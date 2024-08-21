@@ -4,7 +4,7 @@ const { bitacoraHelpers } = require("./../helpers/bitacoras.js")
 const routerBitacora = express.Router()
 const { check } = require('express-validator');
 const { validarCampos } = require('./../middlewares/validar-campos.js');
-const { validarJWT } = require('./../middlewares/validarJWT.js');
+// const { validarJWT } = require('./../middlewares/validarJWT.js');
 
 //GET
 routerBitacora.get('/listarTodo', [
@@ -12,19 +12,19 @@ routerBitacora.get('/listarTodo', [
     validarCampos
 ], httpBitacora.getListarBitacoras)
 routerBitacora.get('/listarPorAprendiz/:aprendiz', [
-    validarJWT,
+    // validarJWT,
     check('aprendiz', 'El aprendiz es obligatorio').notEmpty().isMongoId(),
     check('aprendiz').custom(bitacoraHelpers.validarAprendiz),
     validarCampos
 ], httpBitacora.getListarPorAprendiz)
 routerBitacora.get('/listarPorFicha/:ficha', [
-    validarJWT,
+    // validarJWT,
     validarCampos
 ], httpBitacora.getListarPorFicha)
 
 //POST
 routerBitacora.post('/crear', [
-    validarJWT,
+    // validarJWT,
     check('aprendiz', 'El aprendiz es obligatorio').notEmpty().isMongoId(),
     check('fecha', 'La fecha debe ser válida').optional().isDate(),
     check('aprendiz').custom(bitacoraHelpers.validarAprendiz),
@@ -33,7 +33,7 @@ routerBitacora.post('/crear', [
 
 //PUT
 routerBitacora.put('/modificar/:id', [
-    validarJWT,
+    // validarJWT,
     check('id', 'El id no es válido').notEmpty().isMongoId(),
     check('id').custom(bitacoraHelpers.validarId),
     check('aprendiz', 'El Id debe ser válido').optional().isMongoId(),

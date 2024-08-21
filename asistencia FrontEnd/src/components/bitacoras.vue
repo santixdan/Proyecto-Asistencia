@@ -1,7 +1,7 @@
 <template>
   <div class="todo">
     <div class="q-pa-md">
-      <q-table title="Usuarios" :rows="rows" :columns="columns" row-key="name">
+      <q-table title="Bitacoras" :rows="rows" :columns="columns" row-key="name">
         <template v-slot:body-cell-opciones="props">
           <q-td :props="props">
             <q-btn label="📝" color="black" @click="(icon = true), (change = true), traerId(props.row._id)" />
@@ -18,14 +18,14 @@
       </q-table>
     </div>
     <div class="q-pa-md q-gutter-sm">
-      <q-btn label="Crear Usuario" color="green-8" @click="(icon = true), (change = false)" />
+      <q-btn label="Crear Bitacora" color="green-8" @click="(icon = true), (change = false)" />
     </div>
     <div class="q-pa-md q-gutter-sm">
       <q-dialog v-model="icon" persistent>
         <q-card>
           <q-card-section class="row items-center q-pb-none">
-            <div class="text-h6" v-if="change == false">Crear Usuario</div>
-            <div class="text-h6" v-else>Editar Usuario</div>
+            <div class="text-h6" v-if="change == false">Crear Bitacora</div>
+            <div class="text-h6" v-else>Editar Bitacora</div>
             <q-space />
             <q-btn icon="close" flat round dense v-close-popup />
           </q-card-section>
@@ -33,36 +33,24 @@
           <q-card-section>
             <div class="q-pa-md" style="max-width: 400px">
               <q-form @reset="onReset()" class="q-gutter-md">
-                <q-input filled v-model="email" label="Correo" hint="Correo del usuario" lazy-rules :rules="[
+                <q-input filled type="number" v-model="code" label="Código" hint="Código de la bitacora" lazy-rules :rules="[
                   (val) => {
                     if (change === false) {
                       return (val && val.length > 0) ||
-                        'Por favor, dígite el correo del usuario'
+                        'Por favor, dígite el código de la bitacora'
                     } else { return true }
                   }
                 ]" />
-                <q-input filled v-model="name" label="Nombre" hint="Nombre del usuario" lazy-rules :rules="[
+                <q-input filled v-model="name" label="Nombre" hint="Nombre de la bitacora" lazy-rules :rules="[
                   (val) => {
                     if (change === false) {
                       return (val && val.length > 0) ||
-                        'Por favor, dígite el nombre del usuario'
+                        'Por favor, dígite el nombre de la bitacora'
                     } else { return true }
                   }
                 ]" />
-                <q-input :type="isPwd ? 'password' : 'text'" filled v-model="password" label="Contraseña"
-                  hint="Contraseña" lazy-rules :rules="[
-                    (val) => {
-                      if (change === false) {
-                        return (val && val.length > 0) ||
-                          'Por favor, dígite la contraseña'
-                      } else { return true }
-                    }
-                  ]"><template v-slot:append>
-                    <q-icon :name="isPwd ? 'visibility_off' : 'visibility'" class="cursor-pointer"
-                      @click="isPwd = !isPwd" />
-                  </template></q-input>
                 <div>
-                  <q-btn :loading="useUsuario.loading" label="Guardar" type="submit" color="green-8" @click="crear()" />
+                  <q-btn :loading="useFicha.loading" label="Guardar" type="submit" color="green-8" @click="crear()" />
                 </div>
               </q-form>
             </div>
@@ -76,66 +64,64 @@
 <script setup>
 import { Notify } from 'quasar'
 import { onBeforeMount, ref } from "vue";
-import { useUsuarioStore } from "./../stores/usuarios.js";
+import { useBitacoraStore } from '../stores/bitacoras.js';
 
-let useUsuario = useUsuarioStore();
-let email = ref("");
+let useBitacora = useBitacoraStore();
+let code = ref("");
 let name = ref("");
-let password = ref("");
 let icon = ref(false);
-let isPwd = ref(true);
 let change = ref(); // false: crear, true: modificar
-let idUsuario = ref();
+let idFicha = ref();
 let rows = ref([]);
 let columns = ref([
   {
     name: "nombre1",
     required: true,
-    label: "Nombre del usuario",
+    label: "Nombre de la ficha",
     align: "center",
     field: "nombre",
     sortable: true,
   },
   {
-    name: "correo1",
+    name: "codigo1",
     align: "center",
-    label: "Correo electrónico",
-    field: "email",
+    label: "Código de la ficha",
+    field: "codigo",
   },
   { name: "estado1", align: "center", label: "Estado", field: "estado" },
   { name: "opciones", align: "center", label: "Opciones" },
 ]);
 
 onBeforeMount(() => {
-  traer()
-})
+  traer();
+});
 
 async function traer() {
-  let res = await useUsuario.getListarUsuarios();
-  rows.value = res.data.usuarios;
+  let res = await useBitacora.getListarBitacora();
+  rows.value = res.data.fichas;
 }
 
 async function activar(id) {
-  let res = await useUsuario.putActivarUsuario(id);
+  let res = await useBitacora.putActivarBitacora(id);
   traer();
 }
 
 async function desactivar(id) {
-  let res = await useUsuario.putDesactivarUsuario(id);
+  let res = await useBitacora.putDesactivarBitacora(id);
   traer();
 }
 
 async function traerId(id) {
-  idUsuario.value = id;
+  idFicha.value = id;
 }
 
 async function crear() {
   let res;
   if (change.value === false) {
-    res = await useUsuario.postCrearUsuario(email.value, name.value, password.value);
+    res = await useBitacora.postCrearBitacora(code.value, name.value);
   }
   else {
-    res = await useUsuario.putModificarUsuario(email.value, name.value, password.value, idUsuario.value);
+    res = await useBitacora.putModificarBitacora(code.value, name.value, idFicha.value);
   }
   if (res.validar.value === true) {
     icon.value = false
@@ -160,7 +146,6 @@ async function crear() {
 
 function onReset() {
   name.value = "";
-  email.value = "";
-  password.value = "";
+  code.value = "";
 }
 </script>
