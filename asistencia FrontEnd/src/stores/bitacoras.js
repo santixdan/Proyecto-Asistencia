@@ -1,15 +1,19 @@
 import { defineStore } from "pinia"
 import axios from "axios"
 import { ref } from "vue"
-
-let validar = ref(true)
-let loading = ref(false)
+import { useUsuarioStore } from "./usuarios.js";
 
 export const useBitacoraStore = defineStore("bitacora", () => {
-    let xtoken = ref()
+    let validar = ref(true)
+    let loading = ref(false)
     async function getListarBitacora() {
+        const useUsuario = useUsuarioStore()
         try {
-            let r = await axios.get("http://localhost:4000/bitacoras/listarTodo")
+            let r = await axios.get("http://localhost:4000/bitacoras/listarTodo", {
+                headers: {
+                    "token": useUsuario.xtoken
+                }
+            })
             console.log(r);
             return r
         } catch (error) {
@@ -19,10 +23,15 @@ export const useBitacoraStore = defineStore("bitacora", () => {
     }
     async function postCrearBitacora(aprendiz, fecha) {
         loading.value = true
+        const useUsuario = useUsuarioStore()
         try {
             let r = await axios.post(`http://localhost:4000/bitacoras/crear`, {
                 aprendiz,
                 fecha
+            }, {
+                headers: {
+                    "token": useUsuario.xtoken
+                }
             })
             validar.value = true
             return { r, validar }
@@ -37,16 +46,25 @@ export const useBitacoraStore = defineStore("bitacora", () => {
 
     async function putModificarBitacora(aprendiz, fecha, id) {
         loading.value = true
+        const useUsuario = useUsuarioStore()
         try {
             let r = ref()
-            if (aprendiz){
+            if (aprendiz) {
                 r.value = await axios.put(`http://localhost:4000/bitacoras/modificar/${id}`, {
                     aprendiz
+                }, {
+                    headers: {
+                        "token": useUsuario.xtoken
+                    }
                 })
             }
-            if (fecha){
+            if (fecha) {
                 r.value = await axios.put(`http://localhost:4000/bitacoras/modificar/${id}`, {
                     fecha
+                }, {
+                    headers: {
+                        "token": useUsuario.xtoken
+                    }
                 })
             }
             validar.value = true
@@ -59,8 +77,8 @@ export const useBitacoraStore = defineStore("bitacora", () => {
             loading.value = false
         }
     }
-    
+
     return {
-        getListarBitacora, postCrearBitacora, putModificarBitacora, loading, xtoken
+        getListarBitacora, postCrearBitacora, putModificarBitacora, loading
     }
 })

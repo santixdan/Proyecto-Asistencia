@@ -73,7 +73,7 @@ import { useBitacoraStore } from '../stores/bitacoras.js';
 
 let useBitacora = useBitacoraStore()
 let useAprendiz = useAprendizStore()
-let aprendiz = ref([]);
+let aprendiz = ref();
 let fecha = ref();
 let icon = ref(false);
 let change = ref(); // false: crear, true: modificar

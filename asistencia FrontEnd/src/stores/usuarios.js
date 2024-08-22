@@ -2,15 +2,20 @@ import { defineStore } from "pinia"
 import axios from "axios"
 import { ref } from "vue"
 
-let validar = ref(true)
-let loading = ref(false)
+
 
 export const useUsuarioStore = defineStore("usuario", () => {
     let xtoken = ref()
     let usuario = ref()
+    let validar = ref(true)
+    let loading = ref(false)
     async function getListarUsuarios() {
         try {
-            let r = await axios.get("http://localhost:4000/usuarios/listarTodos")
+            let r = await axios.get("http://localhost:4000/usuarios/listarTodos", {
+                headers: {
+                    "token": xtoken.value
+                }
+            })
             console.log(r);
             return r
         } catch (error) {
@@ -39,15 +44,17 @@ export const useUsuarioStore = defineStore("usuario", () => {
 
     async function postLoginUsuario(email, password) {
         try {
-            let r = await axios.post(`http://localhost:4000/usuarios/crear/login`, {
+            let r = await axios.post(`http://localhost:4000/usuarios/login`, {
                 email,
                 password
             })
             xtoken.value = r.data.token
             usuario.value = r.data.usuario
-            return r
+            validar.value = true
+            return { r, validar }
         } catch (error) {
-            return error
+            validar.value = false
+            return { error, validar }
         }
     }
 
@@ -55,19 +62,31 @@ export const useUsuarioStore = defineStore("usuario", () => {
         loading.value = true
         try {
             let r = ref()
-            if (email){
+            if (email) {
                 r.value = await axios.put(`http://localhost:4000/usuarios/modificar/${id}`, {
                     email
+                }, {
+                    headers: {
+                        "token": xtoken.value
+                    }
                 })
             }
-            if (name){
+            if (name) {
                 r.value = await axios.put(`http://localhost:4000/usuarios/modificar/${id}`, {
                     nombre: name
+                }, {
+                    headers: {
+                        "token": xtoken.value
+                    }
                 })
             }
-            if (password){
+            if (password) {
                 r.value = await axios.put(`http://localhost:4000/usuarios/modificar/${id}`, {
                     password
+                }, {
+                    headers: {
+                        "token": xtoken.value
+                    }
                 })
             }
             validar.value = true
@@ -82,7 +101,11 @@ export const useUsuarioStore = defineStore("usuario", () => {
     }
     async function putActivarUsuario(id) {
         try {
-            let r = await axios.put(`http://localhost:4000/usuarios/activar/${id}`)
+            let r = await axios.put(`http://localhost:4000/usuarios/activar/${id}`, {}, {
+                headers: {
+                    "token": xtoken.value
+                }
+            })
             return r
         } catch (error) {
             console.log(error);
@@ -91,7 +114,11 @@ export const useUsuarioStore = defineStore("usuario", () => {
     }
     async function putDesactivarUsuario(id) {
         try {
-            let r = await axios.put(`http://localhost:4000/usuarios/desactivar/${id}`)
+            let r = await axios.put(`http://localhost:4000/usuarios/desactivar/${id}`, {}, {
+                headers: {
+                    "token": xtoken.value
+                }
+            })
             return r
         } catch (error) {
             console.log(error);

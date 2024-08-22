@@ -4,11 +4,11 @@ const { usuarioHelpers } = require("./../helpers/usuarios.js")
 const routerUsuario = express.Router();
 const { check } = require('express-validator');
 const { validarCampos } = require('./../middlewares/validar-campos.js');
-// const { validarJWT } = require('./../middlewares/validarJWT.js');
+const { validarJWT } = require('./../middlewares/validarJWT.js');
 
 //GET
 routerUsuario.get("/listarTodos", [
-    // validarJWT,
+    validarJWT,
     validarCampos
 ], httpUsuario.getListarUsuarios)
 
@@ -31,7 +31,7 @@ routerUsuario.post('/login', [
 
 //PUT
 routerUsuario.put("/modificar/:id", [
-    // validarJWT,
+    validarJWT,
     check('id', 'El id no es válido').notEmpty().isMongoId(),
     check('id').custom(usuarioHelpers.validarId),
     check('email', 'El email debe ser válido').optional().isEmail(),
@@ -40,13 +40,13 @@ routerUsuario.put("/modificar/:id", [
     validarCampos
 ], httpUsuario.putModificarUsuarios)
 routerUsuario.put("/activar/:id", [
-    // validarJWT,
+    validarJWT,
     check('id', 'El id no es válido').notEmpty().isMongoId(),
     check('id').custom(usuarioHelpers.validarId),
     validarCampos
 ], httpUsuario.putActivarUsuario)
 routerUsuario.put("/desactivar/:id", [
-    // validarJWT,
+    validarJWT,
     check('id', 'El id no es válido').notEmpty().isMongoId(),
     check('id').custom(usuarioHelpers.validarId),
     validarCampos

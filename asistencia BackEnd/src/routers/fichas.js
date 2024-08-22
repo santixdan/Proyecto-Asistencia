@@ -4,17 +4,17 @@ const { fichaHelpers } = require("./../helpers/fichas.js")
 const routerFicha = express.Router();
 const { check } = require('express-validator');
 const { validarCampos } = require('./../middlewares/validar-campos.js');
-// const { validarJWT } = require('./../middlewares/validarJWT.js');
+const { validarJWT } = require('./../middlewares/validarJWT.js');
 
 //GET
 routerFicha.get("/listarTodo", [
-    // validarJWT,
+    validarJWT,
     validarCampos
 ], httpFichas.getListarFichas)
 
 //POST
 routerFicha.post("/crear", [
-    // validarJWT,
+    validarJWT,
     check('nombre', 'El nombre es obligatorio').notEmpty(),
     check('codigo', 'El codigo debe tener mínimo 5 carácteres').notEmpty().isLength({ min: 5 }),
     check('codigo').custom(fichaHelpers.validarCodigoFicha),
@@ -23,7 +23,7 @@ routerFicha.post("/crear", [
 
 //PUT
 routerFicha.put("/modificar/:id", [
-    // validarJWT,
+    validarJWT,
     check('id', 'El id no es válido').notEmpty().isMongoId(),
     check('id').custom(fichaHelpers.validarId),
     check('codigo', 'El codigo debe tener mínimo 5 carácteres').optional().isLength({ min: 5 }),
@@ -31,13 +31,13 @@ routerFicha.put("/modificar/:id", [
     validarCampos
 ], httpFichas.putModificarFichas)
 routerFicha.put("/activar/:id", [
-    // validarJWT,
+    validarJWT,
     check('id', 'El id no es válido').notEmpty().isMongoId(),
     check('id').custom(fichaHelpers.validarId),
     validarCampos
 ], httpFichas.putActivarFichas)
 routerFicha.put("/desactivar/:id", [
-    // validarJWT,
+    validarJWT,
     check('id', 'El id no es válido').notEmpty().isMongoId(),
     check('id').custom(fichaHelpers.validarId),
     validarCampos

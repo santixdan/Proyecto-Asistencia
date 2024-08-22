@@ -4,21 +4,21 @@ const { apredizHelpers } = require("./../helpers/aprendices.js")
 const routerAprendiz = express.Router();
 const { check } = require('express-validator');
 const { validarCampos } = require('./../middlewares/validar-campos.js');
-// const { validarJWT } = require('./../middlewares/validarJWT.js');
+const { validarJWT } = require('./../middlewares/validarJWT.js');
 
 //GET
 routerAprendiz.get("/listarTodo", [
-    // validarJWT,
+    validarJWT,
     validarCampos
 ], httpAprendices.getListarAprendiz)
 routerAprendiz.get("/listarPorFicha/:ficha", [
-    // validarJWT,
+    validarJWT,
     check('ficha', 'La ficha es obligatoria').notEmpty().isMongoId(),
     check('ficha').custom(apredizHelpers.validarFicha),
     validarCampos
 ], httpAprendices.getListarPorFichaAprendiz)
 routerAprendiz.get("/listarPorId/:id", [
-    // validarJWT,
+    validarJWT,
     check('id', 'El id no es válido').notEmpty().isMongoId(),
     check('id').custom(apredizHelpers.validarId),
     validarCampos
@@ -26,7 +26,7 @@ routerAprendiz.get("/listarPorId/:id", [
 
 //POST
 routerAprendiz.post("/crear", [
-    // validarJWT,
+    validarJWT,
     check('nombre', 'El nombre es obligatorio').notEmpty(),
     check('cedula', 'La cédula es obligatoria').notEmpty().isLength({ min: 8 }),
     check('cedula').custom(apredizHelpers.validarCedulaAprendiz),
@@ -41,7 +41,7 @@ routerAprendiz.post("/crear", [
 
 //PUT
 routerAprendiz.put("/modificar/:id", [
-    // validarJWT,
+    validarJWT,
     check('id', 'El id no es válido').notEmpty().isMongoId(),
     check('id').custom(apredizHelpers.validarId),
     check('cedula', 'La cédula debe ser válida').optional().isLength({ min: 8 }),
@@ -55,13 +55,13 @@ routerAprendiz.put("/modificar/:id", [
     validarCampos
 ], httpAprendices.putModificarAprendiz)
 routerAprendiz.put("/activar/:id", [
-    // validarJWT,
+    validarJWT,
     check('id', 'El id no es válido').notEmpty().isMongoId(),
     check('id').custom(apredizHelpers.validarId),
     validarCampos
 ], httpAprendices.putActivarAprendiz)
 routerAprendiz.put("/desactivar/:id", [
-    // validarJWT,
+    validarJWT,
     check('id', 'El id no es válido').notEmpty().isMongoId(),
     check('id').custom(apredizHelpers.validarId),
     validarCampos
