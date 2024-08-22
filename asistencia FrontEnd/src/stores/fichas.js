@@ -6,7 +6,6 @@ import { useUsuarioStore } from "./usuarios.js";
 export const useFichaStore = defineStore("ficha", () => {
     let validar = ref(true)
     let loading = ref(false)
-
     async function getListarFichas() {
         const useUsuario = useUsuarioStore()
         try {
@@ -108,6 +107,4 @@ export const useFichaStore = defineStore("ficha", () => {
     return {
         getListarFichas, postCrearFicha, putActivarFicha, putDesactivarFicha, putModificarFicha, loading
     }
-}, {
-    persist: true
 })

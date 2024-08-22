@@ -103,7 +103,13 @@ onBeforeMount(() => {
 
 async function traer() {
   let res = await useBitacora.getListarBitacora();
-  rows.value = res.data.bitacoras;
+  let res2 = await useAprendiz.getListarAprendiz();
+  rows.value = res.data.bitacoras.map(bitacora => {
+    return {
+      ...bitacora,
+      aprendiz: res2.data.aprendices.find(aprendiz => aprendiz._id === bitacora.aprendiz)?.cedula
+    };
+  })
 }
 
 async function traerId(id) {

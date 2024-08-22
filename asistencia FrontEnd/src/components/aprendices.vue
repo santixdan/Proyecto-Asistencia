@@ -34,7 +34,7 @@
             <div class="q-pa-md" style="max-width: 400px">
               <q-form @reset="onReset()" class="q-gutter-md">
                 <q-select filled type="number" v-model="ficha" :options="options" label="Ficha"
-                  hint="Código de la ficha" emit-value map-options/>
+                  hint="Código de la ficha" emit-value map-options />
                 <q-input filled v-model="name" label="Nombre" hint="Nombre del usuario" lazy-rules :rules="[
                   (val) => {
                     if (change === false) {
@@ -94,6 +94,7 @@ let email = ref("");
 let telefono = ref("");
 let ficha = ref();
 let cedula = ref("");
+let codigo = ref()
 let name = ref("");
 let icon = ref(false);
 let change = ref(); // false: crear, true: modificar
@@ -144,7 +145,13 @@ onBeforeMount(() => {
 
 async function traer() {
   let res = await useAprendiz.getListarAprendiz();
-  rows.value = res.data.aprendices;
+  let res2 = await useFicha.getListarFichas();
+  rows.value = res.data.aprendices.map(aprendiz => {
+    return {
+      ...aprendiz,
+      ficha: res2.data.fichas.find(ficha => ficha._id === aprendiz.ficha)?.codigo
+    };
+  })
 }
 
 async function activar(id) {
@@ -167,7 +174,7 @@ async function traerFichas() {
     label: ficha.codigo,
     value: ficha._id
   }));
-  
+
 }
 
 async function crear() {

@@ -16,7 +16,6 @@ export const useUsuarioStore = defineStore("usuario", () => {
                     "token": xtoken.value
                 }
             })
-            console.log(r);
             return r
         } catch (error) {
             console.log(error);
@@ -43,6 +42,7 @@ export const useUsuarioStore = defineStore("usuario", () => {
     }
 
     async function postLoginUsuario(email, password) {
+        loading.value = true
         try {
             let r = await axios.post(`http://localhost:4000/usuarios/login`, {
                 email,
@@ -55,6 +55,8 @@ export const useUsuarioStore = defineStore("usuario", () => {
         } catch (error) {
             validar.value = false
             return { error, validar }
+        } finally {
+            loading.value = false
         }
     }
 
@@ -127,5 +129,9 @@ export const useUsuarioStore = defineStore("usuario", () => {
     }
     return {
         getListarUsuarios, postCrearUsuario, postLoginUsuario, putActivarUsuario, putDesactivarUsuario, putModificarUsuario, loading, xtoken, usuario
+    }
+}, {
+    persist: {
+        paths: ['xtoken', 'usuario']
     }
 })

@@ -15,7 +15,6 @@ export const useAprendizStore = defineStore("aprendiz", () => {
                     "token": useUsuario.xtoken
                 }
             })
-            console.log(r);
             return r
         } catch (error) {
             console.log(error);

@@ -7,7 +7,7 @@ const generarJWT = (uid) => {
         const payload = { uid };
         jwt.sign(payload, process.env.SECRETORPRIVATEKEY, {
             //100 years
-            expiresIn: "100y"
+            expiresIn: "1h"
         }, (err, token) => {
             if (err) {
                 reject("No se pudo generar el token")

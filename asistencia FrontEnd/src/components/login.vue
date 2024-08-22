@@ -1,11 +1,10 @@
 <template>
     <div class="q-pa-md" style="max-width: 400px">
-
         <q-form @reset="onReset()" class="q-gutter-md">
-            <q-input filled v-model="email" label="Email" hint="email del usuario" lazy-rules
+            <q-input filled v-model="email" label="Email" @keyup.enter="login()" hint="email del usuario" lazy-rules
                 :rules="[val => val && val.length > 0 || 'Por favor, dígite el correo del usuario']" />
 
-            <q-input v-model="password" filled label="Contraseña" :type="isPwd ? 'password' : 'text'" hint="Contraseña" lazy-rules
+            <q-input v-model="password" filled label="Contraseña" @keyup.enter="login()" :type="isPwd ? 'password' : 'text'" hint="Contraseña" lazy-rules
             :rules="[val => val && val.length > 0 || 'Por favor, dígite la contraseña']">
                 <template v-slot:append>
                     <q-icon :name="isPwd ? 'visibility_off' : 'visibility'" class="cursor-pointer"
@@ -14,7 +13,7 @@
             </q-input>
 
             <div>
-                <q-btn label="Submit" type="submit" color="primary" @click="login"/>
+                <q-btn :loading="useUsuario.loading" label="Submit" color="primary" @click.prevent="login()"/>
             </div>
         </q-form>
 
@@ -29,21 +28,21 @@ import { useRouter } from 'vue-router'
 
 const router = useRouter()
 const useUsuario = useUsuarioStore()
-const email = ref('')
-const password = ref('')
+const email = ref('') //danielito@gmail.com
+const password = ref('') //daniel123
 const isPwd = ref(true)
 
 async function login() {
     let res = await useUsuario.postLoginUsuario(email.value, password.value);
     if (res.validar.value === true) {
-        router.push('/home');
-        onReset()
         Notify.create({
             color: "green-3",
             message: "Inicio de sesión exitoso",
             icon: "cloud_done",
             timeout: 2500,
         });
+        await router.replace('/home');
+        onReset()
     } else {
         Notify.create({
             color: "red-5",

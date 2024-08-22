@@ -14,7 +14,6 @@ export const useBitacoraStore = defineStore("bitacora", () => {
                     "token": useUsuario.xtoken
                 }
             })
-            console.log(r);
             return r
         } catch (error) {
             console.log(error);
