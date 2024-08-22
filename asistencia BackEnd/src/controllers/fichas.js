@@ -24,18 +24,14 @@ const httpFichas = {
             const id = req.params.id;
             const { codigo, nombre } = req.body
             const ficha = await Ficha.findById(id)
-            if (ficha){
-                if(codigo){
-                    ficha.codigo = codigo
-                }
-                if(nombre){
-                    ficha.nombre = nombre
-                }
-                await ficha.save()
-                res.json({ ficha })
-            } else {
-                res.status(404).json({ message: 'Usuario no encontrado' });
+            if (codigo) {
+                ficha.codigo = codigo
             }
+            if (nombre) {
+                ficha.nombre = nombre
+            }
+            await ficha.save()
+            res.json({ ficha })
         } catch (error) {
             res.status(400).json({ error })
         }

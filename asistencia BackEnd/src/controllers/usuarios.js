@@ -35,24 +35,22 @@ const httpUsuario = {
 
     },
     putModificarUsuarios: async (req, res) => {
-        const id = req.params.id;
         try {
+            const id = req.params.id;
             const { email, password, nombre } = req.body
             const usuario = await Usuario.findById(id)
-            if (usuario) {
-                if (email) {
-                    usuario.email = email;
-                }
-                if (password) {
-                    const salt = bcryptjs.genSaltSync();
-                    usuario.password = bcryptjs.hashSync(password, salt);
-                }
-                if (nombre) {
-                    usuario.nombre = nombre;
-                }
-                await usuario.save();
-                res.json({ usuario });
+            if (email) {
+                usuario.email = email;
             }
+            if (password) {
+                const salt = bcryptjs.genSaltSync();
+                usuario.password = bcryptjs.hashSync(password, salt);
+            }
+            if (nombre) {
+                usuario.nombre = nombre;
+            }
+            await usuario.save();
+            res.json({ usuario });
         } catch (error) {
             res.status(400).json({ error })
         }

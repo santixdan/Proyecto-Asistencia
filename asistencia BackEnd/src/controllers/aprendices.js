@@ -61,7 +61,6 @@ const httpAprendices = {
             }
             await aprendiz.save()
             res.json({ aprendiz })
-
         } catch (error) {
             res.status(400).json({ error })
         }
