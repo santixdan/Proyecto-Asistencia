@@ -1,31 +1,23 @@
 <template>
   <div class="todo">
     <div class="q-pa-md">
-      <q-table title="Bitacoras" :rows="rows" :columns="columns" row-key="name">
+      <q-table title="Bitácoras" :rows="rows" :columns="columns" row-key="name">
         <template v-slot:body-cell-opciones="props">
           <q-td :props="props">
             <q-btn label="📝" color="black" @click="(icon = true), (change = true), traerId(props.row._id)" />
-            <q-btn v-if="props.row.estado == 0" @click="activar(props.row._id)">✅</q-btn>
-            <q-btn v-else @click="desactivar(props.row._id)">❌</q-btn>
-          </q-td>
-        </template>
-        <template v-slot:body-cell-estado1="props">
-          <q-td :props="props">
-            <p style="color: green" v-if="props.row.estado == 1">Activo</p>
-            <p style="color: red" v-else>Inactivo</p>
           </q-td>
         </template>
       </q-table>
     </div>
     <div class="q-pa-md q-gutter-sm">
-      <q-btn label="Crear Bitacora" color="green-8" @click="(icon = true), (change = false)" />
+      <q-btn label="Crear Bitácora" color="green-8" @click="(icon = true), (change = false)" />
     </div>
     <div class="q-pa-md q-gutter-sm">
       <q-dialog v-model="icon" persistent>
         <q-card>
           <q-card-section class="row items-center q-pb-none">
-            <div class="text-h6" v-if="change == false">Crear Bitacora</div>
-            <div class="text-h6" v-else>Editar Bitacora</div>
+            <div class="text-h6" v-if="change == false">Crear Bitácora</div>
+            <div class="text-h6" v-else>Editar Bitácora</div>
             <q-space />
             <q-btn icon="close" flat round dense v-close-popup />
           </q-card-section>
@@ -33,24 +25,36 @@
           <q-card-section>
             <div class="q-pa-md" style="max-width: 400px">
               <q-form @reset="onReset()" class="q-gutter-md">
-                <q-input filled type="number" v-model="code" label="Código" hint="Código de la bitacora" lazy-rules :rules="[
-                  (val) => {
-                    if (change === false) {
-                      return (val && val.length > 0) ||
-                        'Por favor, dígite el código de la bitacora'
-                    } else { return true }
-                  }
-                ]" />
-                <q-input filled v-model="name" label="Nombre" hint="Nombre de la bitacora" lazy-rules :rules="[
-                  (val) => {
-                    if (change === false) {
-                      return (val && val.length > 0) ||
-                        'Por favor, dígite el nombre de la bitacora'
-                    } else { return true }
-                  }
-                ]" />
+                <q-select filled type="number" v-model="aprendiz" :options="options" label="Aprendiz"
+                  hint="Cédula del aprendiz"  emit-value map-options/>
+                <q-input filled v-model="fecha">
+                  <template v-slot:prepend>
+                    <q-icon name="event" class="cursor-pointer">
+                      <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                        <q-date v-model="fecha" mask="YYYY-MM-DD HH:mm" today-btn>
+                          <div class="row items-center justify-end">
+                            <q-btn v-close-popup label="Close" color="primary" flat />
+                          </div>
+                        </q-date>
+                      </q-popup-proxy>
+                    </q-icon>
+                  </template>
+
+                  <template v-slot:append>
+                    <q-icon name="access_time" class="cursor-pointer">
+                      <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                        <q-time v-model="fecha" mask="YYYY-MM-DD HH:mm" format24h>
+                          <div class="row items-center justify-end">
+                            <q-btn v-close-popup label="Close" color="primary" flat />
+                          </div>
+                        </q-time>
+                      </q-popup-proxy>
+                    </q-icon>
+                  </template>
+                </q-input>
                 <div>
-                  <q-btn :loading="useFicha.loading" label="Guardar" type="submit" color="green-8" @click="crear()" />
+                  <q-btn :loading="useAprendiz.loading" label="Guardar" type="submit" color="green-8"
+                    @click="crear()" />
                 </div>
               </q-form>
             </div>
@@ -64,64 +68,63 @@
 <script setup>
 import { Notify } from 'quasar'
 import { onBeforeMount, ref } from "vue";
+import { useAprendizStore } from '../stores/aprendices.js';
 import { useBitacoraStore } from '../stores/bitacoras.js';
 
-let useBitacora = useBitacoraStore();
-let code = ref("");
-let name = ref("");
+let useBitacora = useBitacoraStore()
+let useAprendiz = useAprendizStore()
+let aprendiz = ref([]);
+let fecha = ref();
 let icon = ref(false);
 let change = ref(); // false: crear, true: modificar
-let idFicha = ref();
+let idBitacora = ref();
+let options = ref()
 let rows = ref([]);
 let columns = ref([
   {
-    name: "nombre1",
-    required: true,
-    label: "Nombre de la ficha",
+    name: "aprendiz1",
     align: "center",
-    field: "nombre",
-    sortable: true,
+    label: "Cédula del aprendiz",
+    field: "aprendiz",
   },
   {
-    name: "codigo1",
+    name: "fecha1",
     align: "center",
-    label: "Código de la ficha",
-    field: "codigo",
+    label: "Fecha de la bitácora",
+    field: "fecha",
   },
-  { name: "estado1", align: "center", label: "Estado", field: "estado" },
   { name: "opciones", align: "center", label: "Opciones" },
 ]);
 
 onBeforeMount(() => {
-  traer();
-});
+  traer()
+  traerAprendices()
+})
 
 async function traer() {
   let res = await useBitacora.getListarBitacora();
-  rows.value = res.data.fichas;
-}
-
-async function activar(id) {
-  let res = await useBitacora.putActivarBitacora(id);
-  traer();
-}
-
-async function desactivar(id) {
-  let res = await useBitacora.putDesactivarBitacora(id);
-  traer();
+  rows.value = res.data.bitacoras;
 }
 
 async function traerId(id) {
-  idFicha.value = id;
+  idBitacora.value = id;
+}
+
+async function traerAprendices() {
+  let res = await useAprendiz.getListarAprendiz();
+  options.value = res.data.aprendices.map(aprendiz => ({
+    label: aprendiz.cedula,
+    value: aprendiz._id
+  }));
 }
 
 async function crear() {
   let res;
   if (change.value === false) {
-    res = await useBitacora.postCrearBitacora(code.value, name.value);
+    res = await useBitacora.postCrearBitacora(aprendiz.value, fecha.value)
   }
   else {
-    res = await useBitacora.putModificarBitacora(code.value, name.value, idFicha.value);
+    res = await useBitacora.putModificarBitacora(aprendiz.value, fecha.value, idBitacora.value)
   }
   if (res.validar.value === true) {
     icon.value = false
@@ -145,7 +148,7 @@ async function crear() {
 }
 
 function onReset() {
-  name.value = "";
-  code.value = "";
+  fecha.value = ""
+  aprendiz.value = ""
 }
 </script>

@@ -7,7 +7,6 @@ let loading = ref(false)
 
 export const useAprendizStore = defineStore("aprendiz", () => {
     let xtoken = ref()
-    let aprendiz = ref()
     async function getListarAprendiz() {
         try {
             let r = await axios.get("http://localhost:4000/aprendices/listarTodo")
@@ -97,6 +96,6 @@ export const useAprendizStore = defineStore("aprendiz", () => {
         }
     }
     return {
-        getListarAprendiz, postCrearAprendiz, putActivarAprendiz, putDesactivarAprendiz, putModificarAprendiz, loading, xtoken, aprendiz
+        getListarAprendiz, postCrearAprendiz, putActivarAprendiz, putDesactivarAprendiz, putModificarAprendiz, loading, xtoken
     }
 })

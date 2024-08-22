@@ -4,18 +4,8 @@ const Aprendiz = require("./../models/aprendices.js")
 const httpBitacora = {
     getListarBitacoras: async (req, res) => {
         try {
-            const { startDate, endDate } = req.body;
-            const query = {};
-
-            if (startDate && endDate) {
-                query.fecha = {
-                    $gte: new Date(startDate),
-                    $lte: new Date(endDate)
-                };
-            }
-
-            const bitacora = await Bitacora.find(query);
-            res.json({ bitacora });
+            const bitacoras = await Bitacora.find();
+            res.json({ bitacoras });
         } catch (error) {
             res.status(400).json({ error });
         }

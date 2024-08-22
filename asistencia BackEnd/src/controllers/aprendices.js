@@ -1,4 +1,5 @@
 const Aprendiz = require("./../models/aprendices.js")
+const Ficha = require("./../models/fichas.js")
 
 const httpAprendices = {
     getListarAprendiz: async (req, res) => {

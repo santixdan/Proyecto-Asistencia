@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const bitacoraSchema = new mongoose.Schema({
     aprendiz: { type: mongoose.Schema.Types.ObjectId, ref: 'Aprendiz' },
-    fecha: { type: Date, default: Date.now() }
+    fecha: { type: String, required: true }
 }, { timestamps: true })
 
 module.exports = mongoose.model("Bitacora", bitacoraSchema)
