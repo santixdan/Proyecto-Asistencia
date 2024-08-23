@@ -9,6 +9,7 @@ export const useAprendizStore = defineStore("aprendiz", () => {
 
     async function getListarAprendiz() {
         const useUsuario = useUsuarioStore()
+        loading.value = true
         try {
             let r = await axios.get("http://localhost:4000/aprendices/listarTodo", {
                 headers: {
@@ -19,6 +20,8 @@ export const useAprendizStore = defineStore("aprendiz", () => {
         } catch (error) {
             console.log(error);
             return error
+        } finally {
+            loading.value = false
         }
     }
     async function postCrearAprendiz(ficha, cedula, name, telefono, email) {

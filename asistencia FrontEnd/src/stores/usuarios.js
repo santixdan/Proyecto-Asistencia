@@ -10,6 +10,7 @@ export const useUsuarioStore = defineStore("usuario", () => {
     let validar = ref(true)
     let loading = ref(false)
     async function getListarUsuarios() {
+        loading.value = true
         try {
             let r = await axios.get("http://localhost:4000/usuarios/listarTodos", {
                 headers: {
@@ -20,6 +21,8 @@ export const useUsuarioStore = defineStore("usuario", () => {
         } catch (error) {
             console.log(error);
             return error
+        } finally {
+            loading.value = false
         }
     }
     async function postCrearUsuario(email, name, password) {
@@ -29,6 +32,10 @@ export const useUsuarioStore = defineStore("usuario", () => {
                 email,
                 nombre: name,
                 password
+            }, {
+                headers: {
+                    "token": xtoken.value
+                }
             })
             validar.value = true
             return { r, validar }
@@ -102,6 +109,7 @@ export const useUsuarioStore = defineStore("usuario", () => {
         }
     }
     async function putActivarUsuario(id) {
+        loading.value = true
         try {
             let r = await axios.put(`http://localhost:4000/usuarios/activar/${id}`, {}, {
                 headers: {
@@ -112,9 +120,12 @@ export const useUsuarioStore = defineStore("usuario", () => {
         } catch (error) {
             console.log(error);
             return error
+        } finally {
+            loading.value = false
         }
     }
     async function putDesactivarUsuario(id) {
+        loading.value = true
         try {
             let r = await axios.put(`http://localhost:4000/usuarios/desactivar/${id}`, {}, {
                 headers: {
@@ -125,6 +136,8 @@ export const useUsuarioStore = defineStore("usuario", () => {
         } catch (error) {
             console.log(error);
             return error
+        } finally {
+            loading.value = false
         }
     }
     return {

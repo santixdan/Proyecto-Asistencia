@@ -1,12 +1,21 @@
 <template>
+  
   <div class="todo">
+    <h3 id="tituloPrincipal">Fichas</h3> 
+    <hr id="hr">
     <div class="q-pa-md">
-      <q-table title="Fichas" :rows="rows" :columns="columns" row-key="name">
+      <div class="q-pa-md q-gutter-sm">
+        <q-btn label="Crear Ficha" color="green-8" @click="(icon = true), (change = false)" />
+      </div>
+      <q-table title="Fichas" :rows="rows" :columns="columns" row-key="name" :loading="useFicha.loading">
+
         <template v-slot:body-cell-opciones="props">
           <q-td :props="props">
-            <q-btn label="📝" color="black" @click="(icon = true), (change = true), traerId(props.row._id)" />
-            <q-btn v-if="props.row.estado == 0" @click="activar(props.row._id)">✅</q-btn>
-            <q-btn v-else @click="desactivar(props.row._id)">❌</q-btn>
+            <div class="q-pa-md q-gutter-sm">
+              <q-btn label="📝" @click="(icon = true), (change = true), traerId(props.row._id)" />
+              <q-btn v-if="props.row.estado == 0" @click="activar(props.row._id)">✅</q-btn>
+              <q-btn v-else @click="desactivar(props.row._id)">❌</q-btn>
+            </div>
           </q-td>
         </template>
         <template v-slot:body-cell-estado1="props">
@@ -17,23 +26,22 @@
         </template>
       </q-table>
     </div>
-    <div class="q-pa-md q-gutter-sm">
-      <q-btn label="Crear Ficha" color="green-8" @click="(icon = true), (change = false)" />
-    </div>
+
     <div class="q-pa-md q-gutter-sm">
       <q-dialog v-model="icon" persistent>
         <q-card>
           <q-card-section class="row items-center q-pb-none">
             <div class="text-h6" v-if="change == false">Crear Ficha</div>
             <div class="text-h6" v-else>Editar Ficha</div>
+            
             <q-space />
             <q-btn icon="close" flat round dense v-close-popup />
           </q-card-section>
 
           <q-card-section>
             <div class="q-pa-md" style="max-width: 400px">
-              <q-form @reset="onReset()" class="q-gutter-md">
-                <q-input filled type="number" v-model="code" label="Código" hint="Código de la ficha" lazy-rules :rules="[
+              <q-form @submit="crear()" @reset="onReset()" class="q-gutter-md">
+                <q-input @keyup.enter="crear()" filled type="number" v-model="code" label="Código" lazy-rules :rules="[
                   (val) => {
                     if (change === false) {
                       return (val && val.length > 0) ||
@@ -41,7 +49,7 @@
                     } else { return true }
                   }
                 ]" />
-                <q-input filled v-model="name" label="Nombre" hint="Nombre de la ficha" lazy-rules :rules="[
+                <q-input @keyup.enter="crear()" filled v-model="name" label="Nombre" lazy-rules :rules="[
                   (val) => {
                     if (change === false) {
                       return (val && val.length > 0) ||
@@ -50,7 +58,7 @@
                   }
                 ]" />
                 <div>
-                  <q-btn :loading="useFicha.loading" label="Guardar" type="submit" color="green-8" @click="crear()" />
+                  <q-btn :loading="useFicha.loading" label="Guardar" type="submit" color="green-8" />
                 </div>
               </q-form>
             </div>
@@ -118,10 +126,10 @@ async function traerId(id) {
 async function crear() {
   let res;
   if (change.value === false) {
-    res = await useFicha.postCrearFicha(code.value, name.value);
+    res = await useFicha.postCrearFicha(code.value.trim(), name.value.trim());
   }
   else {
-    res = await useFicha.putModificarFicha(code.value, name.value, idFicha.value);
+    res = await useFicha.putModificarFicha(code.value.trim(), name.value.trim(), idFicha.value);
   }
   if (res.validar.value === true) {
     icon.value = false

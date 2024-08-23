@@ -8,6 +8,7 @@ export const useFichaStore = defineStore("ficha", () => {
     let loading = ref(false)
     async function getListarFichas() {
         const useUsuario = useUsuarioStore()
+        loading.value = true
         try {
             let r = await axios.get("http://localhost:4000/fichas/listarTodo", {
                 headers: {
@@ -18,6 +19,8 @@ export const useFichaStore = defineStore("ficha", () => {
         } catch (error) {
             console.log(error);
             return error
+        } finally {
+            loading.value = false
         }
     }
     async function postCrearFicha(code, name) {

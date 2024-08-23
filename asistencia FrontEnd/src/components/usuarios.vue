@@ -1,12 +1,19 @@
 <template>
   <div class="todo">
+    <h3 id="tituloPrincipal">Usuarios</h3> 
+    <hr id="hr">
     <div class="q-pa-md">
-      <q-table title="Usuarios" :rows="rows" :columns="columns" row-key="name">
+      <div class="q-pa-md q-gutter-sm">
+        <q-btn label="Crear Usuario" color="green-8" @click="(icon = true), (change = false)" />
+      </div>
+      <q-table title="Usuarios" :rows="rows" :columns="columns" row-key="name" :loading="useUsuario.loading">
         <template v-slot:body-cell-opciones="props">
           <q-td :props="props">
-            <q-btn label="📝" color="black" @click="(icon = true), (change = true), traerId(props.row._id)" />
-            <q-btn v-if="props.row.estado == 0" @click="activar(props.row._id)">✅</q-btn>
-            <q-btn v-else @click="desactivar(props.row._id)">❌</q-btn>
+            <div class="q-pa-md q-gutter-sm" >
+              <q-btn label="📝" @click="(icon = true), (change = true), traerId(props.row._id)" />
+              <q-btn v-if="props.row.estado == 0" @click="activar(props.row._id)" >✅</q-btn>
+              <q-btn v-else @click="desactivar(props.row._id)" >❌</q-btn>
+            </div>
           </q-td>
         </template>
         <template v-slot:body-cell-estado1="props">
@@ -17,9 +24,7 @@
         </template>
       </q-table>
     </div>
-    <div class="q-pa-md q-gutter-sm">
-      <q-btn label="Crear Usuario" color="green-8" @click="(icon = true), (change = false)" />
-    </div>
+
     <div class="q-pa-md q-gutter-sm">
       <q-dialog v-model="icon" persistent>
         <q-card>
@@ -32,8 +37,8 @@
 
           <q-card-section>
             <div class="q-pa-md" style="max-width: 400px">
-              <q-form @reset="onReset()" class="q-gutter-md">
-                <q-input filled v-model="email" label="Correo" hint="Correo del usuario" lazy-rules :rules="[
+              <q-form @submit="crear()" @reset="onReset()" class="q-gutter-md">
+                <q-input @keyup.enter="crear()"  filled v-model="email" label="Correo" lazy-rules :rules="[
                   (val) => {
                     if (change === false) {
                       return (val && val.length > 0) ||
@@ -41,7 +46,8 @@
                     } else { return true }
                   }
                 ]" />
-                <q-input filled v-model="name" label="Nombre" hint="Nombre del usuario" lazy-rules :rules="[
+                <q-input @keyup.enter="crear()"  filled v-model="name" label="Nombre" lazy-rules :rules="[
+                  
                   (val) => {
                     if (change === false) {
                       return (val && val.length > 0) ||
@@ -49,20 +55,20 @@
                     } else { return true }
                   }
                 ]" />
-                <q-input :type="isPwd ? 'password' : 'text'" filled v-model="password" label="Contraseña"
-                  hint="Contraseña" lazy-rules :rules="[
+                <q-input @keyup.enter="crear()"  v-if="change===false" :type="isPwd ? 'password' : 'text'" filled v-model="password" label="Contraseña" lazy-rules
+                  :rules="[
                     (val) => {
                       if (change === false) {
                         return (val && val.length > 0) ||
                           'Por favor, dígite la contraseña'
                       } else { return true }
                     }
-                  ]"><template v-slot:append>
+                  ]" ><template v-slot:append>
                     <q-icon :name="isPwd ? 'visibility_off' : 'visibility'" class="cursor-pointer"
                       @click="isPwd = !isPwd" />
                   </template></q-input>
                 <div>
-                  <q-btn :loading="useUsuario.loading" label="Guardar" type="submit" color="green-8" @click="crear()" />
+                  <q-btn :loading="useUsuario.loading" label="Guardar" type="submit" color="green-8" />
                 </div>
               </q-form>
             </div>
@@ -132,10 +138,10 @@ async function traerId(id) {
 async function crear() {
   let res;
   if (change.value === false) {
-    res = await useUsuario.postCrearUsuario(email.value, name.value, password.value);
+    res = await useUsuario.postCrearUsuario(email.value.trim(), name.value.trim(), password.value.trim());
   }
   else {
-    res = await useUsuario.putModificarUsuario(email.value, name.value, password.value, idUsuario.value);
+    res = await useUsuario.putModificarUsuario(email.value.trim(), name.value.trim(), password.value.trim(), idUsuario.value);
   }
   if (res.validar.value === true) {
     icon.value = false
@@ -164,3 +170,4 @@ function onReset() {
   password.value = "";
 }
 </script>
+

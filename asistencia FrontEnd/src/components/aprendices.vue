@@ -1,12 +1,19 @@
 <template>
   <div class="todo">
+    <h3 id="tituloPrincipal">Aprendices</h3> 
+    <hr id="hr">
     <div class="q-pa-md">
-      <q-table title="Aprendices" :rows="rows" :columns="columns" row-key="name">
+      <div class="q-pa-md q-gutter-sm">
+        <q-btn label="Crear Aprendiz" color="green-8" @click="(icon = true), (change = false)" />
+      </div>
+      <q-table title="Aprendices" :rows="rows" :columns="columns" row-key="name" :loading="useAprendiz.loading">
         <template v-slot:body-cell-opciones="props">
           <q-td :props="props">
-            <q-btn label="📝" color="black" @click="(icon = true), (change = true), traerId(props.row._id)" />
-            <q-btn v-if="props.row.estado == 0" @click="activar(props.row._id)">✅</q-btn>
-            <q-btn v-else @click="desactivar(props.row._id)">❌</q-btn>
+            <div class="q-pa-md q-gutter-sm">
+              <q-btn label="📝" @click="(icon = true), (change = true), traerId(props.row._id)" />
+              <q-btn v-if="props.row.estado == 0" @click="activar(props.row._id)">✅</q-btn>
+              <q-btn v-else @click="desactivar(props.row._id)">❌</q-btn>
+            </div>
           </q-td>
         </template>
         <template v-slot:body-cell-estado1="props">
@@ -17,9 +24,7 @@
         </template>
       </q-table>
     </div>
-    <div class="q-pa-md q-gutter-sm">
-      <q-btn label="Crear Aprendiz" color="green-8" @click="(icon = true), (change = false)" />
-    </div>
+
     <div class="q-pa-md q-gutter-sm">
       <q-dialog v-model="icon" persistent>
         <q-card>
@@ -32,10 +37,10 @@
 
           <q-card-section>
             <div class="q-pa-md" style="max-width: 400px">
-              <q-form @reset="onReset()" class="q-gutter-md">
-                <q-select filled type="number" v-model="ficha" :options="options" label="Ficha"
-                  hint="Código de la ficha" emit-value map-options />
-                <q-input filled v-model="name" label="Nombre" hint="Nombre del usuario" lazy-rules :rules="[
+              <q-form @submit="crear()" @reset="onReset()" class="q-gutter-md">
+                <q-select filled type="number" v-model="ficha" :options="options" label="Ficha" emit-value
+                  map-options />
+                <q-input @keyup.enter="crear()" filled v-model="name" label="Nombre" lazy-rules :rules="[
                   (val) => {
                     if (change === false) {
                       return (val && val.length > 0) ||
@@ -43,25 +48,23 @@
                     } else { return true }
                   }
                 ]" />
-                <q-input filled type="number" v-model="cedula" label="Cédula" hint="Cédula del aprendiz" lazy-rules
-                  :rules="[
-                    (val) => {
-                      if (change === false) {
-                        return (val && val.length > 0) ||
-                          'Por favor, dígite la cédula del aprendiz'
-                      } else { return true }
-                    }
-                  ]" />
-                <q-input filled type="number" v-model="telefono" label="Teléfono" hint="Teléfono del aprendiz"
-                  lazy-rules :rules="[
-                    (val) => {
-                      if (change === false) {
-                        return (val && val.length > 0) ||
-                          'Por favor, dígite el teléfono del aprendiz'
-                      } else { return true }
-                    }
-                  ]" />
-                <q-input filled v-model="email" label="Correo" hint="Correo del aprendiz" lazy-rules :rules="[
+                <q-input @keyup.enter="crear()" filled type="number" v-model="cedula" label="Cédula" lazy-rules :rules="[
+                  (val) => {
+                    if (change === false) {
+                      return (val && val.length > 0) ||
+                        'Por favor, dígite la cédula del aprendiz'
+                    } else { return true }
+                  }
+                ]" />
+                <q-input @keyup.enter="crear()" filled type="number" v-model="telefono" label="Teléfono" lazy-rules :rules="[
+                  (val) => {
+                    if (change === false) {
+                      return (val && val.length > 0) ||
+                        'Por favor, dígite el teléfono del aprendiz'
+                    } else { return true }
+                  }
+                ]" />
+                <q-input @keyup.enter="crear()" filled v-model="email" label="Correo" lazy-rules :rules="[
                   (val) => {
                     if (change === false) {
                       return (val && val.length > 0) ||
@@ -70,8 +73,7 @@
                   }
                 ]" />
                 <div>
-                  <q-btn :loading="useAprendiz.loading" label="Guardar" type="submit" color="green-8"
-                    @click="crear()" />
+                  <q-btn :loading="useAprendiz.loading" label="Guardar" type="submit" color="green-8" />
                 </div>
               </q-form>
             </div>
@@ -180,10 +182,10 @@ async function traerFichas() {
 async function crear() {
   let res;
   if (change.value === false) {
-    res = await useAprendiz.postCrearAprendiz(ficha.value, cedula.value, name.value, telefono.value, email.value)
+    res = await useAprendiz.postCrearAprendiz(ficha.value.trim(), cedula.value.trim(), name.value.trim(), telefono.value.trim(), email.value.trim())
   }
   else {
-    res = await useAprendiz.putModificarAprendiz(ficha.value, cedula.value, name.value, telefono.value, email.value, idAprendiz.value)
+    res = await useAprendiz.putModificarAprendiz(ficha.value.trim(), cedula.value.trim(), name.value.trim(), telefono.value.trim(), email.value.trim(), idAprendiz.value)
   }
   if (res.validar.value === true) {
     icon.value = false

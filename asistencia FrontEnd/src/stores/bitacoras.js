@@ -8,6 +8,7 @@ export const useBitacoraStore = defineStore("bitacora", () => {
     let loading = ref(false)
     async function getListarBitacora() {
         const useUsuario = useUsuarioStore()
+        loading.value = true
         try {
             let r = await axios.get("http://localhost:4000/bitacoras/listarTodo", {
                 headers: {
@@ -18,6 +19,8 @@ export const useBitacoraStore = defineStore("bitacora", () => {
         } catch (error) {
             console.log(error);
             return error
+        } finally {
+            loading.value = false
         }
     }
     async function postCrearBitacora(aprendiz, fecha) {

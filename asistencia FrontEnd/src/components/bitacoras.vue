@@ -1,17 +1,23 @@
 <template>
   <div class="todo">
+    <h3 id="tituloPrincipal">Bitácoras</h3>
+    <hr id="hr">
     <div class="q-pa-md">
-      <q-table title="Bitácoras" :rows="rows" :columns="columns" row-key="name">
+      <div class="q-pa-md q-gutter-sm">
+        <q-btn label="Crear Bitácora" color="green-8" @click="(icon = true), (change = false)" />
+      </div>
+      <q-table title="Bitácoras" :rows="rows" :columns="columns" row-key="name" :loading="useBitacora.loading">
         <template v-slot:body-cell-opciones="props">
           <q-td :props="props">
-            <q-btn label="📝" color="black" @click="(icon = true), (change = true), traerId(props.row._id)" />
+            <div class="q-gutter-md row">
+              <q-select filled v-model="model" label="Simple select" :options="option" style="width: 250px"
+                behavior="menu" />
+            </div>
           </q-td>
         </template>
       </q-table>
     </div>
-    <div class="q-pa-md q-gutter-sm">
-      <q-btn label="Crear Bitácora" color="green-8" @click="(icon = true), (change = false)" />
-    </div>
+
     <div class="q-pa-md q-gutter-sm">
       <q-dialog v-model="icon" persistent>
         <q-card>
@@ -24,9 +30,9 @@
 
           <q-card-section>
             <div class="q-pa-md" style="max-width: 400px">
-              <q-form @reset="onReset()" class="q-gutter-md">
-                <q-select filled type="number" v-model="aprendiz" :options="options" label="Aprendiz"
-                  hint="Cédula del aprendiz"  emit-value map-options/>
+              <q-form @submit="crear()" @reset="onReset()" class="q-gutter-md">
+                <q-select filled type="number" v-model="aprendiz" :options="options" label="Aprendiz" emit-value
+                  map-options /><br>
                 <q-input filled v-model="fecha">
                   <template v-slot:prepend>
                     <q-icon name="event" class="cursor-pointer">
@@ -53,8 +59,7 @@
                   </template>
                 </q-input>
                 <div>
-                  <q-btn :loading="useAprendiz.loading" label="Guardar" type="submit" color="green-8"
-                    @click="crear()" />
+                  <q-btn :loading="useBitacora.loading" label="Guardar" type="submit" color="green-8" />
                 </div>
               </q-form>
             </div>
@@ -76,6 +81,8 @@ let useAprendiz = useAprendizStore()
 let aprendiz = ref();
 let fecha = ref();
 let icon = ref(false);
+let model = ref();
+let option = ['Asistió', 'No asistió', 'Excusa', 'Pendiente']
 let change = ref(); // false: crear, true: modificar
 let idBitacora = ref();
 let options = ref()
@@ -93,7 +100,7 @@ let columns = ref([
     label: "Fecha de la bitácora",
     field: "fecha",
   },
-  { name: "opciones", align: "center", label: "Opciones" },
+  { name: "opciones", align: "center", label: "Opciones" }
 ]);
 
 onBeforeMount(() => {
@@ -127,10 +134,10 @@ async function traerAprendices() {
 async function crear() {
   let res;
   if (change.value === false) {
-    res = await useBitacora.postCrearBitacora(aprendiz.value, fecha.value)
+    res = await useBitacora.postCrearBitacora(aprendiz.value.trim(), fecha.value.trim())
   }
   else {
-    res = await useBitacora.putModificarBitacora(aprendiz.value, fecha.value, idBitacora.value)
+    res = await useBitacora.putModificarBitacora(aprendiz.value.trim(), fecha.value.trim(), idBitacora.value)
   }
   if (res.validar.value === true) {
     icon.value = false

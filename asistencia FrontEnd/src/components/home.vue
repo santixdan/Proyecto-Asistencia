@@ -8,8 +8,9 @@
             <img
               src="https://lostramites.com.co/wp-content/uploads/logo-de-Sena-sin-fondo-Blanco-300x300.png" />
           </q-avatar>
-          <!--  @click="$router.go(-1)" -->
-          <q-btn v-if="$route.path != '/home'" to="/home" id="btnBack"><img id="imgBtnBack" src="https://static-00.iconduck.com/assets.00/logout-icon-256x256-5c0ge4jd.png" alt=""></q-btn>
+          <!--  @click="$router.go(-1)"  -->
+          <q-btn v-if="$route.path != '/home'" to="/home" id="btnBack"><font-awesome-icon :icon="['fas', 'arrow-right-from-bracket']" style="font-size: 24px;" /></q-btn>
+          <q-btn v-else to="/" id="btnBack"><font-awesome-icon :icon="['fas', 'arrow-right-from-bracket']" style="font-size: 24px;" /></q-btn>
         </q-toolbar-title>
       </q-toolbar>
     </q-header>
@@ -83,6 +84,11 @@
 
 <script>
 import { ref } from "vue";
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons'
+
+library.add(faArrowRightFromBracket)
 
 export default {
   setup() {
@@ -95,6 +101,9 @@ export default {
       },
     };
   },
+  components: {
+    'font-awesome-icon': FontAwesomeIcon
+  }
 };
 </script>
 
@@ -125,7 +134,7 @@ export default {
 
 #btnBack{
   float: right;
-  width: 5%;
+  /* width: 5%; */
 }
 
 #imgBtnBack{
@@ -135,5 +144,17 @@ export default {
 .my-card {
   width: 100%;
   max-width: 250px
+}
+#hr {
+  width: 90%;
+  height: 5px !important;
+  background-color: #2E7D32;
+  border: 0px;
+}
+#tituloPrincipal{
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+  margin-bottom: 10px;
 }
 </style>

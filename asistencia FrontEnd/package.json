@@ -9,8 +9,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.6.0",
+    "@fortawesome/free-solid-svg-icons": "^6.6.0",
+    "@fortawesome/vue-fontawesome": "^3.0.8",
     "@quasar/extras": "^1.16.12",
     "axios": "^1.7.2",
+    "nodemailer": "^6.9.14",
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^3.2.1",
     "quasar": "^2.16.5",

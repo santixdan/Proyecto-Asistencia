@@ -14,14 +14,18 @@ routerUsuario.get("/listarTodos", [
 
 //POST
 routerUsuario.post("/crear", [
+    validarJWT,
     check('email', 'El email es obligatorio').notEmpty().isEmail(),
+    check('email', 'El email debe ser válido').isEmail(),
     check('email').custom(usuarioHelpers.validarEmailUsuario),
     check('nombre', 'El nombre es obligatorio').notEmpty(),
+    check('password', 'La contraseña debe tener más de 5 carácteres').notEmpty(),
     check('password', 'La contraseña debe tener más de 5 carácteres').notEmpty().isLength({ min: 5 }),
     validarCampos
 ], httpUsuario.postCrearUsuarios)
 routerUsuario.post('/login', [
-    check('email', 'El email es obligatorio').notEmpty().isEmail(),
+    check('email', 'El email es obligatorio').notEmpty(),
+    check('email', 'El email debe ser válido').isEmail(),
     check('password', 'La contraseña es obligatoria').notEmpty(),
     check('email').custom(async (email, { req }) => {
         await usuarioHelpers.validarPasswordUsuario(email, req.body.password);
@@ -36,7 +40,6 @@ routerUsuario.put("/modificar/:id", [
     check('id').custom(usuarioHelpers.validarId),
     check('email', 'El email debe ser válido').optional().isEmail(),
     check('email').optional().custom(usuarioHelpers.validarEmailUsuario),
-    check('password', 'La contraseña debe tener más de 5 carácteres').optional().isLength({ min: 5 }),
     validarCampos
 ], httpUsuario.putModificarUsuarios)
 routerUsuario.put("/activar/:id", [

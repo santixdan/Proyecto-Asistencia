@@ -42,10 +42,6 @@ const httpUsuario = {
             if (email) {
                 usuario.email = email;
             }
-            if (password) {
-                const salt = bcryptjs.genSaltSync();
-                usuario.password = bcryptjs.hashSync(password, salt);
-            }
             if (nombre) {
                 usuario.nombre = nombre;
             }
