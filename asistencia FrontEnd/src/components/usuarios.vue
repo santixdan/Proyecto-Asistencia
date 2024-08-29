@@ -38,7 +38,7 @@
           <q-card-section>
             <div class="q-pa-md" style="max-width: 400px">
               <q-form @submit="crear()" @reset="onReset()" class="q-gutter-md">
-                <q-input @keyup.enter="crear()"  filled v-model="email" label="Correo" lazy-rules :rules="[
+                <q-input  filled v-model="email" label="Correo" lazy-rules :rules="[
                   (val) => {
                     if (change === false) {
                       return (val && val.length > 0) ||
@@ -46,7 +46,7 @@
                     } else { return true }
                   }
                 ]" />
-                <q-input @keyup.enter="crear()"  filled v-model="name" label="Nombre" lazy-rules :rules="[
+                <q-input  filled v-model="name" label="Nombre" lazy-rules :rules="[
                   
                   (val) => {
                     if (change === false) {
@@ -55,7 +55,7 @@
                     } else { return true }
                   }
                 ]" />
-                <q-input @keyup.enter="crear()"  v-if="change===false" :type="isPwd ? 'password' : 'text'" filled v-model="password" label="Contraseña" lazy-rules
+                <q-input  v-if="change===false" :type="isPwd ? 'password' : 'text'" filled v-model="password" label="Contraseña" lazy-rules
                   :rules="[
                     (val) => {
                       if (change === false) {

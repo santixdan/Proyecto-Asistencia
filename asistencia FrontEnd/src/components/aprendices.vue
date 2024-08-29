@@ -40,7 +40,7 @@
               <q-form @submit="crear()" @reset="onReset()" class="q-gutter-md">
                 <q-select filled type="number" v-model="ficha" :options="options" label="Ficha" emit-value
                   map-options />
-                <q-input @keyup.enter="crear()" filled v-model="name" label="Nombre" lazy-rules :rules="[
+                <q-input filled v-model="name" label="Nombre" lazy-rules :rules="[
                   (val) => {
                     if (change === false) {
                       return (val && val.length > 0) ||
@@ -48,7 +48,7 @@
                     } else { return true }
                   }
                 ]" />
-                <q-input @keyup.enter="crear()" filled type="number" v-model="cedula" label="Cédula" lazy-rules :rules="[
+                <q-input filled type="number" v-model="cedula" label="Cédula" lazy-rules :rules="[
                   (val) => {
                     if (change === false) {
                       return (val && val.length > 0) ||
@@ -56,7 +56,7 @@
                     } else { return true }
                   }
                 ]" />
-                <q-input @keyup.enter="crear()" filled type="number" v-model="telefono" label="Teléfono" lazy-rules :rules="[
+                <q-input filled type="number" v-model="telefono" label="Teléfono" lazy-rules :rules="[
                   (val) => {
                     if (change === false) {
                       return (val && val.length > 0) ||
@@ -64,7 +64,7 @@
                     } else { return true }
                   }
                 ]" />
-                <q-input @keyup.enter="crear()" filled v-model="email" label="Correo" lazy-rules :rules="[
+                <q-input filled v-model="email" label="Correo" lazy-rules :rules="[
                   (val) => {
                     if (change === false) {
                       return (val && val.length > 0) ||

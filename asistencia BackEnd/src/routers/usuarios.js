@@ -19,8 +19,8 @@ routerUsuario.post("/crear", [
     check('email', 'El email debe ser válido').isEmail(),
     check('email').custom(usuarioHelpers.validarEmailUsuario),
     check('nombre', 'El nombre es obligatorio').notEmpty(),
-    check('password', 'La contraseña debe tener más de 5 carácteres').notEmpty(),
-    check('password', 'La contraseña debe tener más de 5 carácteres').notEmpty().isLength({ min: 5 }),
+    check('password', 'La contraseña debe tener más de 5 caracteres').notEmpty(),
+    check('password', 'La contraseña debe tener más de 5 caracteres').notEmpty().isLength({ min: 5 }),
     validarCampos
 ], httpUsuario.postCrearUsuarios)
 routerUsuario.post('/login', [

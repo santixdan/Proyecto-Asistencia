@@ -17,7 +17,7 @@ routerFicha.post("/crear", [
     validarJWT,
     check('nombre', 'El nombre es obligatorio').notEmpty(),
     check('codigo', 'El codigo es obligatorio').notEmpty(),
-    check('codigo', 'El codigo debe tener mínimo 5 carácteres').isLength({ min: 5 }),
+    check('codigo', 'El codigo debe tener mínimo 5 caracteres').isLength({ min: 5 }),
     check('codigo').custom(fichaHelpers.validarCodigoFicha),
     validarCampos
 ], httpFichas.postCrearFichas)
@@ -27,7 +27,7 @@ routerFicha.put("/modificar/:id", [
     validarJWT,
     check('id', 'El id no es válido').notEmpty().isMongoId(),
     check('id').custom(fichaHelpers.validarId),
-    check('codigo', 'El codigo debe tener mínimo 5 carácteres').optional().isLength({ min: 5 }),
+    check('codigo', 'El codigo debe tener mínimo 5 caracteres').optional().isLength({ min: 5 }),
     check('codigo').optional().custom(fichaHelpers.validarCodigoFicha),
     validarCampos
 ], httpFichas.putModificarFichas)

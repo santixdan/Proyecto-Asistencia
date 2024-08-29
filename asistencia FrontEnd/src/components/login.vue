@@ -17,17 +17,17 @@
 
         <button type="submit">Agregar</button><br />
       </form> -->
-            <q-form @reset="onReset()" class="q-gutter-md">
+            <q-form @submit="guardar()" @reset="onReset()" class="q-gutter-md">
                 <q-input filled v-model="email" label="Correo" lazy-rules
-                    :rules="[val => (val && val.length > 0) || 'Por favor, dígite la correo']" @keyup.enter="guardar()"/>
-                <q-input :type="isPwd ? 'password' : 'text'" filled v-model="password" label="Contraseña" @keyup.enter="guardar()" lazy-rules
+                    :rules="[val => (val && val.length > 0) || 'Por favor, dígite la correo']"/>
+                <q-input :type="isPwd ? 'password' : 'text'" filled v-model="password" label="Contraseña" lazy-rules
                     :rules="[val => (val && val.length > 0) || 'Por favor, dígite el contraseña']">
                     <template v-slot:append>
                         <q-icon :name="isPwd ? 'visibility_off' : 'visibility'" class="cursor-pointer"
                             @click="isPwd = !isPwd" />
                     </template></q-input>
                 <div>
-                    <q-btn :loading="useUsuario.loading" label="Guardar" color="green-8" @click="guardar()" />
+                    <q-btn :loading="useUsuario.loading" type="submit" label="Guardar" color="green-8" />
                 </div>
             </q-form>
             <div v-if="mensaje" class="mensaje">{{ mensaje }}</div>
