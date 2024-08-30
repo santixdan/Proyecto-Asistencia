@@ -13,6 +13,11 @@ const bitacoraHelpers = {
         if (!existeId) {
             throw new Error("La bitácora no existe en la base de datos")
         }
+    },
+    validarEstado: async (estado) => {
+        if (estado !== "Asistió" && estado !== "No asistió" && estado !== "Excusa" && estado !== "Pendiente" ){
+            throw new Error("El estado de la bitácora debe ser 'asistió', 'no asistió', 'excusa' o 'pendiente'")
+        }
     }
 }
 module.exports = { bitacoraHelpers };

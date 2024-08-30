@@ -5,22 +5,40 @@
         <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
         <q-toolbar-title>
           <q-avatar>
-            <img
-              src="https://lostramites.com.co/wp-content/uploads/logo-de-Sena-sin-fondo-Blanco-300x300.png" />
+            <img src="https://lostramites.com.co/wp-content/uploads/logo-de-Sena-sin-fondo-Blanco-300x300.png" />
           </q-avatar>
-          <!--  @click="$router.go(-1)"  -->
-          <q-btn v-if="$route.path != '/home'" to="/home" id="btnBack"><font-awesome-icon :icon="['fas', 'arrow-right-from-bracket']" style="font-size: 24px;" /></q-btn>
-          <q-btn v-else to="/" id="btnBack"><font-awesome-icon :icon="['fas', 'arrow-right-from-bracket']" style="font-size: 24px;" /></q-btn>
+          <q-btn v-if="$route.path != '/home'" to="/home" id="btnBack"><font-awesome-icon
+              :icon="['fas', 'arrow-right-from-bracket']" style="font-size: 24px;" /></q-btn>
+          <q-btn v-else to="/" id="btnBack"><font-awesome-icon :icon="['fas', 'arrow-right-from-bracket']"
+              style="font-size: 24px;" /></q-btn>
         </q-toolbar-title>
       </q-toolbar>
     </q-header>
     <q-drawer show-if-above v-model="leftDrawerOpen" side="left" bordered>
-      <div class="q-pa-md q-gutter-sm column">
-        <q-btn to="/ficha" label="Fichas" color="green" class="full-width q-mb-sm" />
-        <q-btn to="/bitacora" label="Bitacoras" color="green" class="full-width q-mb-sm" />
-        <q-btn to="/aprendiz" label="Aprendices" color="green" class="full-width q-mb-sm" />
-        <q-btn to="/usuario" label="Usuarios" color="green" class="full-width q-mb-sm" />
-      </div>
+      <q-scroll-area style="
+              height: calc(100% - 150px);
+              margin-top: 150px;
+              border-right: 1px solid #ddd;
+            ">
+        <q-list padding>
+          <div class="q-pa-md q-gutter-sm column">
+            <q-btn to="/ficha" label="Fichas" color="green" class="full-width q-mb-sm" />
+            <q-btn to="/bitacora" label="Bitacoras" color="green" class="full-width q-mb-sm" />
+            <q-btn to="/aprendiz" label="Aprendices" color="green" class="full-width q-mb-sm" />
+            <q-btn to="/usuario" label="Usuarios" color="green" class="full-width q-mb-sm" />
+          </div>
+        </q-list>
+      </q-scroll-area>
+
+      <q-img align="center" class="absolute-top" src="https://img.freepik.com/vector-premium/fondo-diferentes-formas-verdes_23-2148358648.jpg" style="height: 150px">
+        <div class="absolute-bottom bg-transparent">
+          <q-avatar size="56px" class="q-mb-sm">
+            <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
+          </q-avatar>
+          <div class="text-weight-bold">{{ nombre }}</div>
+          <div>{{ correo }}</div>
+        </div>
+      </q-img>
     </q-drawer>
     <q-page-container>
       <div v-if="$route.path === '/home'" class="q-pa-md row items-start q-gutter-md" id="divCards">
@@ -82,29 +100,24 @@
   </q-layout>
 </template>
 
-<script>
-import { ref } from "vue";
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons'
+<script setup>
+import { ref } from 'vue';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
+import { useUsuarioStore } from "./../stores/usuarios.js";
 
-library.add(faArrowRightFromBracket)
+let useUsuario = useUsuarioStore();
+let correo = useUsuario.usuario.email
+let nombre = useUsuario.usuario.nombre
 
-export default {
-  setup() {
-    const leftDrawerOpen = ref(false);
+library.add(faArrowRightFromBracket);
 
-    return {
-      leftDrawerOpen,
-      toggleLeftDrawer() {
-        leftDrawerOpen.value = !leftDrawerOpen.value;
-      },
-    };
-  },
-  components: {
-    'font-awesome-icon': FontAwesomeIcon
-  }
-};
+const leftDrawerOpen = ref(false);
+
+function toggleLeftDrawer() {
+  leftDrawerOpen.value = !leftDrawerOpen.value;
+}
 </script>
 
 <style>
@@ -116,28 +129,30 @@ export default {
   background-color: white !important;
 }
 
-#divCards{
+#divCards {
   display: grid;
   grid-template-columns: 1fr 1fr;
   justify-items: center;
   margin: 0 auto;
 }
 
-#imgCards{
+#imgCards {
   height: 100px;
 }
 
-#imgSection , #btnSection{
+#imgSection,
+#btnSection {
   display: flex;
   justify-content: center;
 }
 
-#btnBack{
+#btnBack {
   float: right;
+  margin: none;
   /* width: 5%; */
 }
 
-#imgBtnBack{
+#imgBtnBack {
   width: 20px;
 }
 
@@ -145,16 +160,25 @@ export default {
   width: 100%;
   max-width: 250px
 }
+
 #hr {
   width: 90%;
   height: 5px !important;
   background-color: #2E7D32;
   border: 0px;
 }
-#tituloPrincipal{
+
+#tituloPrincipal {
   display: flex;
   justify-content: center;
   margin-top: 50px;
   margin-bottom: 10px;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1rem;
 }
 </style>

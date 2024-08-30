@@ -11,7 +11,7 @@ const usuarioHelpers = {
     validarPasswordUsuario: async (email, password) => {
         const usuario = await Usuario.findOne({ email })
         if (!usuario) {
-            throw new Error("El usuario no existe")
+            throw new Error("Usuario o contraseña incorrecta")
         }
         const validPassword = bcryptjs.compareSync(password, usuario.password);
         if (!validPassword) {

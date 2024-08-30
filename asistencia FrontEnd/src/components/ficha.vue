@@ -13,8 +13,8 @@
           <q-td :props="props">
             <div class="q-pa-md q-gutter-sm">
               <q-btn label="📝" @click="(icon = true), (change = true), traerId(props.row._id)" />
-              <q-btn v-if="props.row.estado == 0" @click="activar(props.row._id)">✅</q-btn>
-              <q-btn v-else @click="desactivar(props.row._id)">❌</q-btn>
+              <q-btn v-if="props.row.estado == 0" @click="activar(props.row._id)" :loading="loadingButtons[props.row._id]">✅</q-btn>
+              <q-btn v-else @click="desactivar(props.row._id)" :loading="loadingButtons[props.row._id]">❌</q-btn>
             </div>
           </q-td>
         </template>
@@ -80,6 +80,7 @@ let name = ref("");
 let icon = ref(false);
 let change = ref(); // false: crear, true: modificar
 let idFicha = ref();
+let loadingButtons = ref({});
 let rows = ref([]);
 let columns = ref([
   {
@@ -110,12 +111,20 @@ async function traer() {
 }
 
 async function activar(id) {
+  loadingButtons.value[id] = true;
   let res = await useFicha.putActivarFicha(id);
+  if (useFicha.loading == false) {
+    loadingButtons.value[id] = false;
+  }
   traer();
 }
 
 async function desactivar(id) {
+  loadingButtons.value[id] = true;
   let res = await useFicha.putDesactivarFicha(id);
+  if (useFicha.loading == false) {
+    loadingButtons.value[id] = false;
+  }
   traer();
 }
 

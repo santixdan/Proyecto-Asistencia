@@ -9,15 +9,18 @@
       <q-table title="Bitácoras" :rows="rows" :columns="columns" row-key="name" :loading="useBitacora.loading">
         <template v-slot:body-cell-opciones="props">
           <q-td :props="props">
-            <div class="q-gutter-md row">
-              <q-select filled v-model="model" label="Simple select" :options="option" style="width: 250px"
-                behavior="menu" />
+            <div class="q-pa-md" align="center">
+              <q-select filled
+                v-model="props.row.estado"
+                label="Estado"
+                style="max-width: 300px;"
+                :options="optionsEstado"
+                @update:model-value="updateEstado(props.row)"/>
             </div>
           </q-td>
         </template>
       </q-table>
     </div>
-
     <div class="q-pa-md q-gutter-sm">
       <q-dialog v-model="icon" persistent>
         <q-card>
@@ -31,29 +34,40 @@
           <q-card-section>
             <div class="q-pa-md" style="max-width: 400px">
               <q-form @submit="crear()" @reset="onReset()" class="q-gutter-md">
-                <q-select filled type="number" v-model="aprendiz" :options="options" label="Aprendiz" emit-value
-                  map-options /><br>
-                <q-input filled v-model="fecha">
-                  <template v-slot:prepend>
+                <q-select filled type="number" v-model="aprendiz" use-input input-debounce="0" label="Aprendiz"
+                  :options="options" @filter="filterFn" style="width: 250px" behavior="menu" emit-value map-options
+                  lazy-rules :rules="[
+                    (val) => {
+                      if (change === false) {
+                        return (val && val.length > 0) ||
+                          'Por favor, dígite el nombre del usuario'
+                      } else { return true }
+                    }
+                  ]">
+                  <template v-slot:no-option>
+                    <q-item>
+                      <q-item-section class="text-grey">
+                        No results
+                      </q-item-section>
+                    </q-item>
+                  </template>
+                </q-select>
+                <q-input filled v-model="fecha" mask="date" lazy-rules :rules="[
+                  (val) => {
+                    if (change === false) {
+                      return (val && val.length > 0) ||
+                        'Por favor, dígite el nombre del usuario'
+                    } else { return true }
+                  }
+                ]">
+                  <template v-slot:append>
                     <q-icon name="event" class="cursor-pointer">
                       <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                        <q-date v-model="fecha" mask="YYYY-MM-DD HH:mm" today-btn>
+                        <q-date v-model="fecha" today-btn>
                           <div class="row items-center justify-end">
                             <q-btn v-close-popup label="Close" color="primary" flat />
                           </div>
                         </q-date>
-                      </q-popup-proxy>
-                    </q-icon>
-                  </template>
-
-                  <template v-slot:append>
-                    <q-icon name="access_time" class="cursor-pointer">
-                      <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                        <q-time v-model="fecha" mask="YYYY-MM-DD HH:mm" format24h>
-                          <div class="row items-center justify-end">
-                            <q-btn v-close-popup label="Close" color="primary" flat />
-                          </div>
-                        </q-time>
                       </q-popup-proxy>
                     </q-icon>
                   </template>
@@ -81,10 +95,9 @@ let useAprendiz = useAprendizStore()
 let aprendiz = ref();
 let fecha = ref();
 let icon = ref(false);
-let model = ref();
-let option = ['Asistió', 'No asistió', 'Excusa', 'Pendiente']
+let estado = ref();
+let optionsEstado = ['Asistió', 'No asistió', 'Excusa', 'Pendiente']
 let change = ref(); // false: crear, true: modificar
-let idBitacora = ref();
 let options = ref()
 let rows = ref([]);
 let columns = ref([
@@ -105,13 +118,13 @@ let columns = ref([
 
 onBeforeMount(() => {
   traer()
-  traerAprendices()
+  // traerAprendices()
 })
 
 async function traer() {
   let res = await useBitacora.getListarBitacora();
   let res2 = await useAprendiz.getListarAprendiz();
-  rows.value = res.data.bitacoras.map(bitacora => {
+  rows.value = res.data.bitacora.map(bitacora => {
     return {
       ...bitacora,
       aprendiz: res2.data.aprendices.find(aprendiz => aprendiz._id === bitacora.aprendiz)?.cedula
@@ -119,25 +132,39 @@ async function traer() {
   })
 }
 
-async function traerId(id) {
-  idBitacora.value = id;
+const filterFn = async (val, update) => {
+  let res = await useAprendiz.getListarAprendiz();
+  if (val === '') {
+    update(() => {
+      options.value = res.data.aprendices.map(aprendiz => ({
+        label: aprendiz.cedula,
+        value: aprendiz._id
+      }));
+    });
+    return;
+  }
+
+  update(() => {
+    const needle = val.toLowerCase();
+    options.value = res.data.aprendices.map(aprendiz => ({
+      label: aprendiz.cedula,
+      value: aprendiz._id
+    })).filter(option => option.label.toLowerCase().includes(needle));
+  });
 }
 
-async function traerAprendices() {
-  let res = await useAprendiz.getListarAprendiz();
-  options.value = res.data.aprendices.map(aprendiz => ({
-    label: aprendiz.cedula,
-    value: aprendiz._id
-  }));
-}
+// async function traerAprendices() {
+//   let res = await useAprendiz.getListarAprendiz();
+//   options.value = res.data.aprendices.map(aprendiz => ({
+//     label: aprendiz.cedula,
+//     value: aprendiz._id
+//   }));
+// }
 
 async function crear() {
   let res;
   if (change.value === false) {
     res = await useBitacora.postCrearBitacora(aprendiz.value.trim(), fecha.value.trim())
-  }
-  else {
-    res = await useBitacora.putModificarBitacora(aprendiz.value.trim(), fecha.value.trim(), idBitacora.value)
   }
   if (res.validar.value === true) {
     icon.value = false
@@ -164,4 +191,5 @@ function onReset() {
   fecha.value = ""
   aprendiz.value = ""
 }
+
 </script>

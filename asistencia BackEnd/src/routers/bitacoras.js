@@ -29,6 +29,7 @@ routerBitacora.post('/crear', [
     check('aprendiz', 'El aprendiz debe ser un MongoId').isMongoId(),
     check('fecha', 'La fecha debe ser válida').notEmpty(),
     check('aprendiz').custom(bitacoraHelpers.validarAprendiz),
+    check('estado').optional().custom(bitacoraHelpers.validarEstado),
     validarCampos
 ], httpBitacora.postCrearBitacora)
 
@@ -39,6 +40,7 @@ routerBitacora.put('/modificar/:id', [
     check('id').custom(bitacoraHelpers.validarId),
     check('aprendiz', 'El Id debe ser válido').optional().isMongoId(),
     check('aprendiz').optional().custom(bitacoraHelpers.validarAprendiz),
+    check('estado').optional().custom(bitacoraHelpers.validarEstado),
     validarCampos
 ], httpBitacora.putModificarBitacora)
 

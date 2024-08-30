@@ -1,6 +1,6 @@
 <template>
   <div class="todo">
-    <h3 id="tituloPrincipal">Aprendices</h3> 
+    <h3 id="tituloPrincipal">Aprendices</h3>
     <hr id="hr">
     <div class="q-pa-md">
       <div class="q-pa-md q-gutter-sm">
@@ -11,8 +11,8 @@
           <q-td :props="props">
             <div class="q-pa-md q-gutter-sm">
               <q-btn label="📝" @click="(icon = true), (change = true), traerId(props.row._id)" />
-              <q-btn v-if="props.row.estado == 0" @click="activar(props.row._id)">✅</q-btn>
-              <q-btn v-else @click="desactivar(props.row._id)">❌</q-btn>
+              <q-btn v-if="props.row.estado == 0" @click="activar(props.row._id)" :loading="loadingButtons[props.row._id]">✅</q-btn>
+              <q-btn v-else @click="desactivar(props.row._id)" :loading="loadingButtons[props.row._id]">❌</q-btn>
             </div>
           </q-td>
         </template>
@@ -38,8 +38,25 @@
           <q-card-section>
             <div class="q-pa-md" style="max-width: 400px">
               <q-form @submit="crear()" @reset="onReset()" class="q-gutter-md">
-                <q-select filled type="number" v-model="ficha" :options="options" label="Ficha" emit-value
-                  map-options />
+                <!-- <q-select filled type="number" v-model="ficha" :options="options" label="Ficha" emit-value
+                  map-options /> -->
+                <q-select filled type="number" v-model="ficha" use-input input-debounce="0" label="Ficha" :options="options"
+                  @filter="filterFn" style="width: 250px" behavior="menu" emit-value map-options lazy-rules :rules="[
+                    (val) => {
+                      if (change === false) {
+                        return (val && val.length > 0) ||
+                          'Por favor, dígite el nombre del usuario'
+                      } else { return true }
+                    }
+                  ]">
+                  <template v-slot:no-option>
+                    <q-item>
+                      <q-item-section class="text-grey">
+                        No results
+                      </q-item-section>
+                    </q-item>
+                  </template>
+                </q-select>
                 <q-input filled v-model="name" label="Nombre" lazy-rules :rules="[
                   (val) => {
                     if (change === false) {
@@ -96,11 +113,11 @@ let email = ref("");
 let telefono = ref("");
 let ficha = ref();
 let cedula = ref("");
-let codigo = ref()
 let name = ref("");
 let icon = ref(false);
 let change = ref(); // false: crear, true: modificar
 let idAprendiz = ref();
+let loadingButtons = ref({});
 let options = ref()
 let rows = ref([]);
 let columns = ref([
@@ -156,13 +173,42 @@ async function traer() {
   })
 }
 
+const filterFn = async (val, update) => {
+  let res = await useFicha.getListarFichas();
+  if (val === '') {
+    update(() => {
+      options.value = res.data.fichas.map(ficha => ({
+        label: ficha.codigo,
+        value: ficha._id
+      }));
+    });
+    return;
+  }
+
+  update(() => {
+    const needle = val.toLowerCase();
+    options.value = res.data.fichas.map(ficha => ({
+      label: ficha.codigo,
+      value: ficha._id
+    })).filter(option => option.label.toLowerCase().includes(needle));
+  });
+}
+
 async function activar(id) {
+  loadingButtons.value[id] = true;
   let res = await useAprendiz.putActivarAprendiz(id)
+  if (useAprendiz.loading == false) {
+    loadingButtons.value[id] = false;
+  }
   traer();
 }
 
 async function desactivar(id) {
+  loadingButtons.value[id] = true;
   let res = await useAprendiz.putDesactivarAprendiz(id)
+  if (useAprendiz.loading == false) {
+    loadingButtons.value[id] = false;
+  }
   traer();
 }
 
