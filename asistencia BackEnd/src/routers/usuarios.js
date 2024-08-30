@@ -14,7 +14,7 @@ routerUsuario.get("/listarTodos", [
 
 //POST
 routerUsuario.post("/crear", [
-    // validarJWT,
+    validarJWT,
     check('email', 'El email es obligatorio').notEmpty().isEmail(),
     check('email', 'El email debe ser válido').isEmail(),
     check('email').custom(usuarioHelpers.validarEmailUsuario),
