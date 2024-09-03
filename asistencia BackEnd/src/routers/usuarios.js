@@ -39,7 +39,7 @@ routerUsuario.put("/modificar/:id", [
     check('id', 'El id no es válido').notEmpty().isMongoId(),
     check('id').custom(usuarioHelpers.validarId),
     check('email', 'El email debe ser válido').optional().isEmail(),
-    // check('email').optional().custom(usuarioHelpers.validarEmailUsuario),
+    check('email').optional().custom(usuarioHelpers.validarEmailSiEsDiferente),
     validarCampos
 ], httpUsuario.putModificarUsuarios)
 routerUsuario.put("/activar/:id", [

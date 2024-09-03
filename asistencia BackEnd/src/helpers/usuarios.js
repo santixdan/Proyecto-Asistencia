@@ -8,6 +8,15 @@ const usuarioHelpers = {
             throw new Error("El email ya existe")
         }
     },
+    validarEmailSiEsDiferente: async (email, emailActual = null) => {
+        if (email === emailActual) {
+            return;
+        }
+        let existeEmailUsuario = await Usuario.findOne({ email });
+        if (existeEmailUsuario) {
+            throw new Error("El email ya existe");
+        }
+    },
     validarPasswordUsuario: async (email, password) => {
         const usuario = await Usuario.findOne({ email })
         if (!usuario) {
