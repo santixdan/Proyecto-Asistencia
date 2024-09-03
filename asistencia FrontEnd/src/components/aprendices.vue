@@ -11,7 +11,8 @@
           <q-td :props="props">
             <div class="q-pa-md q-gutter-sm">
               <q-btn label="📝" @click="(icon = true), (change = true), traerId(props.row._id)" />
-              <q-btn v-if="props.row.estado == 0" @click="activar(props.row._id)" :loading="loadingButtons[props.row._id]">✅</q-btn>
+              <q-btn v-if="props.row.estado == 0" @click="activar(props.row._id)"
+                :loading="loadingButtons[props.row._id]">✅</q-btn>
               <q-btn v-else @click="desactivar(props.row._id)" :loading="loadingButtons[props.row._id]">❌</q-btn>
             </div>
           </q-td>
@@ -32,7 +33,7 @@
             <div class="text-h6" v-if="change == false">Crear Aprendiz</div>
             <div class="text-h6" v-else>Editar Aprendiz</div>
             <q-space />
-            <q-btn icon="close" flat round dense v-close-popup />
+            <q-btn icon="close" flat round dense v-close-popup @click="onReset()"/>
           </q-card-section>
 
           <q-card-section>
@@ -40,8 +41,9 @@
               <q-form @submit="crear()" @reset="onReset()" class="q-gutter-md">
                 <!-- <q-select filled type="number" v-model="ficha" :options="options" label="Ficha" emit-value
                   map-options /> -->
-                <q-select filled type="number" v-model="ficha" use-input input-debounce="0" label="Ficha" :options="options"
-                  @filter="filterFn" style="width: 250px" behavior="menu" emit-value map-options lazy-rules :rules="[
+                <q-select filled type="number" v-model="ficha" use-input input-debounce="0" label="Ficha"
+                  :options="options" @filter="filterFn" style="width: 250px" behavior="menu" emit-value map-options
+                  lazy-rules :rules="[
                     (val) => {
                       if (change === false) {
                         return (val && val.length > 0) ||
@@ -213,6 +215,12 @@ async function desactivar(id) {
 }
 
 async function traerId(id) {
+  let aprendiz = rows.value.find(apprentice => apprentice._id === id);
+  email.value = aprendiz.email
+  telefono.value = aprendiz.telefono
+  ficha.value = aprendiz.ficha
+  cedula.value = aprendiz.cedula
+  name.value = aprendiz.nombre
   idAprendiz.value = id;
 }
 

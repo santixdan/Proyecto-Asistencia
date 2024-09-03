@@ -35,7 +35,7 @@
             <div class="text-h6" v-else>Editar Ficha</div>
             
             <q-space />
-            <q-btn icon="close" flat round dense v-close-popup />
+            <q-btn icon="close" flat round dense v-close-popup @click="onReset()"/>
           </q-card-section>
 
           <q-card-section>
@@ -129,6 +129,9 @@ async function desactivar(id) {
 }
 
 async function traerId(id) {
+  let ficha = rows.value.find(fiche => fiche._id === id);
+  code.value = ficha.codigo;
+  name.value = ficha.nombre;
   idFicha.value = id;
 }
 
