@@ -1,6 +1,6 @@
 <template>
   <div class="todo">
-    <h3 id="tituloPrincipal">Usuarios</h3> 
+    <h3 id="tituloPrincipal">Usuarios</h3>
     <hr id="hr">
     <div class="q-pa-md">
       <div class="q-pa-md q-gutter-sm">
@@ -9,9 +9,10 @@
       <q-table title="Usuarios" :rows="rows" :columns="columns" row-key="name" :loading="useUsuario.loading">
         <template v-slot:body-cell-opciones="props">
           <q-td :props="props">
-            <div class="q-pa-md q-gutter-sm" >
+            <div class="q-pa-md q-gutter-sm">
               <q-btn label="📝" @click="(icon = true), (change = true), traerId(props.row._id)" />
-              <q-btn v-if="props.row.estado == 0" @click="activar(props.row._id)" :loading="loadingButtons[props.row._id]">✅</q-btn>
+              <q-btn v-if="props.row.estado == 0" @click="activar(props.row._id)"
+                :loading="loadingButtons[props.row._id]">✅</q-btn>
               <q-btn v-else @click="desactivar(props.row._id)" :loading="loadingButtons[props.row._id]">❌</q-btn>
             </div>
           </q-td>
@@ -32,13 +33,13 @@
             <div class="text-h6" v-if="change == false">Crear Usuario</div>
             <div class="text-h6" v-else>Editar Usuario</div>
             <q-space />
-            <q-btn icon="close" flat round dense v-close-popup />
+            <q-btn icon="close" flat round dense v-close-popup @click="onReset()" />
           </q-card-section>
 
           <q-card-section>
             <div class="q-pa-md" style="max-width: 400px">
               <q-form @submit="crear()" @reset="onReset()" class="q-gutter-md">
-                <q-input  filled v-model="email" label="Correo" lazy-rules :rules="[
+                <q-input filled v-model="email" label="Correo" lazy-rules :rules="[
                   (val) => {
                     if (change === false) {
                       return (val && val.length > 0) ||
@@ -46,8 +47,8 @@
                     } else { return true }
                   }
                 ]" />
-                <q-input  filled v-model="name" label="Nombre" lazy-rules :rules="[
-                  
+                <q-input filled v-model="name" label="Nombre" lazy-rules :rules="[
+
                   (val) => {
                     if (change === false) {
                       return (val && val.length > 0) ||
@@ -55,15 +56,15 @@
                     } else { return true }
                   }
                 ]" />
-                <q-input  v-if="change===false" :type="isPwd ? 'password' : 'text'" filled v-model="password" label="Contraseña" lazy-rules
-                  :rules="[
+                <q-input v-if="change === false" :type="isPwd ? 'password' : 'text'" filled v-model="password"
+                  label="Contraseña" lazy-rules :rules="[
                     (val) => {
                       if (change === false) {
                         return (val && val.length > 0) ||
                           'Por favor, dígite la contraseña'
                       } else { return true }
                     }
-                  ]" ><template v-slot:append>
+                  ]"><template v-slot:append>
                     <q-icon :name="isPwd ? 'visibility_off' : 'visibility'" class="cursor-pointer"
                       @click="isPwd = !isPwd" />
                   </template></q-input>
@@ -119,7 +120,6 @@ onBeforeMount(() => {
 
 async function traer() {
   let res = await useUsuario.getListarUsuarios();
-  console.log(res)
   rows.value = res.data.usuarios;
 }
 
@@ -142,6 +142,9 @@ async function desactivar(id) {
 }
 
 async function traerId(id) {
+  let usuario = rows.value.find(user => user._id === id);
+  email.value = usuario.email;
+  name.value = usuario.nombre;
   idUsuario.value = id;
 }
 
@@ -151,7 +154,7 @@ async function crear() {
     res = await useUsuario.postCrearUsuario(email.value.trim(), name.value.trim(), password.value.trim());
   }
   else {
-    res = await useUsuario.putModificarUsuario(email.value.trim(), name.value.trim(), password.value.trim(), idUsuario.value);
+    res = await useUsuario.putModificarUsuario(email.value, name.value, password.value, idUsuario.value);
   }
   if (res.validar.value === true) {
     icon.value = false
@@ -180,4 +183,3 @@ function onReset() {
   password.value = "";
 }
 </script>
-

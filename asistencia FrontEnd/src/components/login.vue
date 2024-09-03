@@ -159,7 +159,6 @@ let mensaje = ref("");
 
 async function guardar() {
     let res = await useUsuario.postLoginUsuario(email.value.trim(), password.value.trim())
-    console.log(res);
     
     if (res.validar.value === true) {
         onReset()

@@ -231,7 +231,7 @@ async function crear() {
     res = await useAprendiz.postCrearAprendiz(ficha.value.trim(), cedula.value.trim(), name.value.trim(), telefono.value.trim(), email.value.trim())
   }
   else {
-    res = await useAprendiz.putModificarAprendiz(ficha.value.trim(), cedula.value.trim(), name.value.trim(), telefono.value.trim(), email.value.trim(), idAprendiz.value)
+    res = await useAprendiz.putModificarAprendiz(ficha.value, cedula.value, name.value, telefono.value, email.value, idAprendiz.value)
   }
   if (res.validar.value === true) {
     icon.value = false
