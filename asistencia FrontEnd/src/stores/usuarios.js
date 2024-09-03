@@ -2,6 +2,7 @@ import { defineStore } from "pinia"
 import axios from "axios"
 import { ref } from "vue"
 
+axios.defaults.withCredentials = true;
 const API_URL = 'https://proyecto-asistencia-backend.onrender.com';
 
 
@@ -15,6 +16,7 @@ export const useUsuarioStore = defineStore("usuario", () => {
         try {
             let r = await axios.get(`${API_URL}/usuarios/listarTodos`, {
                 headers: {
+                    "Content-Type": "application/json",
                     "token": xtoken.value
                 }
             })
@@ -35,6 +37,7 @@ export const useUsuarioStore = defineStore("usuario", () => {
                 password
             }, {
                 headers: {
+                    "Content-Type": "application/json",
                     "token": xtoken.value
                 }
             })
@@ -78,6 +81,7 @@ export const useUsuarioStore = defineStore("usuario", () => {
                     email
                 }, {
                     headers: {
+                        "Content-Type": "application/json",
                         "token": xtoken.value
                     }
                 })
@@ -87,6 +91,7 @@ export const useUsuarioStore = defineStore("usuario", () => {
                     nombre: name
                 }, {
                     headers: {
+                        "Content-Type": "application/json",
                         "token": xtoken.value
                     }
                 })
@@ -96,6 +101,7 @@ export const useUsuarioStore = defineStore("usuario", () => {
                     password
                 }, {
                     headers: {
+                        "Content-Type": "application/json",
                         "token": xtoken.value
                     }
                 })
@@ -115,6 +121,7 @@ export const useUsuarioStore = defineStore("usuario", () => {
         try {
             let r = await axios.put(`${API_URL}/usuarios/activar/${id}`, {}, {
                 headers: {
+                    "Content-Type": "application/json",
                     "token": xtoken.value
                 }
             })
@@ -131,6 +138,7 @@ export const useUsuarioStore = defineStore("usuario", () => {
         try {
             let r = await axios.put(`${API_URL}/usuarios/desactivar/${id}`, {}, {
                 headers: {
+                    "Content-Type": "application/json",
                     "token": xtoken.value
                 }
             })

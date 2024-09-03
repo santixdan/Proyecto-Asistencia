@@ -119,6 +119,7 @@ onBeforeMount(() => {
 
 async function traer() {
   let res = await useUsuario.getListarUsuarios();
+  console.log(res)
   rows.value = res.data.usuarios;
 }
 

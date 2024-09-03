@@ -14,10 +14,11 @@ import { faHome } from '@fortawesome/free-solid-svg-icons'
 // Import Quasar CSS
 import '@quasar/extras/material-icons/material-icons.css'
 import 'quasar/src/css/index.sass'
-
+import axios from 'axios';
 // Assumes your root component is App.vue
 // and placed in same folder as main.js
 import App from './App.vue'
+axios.defaults.withCredentials = true;
 
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
