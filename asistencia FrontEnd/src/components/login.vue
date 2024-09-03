@@ -132,7 +132,7 @@ async function guardar() {
                     </template>
                 </q-input>
                 <div>
-                    <q-btn class="btn" label="Inicar sesión" color="green-8" type="submit" />
+                    <q-btn class="btn" label="Inicar sesión" color="green-8" type="submit" :loading="useUsuario.loading"/>
                 </div>
                 <!-- <q-tabs class="rutas">
                     <q-route-tab to="/confipass" style="color:green" label="Olvide mi contraseña" />
@@ -145,7 +145,7 @@ async function guardar() {
 </template>
 
 <script setup>
-import { Notify } from 'quasar'
+import { Loading, Notify } from 'quasar'
 import { ref } from "vue";
 import { useUsuarioStore } from "./../stores/usuarios.js";
 import { useRouter } from 'vue-router'
@@ -159,6 +159,8 @@ let mensaje = ref("");
 
 async function guardar() {
     let res = await useUsuario.postLoginUsuario(email.value.trim(), password.value.trim())
+    console.log(res);
+    
     if (res.validar.value === true) {
         onReset()
         mensaje.value = "exito"

@@ -57,6 +57,7 @@ export const useUsuarioStore = defineStore("usuario", () => {
                 password
             })
             xtoken.value = r.data.token
+            console.log(xtoken.value);
             usuario.value = r.data.usuario
             validar.value = true
             return { r, validar }

@@ -19,7 +19,7 @@ class Server {
     middlewares() {
         this.app.use(express.json());
         this.app.use(cors({
-            origin: 'https://proyecto-asistencia-cxfa.onrender.com',
+            origin:['https://proyecto-asistencia-cxfa.onrender.com','http://localhost:4000'],
             credentials: true,
             methods: ['GET', 'POST', 'PUT', 'DELETE'],
             allowedHeaders: ['Content-Type', 'Authorization']
