@@ -13,7 +13,7 @@ export const useUsuarioStore = defineStore("usuario", () => {
     async function getListarUsuarios() {
         loading.value = true
         try {
-            let r = await axios.get("http://localhost:4000/usuarios/listarTodos", {
+            let r = await axios.get(`${API_URL}/usuarios/listarTodos`, {
                 headers: {
                     "token": xtoken.value
                 }
@@ -29,7 +29,7 @@ export const useUsuarioStore = defineStore("usuario", () => {
     async function postCrearUsuario(email, name, password) {
         loading.value = true
         try {
-            let r = await axios.post(`http://localhost:4000/usuarios/crear`, {
+            let r = await axios.post(`${API_URL}/usuarios/crear`, {
                 email,
                 nombre: name,
                 password
@@ -73,7 +73,7 @@ export const useUsuarioStore = defineStore("usuario", () => {
         try {
             let r = ref()
             if (email) {
-                r.value = await axios.put(`http://localhost:4000/usuarios/modificar/${id}`, {
+                r.value = await axios.put(`${API_URL}/usuarios/modificar/${id}`, {
                     email
                 }, {
                     headers: {
@@ -82,7 +82,7 @@ export const useUsuarioStore = defineStore("usuario", () => {
                 })
             }
             if (name) {
-                r.value = await axios.put(`http://localhost:4000/usuarios/modificar/${id}`, {
+                r.value = await axios.put(`${API_URL}/usuarios/modificar/${id}`, {
                     nombre: name
                 }, {
                     headers: {
@@ -91,7 +91,7 @@ export const useUsuarioStore = defineStore("usuario", () => {
                 })
             }
             if (password) {
-                r.value = await axios.put(`http://localhost:4000/usuarios/modificar/${id}`, {
+                r.value = await axios.put(`${API_URL}/usuarios/modificar/${id}`, {
                     password
                 }, {
                     headers: {
@@ -112,7 +112,7 @@ export const useUsuarioStore = defineStore("usuario", () => {
     async function putActivarUsuario(id) {
         loading.value = true
         try {
-            let r = await axios.put(`http://localhost:4000/usuarios/activar/${id}`, {}, {
+            let r = await axios.put(`${API_URL}/usuarios/activar/${id}`, {}, {
                 headers: {
                     "token": xtoken.value
                 }
@@ -128,7 +128,7 @@ export const useUsuarioStore = defineStore("usuario", () => {
     async function putDesactivarUsuario(id) {
         loading.value = true
         try {
-            let r = await axios.put(`http://localhost:4000/usuarios/desactivar/${id}`, {}, {
+            let r = await axios.put(`${API_URL}/usuarios/desactivar/${id}`, {}, {
                 headers: {
                     "token": xtoken.value
                 }

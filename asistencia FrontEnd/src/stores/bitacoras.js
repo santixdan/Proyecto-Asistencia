@@ -3,6 +3,8 @@ import axios from "axios"
 import { ref } from "vue"
 import { useUsuarioStore } from "./usuarios.js";
 
+const API_URL = 'https://proyecto-asistencia-backend.onrender.com';
+
 export const useBitacoraStore = defineStore("bitacora", () => {
     let validar = ref(true)
     let loading = ref(false)
@@ -10,7 +12,7 @@ export const useBitacoraStore = defineStore("bitacora", () => {
         const useUsuario = useUsuarioStore()
         loading.value = true
         try {
-            let r = await axios.get("http://localhost:4000/bitacoras/listarTodo", {
+            let r = await axios.get(`${API_URL}/bitacoras/listarTodo`, {
                 headers: {
                     "token": useUsuario.xtoken
                 }
@@ -27,7 +29,7 @@ export const useBitacoraStore = defineStore("bitacora", () => {
         loading.value = true
         const useUsuario = useUsuarioStore()
         try {
-            let r = await axios.post(`http://localhost:4000/bitacoras/crear`, {
+            let r = await axios.post(`${API_URL}/bitacoras/crear`, {
                 aprendiz,
                 fecha
             }, {
@@ -52,7 +54,7 @@ export const useBitacoraStore = defineStore("bitacora", () => {
         try {
             let r = ref()
             if (aprendiz) {
-                r.value = await axios.put(`http://localhost:4000/bitacoras/modificar/${id}`, {
+                r.value = await axios.put(`${API_URL}/bitacoras/modificar/${id}`, {
                     aprendiz
                 }, {
                     headers: {
@@ -61,7 +63,7 @@ export const useBitacoraStore = defineStore("bitacora", () => {
                 })
             }
             if (fecha) {
-                r.value = await axios.put(`http://localhost:4000/bitacoras/modificar/${id}`, {
+                r.value = await axios.put(`${API_URL}/bitacoras/modificar/${id}`, {
                     fecha
                 }, {
                     headers: {

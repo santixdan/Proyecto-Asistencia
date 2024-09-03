@@ -3,6 +3,8 @@ import axios from "axios"
 import { ref } from "vue"
 import { useUsuarioStore } from "./usuarios.js";
 
+const API_URL = 'https://proyecto-asistencia-backend.onrender.com';
+
 export const useFichaStore = defineStore("ficha", () => {
     let validar = ref(true)
     let loading = ref(false)
@@ -10,7 +12,7 @@ export const useFichaStore = defineStore("ficha", () => {
         const useUsuario = useUsuarioStore()
         loading.value = true
         try {
-            let r = await axios.get("http://localhost:4000/fichas/listarTodo", {
+            let r = await axios.get(`${API_URL}/fichas/listarTodo`, {
                 headers: {
                     "token": useUsuario.xtoken
                 }
@@ -27,7 +29,7 @@ export const useFichaStore = defineStore("ficha", () => {
         loading.value = true
         const useUsuario = useUsuarioStore()
         try {
-            let r = await axios.post(`http://localhost:4000/fichas/crear`, {
+            let r = await axios.post(`${API_URL}/fichas/crear`, {
                 codigo: code,
                 nombre: name
             }, {
@@ -52,7 +54,7 @@ export const useFichaStore = defineStore("ficha", () => {
         try {
             let r = ref()
             if (code) {
-                r.value = await axios.put(`http://localhost:4000/fichas/modificar/${id}`, {
+                r.value = await axios.put(`${API_URL}/fichas/modificar/${id}`, {
                     codigo: code
                 }, {
                     headers: {
@@ -61,7 +63,7 @@ export const useFichaStore = defineStore("ficha", () => {
                 })
             }
             if (name) {
-                r.value = await axios.put(`http://localhost:4000/fichas/modificar/${id}`, {
+                r.value = await axios.put(`${API_URL}/fichas/modificar/${id}`, {
                     nombre: name
                 }, {
                     headers: {
@@ -82,7 +84,7 @@ export const useFichaStore = defineStore("ficha", () => {
     async function putActivarFicha(id) {
         const useUsuario = useUsuarioStore()
         try {
-            let r = await axios.put(`http://localhost:4000/fichas/activar/${id}`, {}, {
+            let r = await axios.put(`${API_URL}/fichas/activar/${id}`, {}, {
                 headers: {
                     "token": useUsuario.xtoken
                 }
@@ -96,7 +98,7 @@ export const useFichaStore = defineStore("ficha", () => {
     async function putDesactivarFicha(id) {
         const useUsuario = useUsuarioStore()
         try {
-            let r = await axios.put(`http://localhost:4000/fichas/desactivar/${id}`, {}, {
+            let r = await axios.put(`${API_URL}/fichas/desactivar/${id}`, {}, {
                 headers: {
                     "token": useUsuario.xtoken
                 }

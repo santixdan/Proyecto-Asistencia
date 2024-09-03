@@ -3,6 +3,8 @@ import axios from "axios"
 import { ref } from "vue"
 import { useUsuarioStore } from "./usuarios.js";
 
+const API_URL = 'https://proyecto-asistencia-backend.onrender.com';
+
 export const useAprendizStore = defineStore("aprendiz", () => {
     let validar = ref(true)
     let loading = ref(false)
@@ -11,7 +13,7 @@ export const useAprendizStore = defineStore("aprendiz", () => {
         const useUsuario = useUsuarioStore()
         loading.value = true
         try {
-            let r = await axios.get("http://localhost:4000/aprendices/listarTodo", {
+            let r = await axios.get(`${API_URL}/aprendices/listarTodo`, {
                 headers: {
                     "token": useUsuario.xtoken
                 }
@@ -28,7 +30,7 @@ export const useAprendizStore = defineStore("aprendiz", () => {
         loading.value = true
         const useUsuario = useUsuarioStore()
         try {
-            let r = await axios.post(`http://localhost:4000/aprendices/crear`, {
+            let r = await axios.post(`${API_URL}/aprendices/crear`, {
                 ficha,
                 cedula,
                 nombre: name,
@@ -56,7 +58,7 @@ export const useAprendizStore = defineStore("aprendiz", () => {
         try {
             let r = ref()
             if (email) {
-                r.value = await axios.put(`http://localhost:4000/aprendices/modificar/${id}`, {
+                r.value = await axios.put(`${API_URL}/aprendices/modificar/${id}`, {
                     email
                 }, {
                     headers: {
@@ -65,7 +67,7 @@ export const useAprendizStore = defineStore("aprendiz", () => {
                 })
             }
             if (name) {
-                r.value = await axios.put(`http://localhost:4000/aprendices/modificar/${id}`, {
+                r.value = await axios.put(`${API_URL}/aprendices/modificar/${id}`, {
                     nombre: name
                 }, {
                     headers: {
@@ -74,7 +76,7 @@ export const useAprendizStore = defineStore("aprendiz", () => {
                 })
             }
             if (ficha) {
-                r.value = await axios.put(`http://localhost:4000/aprendices/modificar/${id}`, {
+                r.value = await axios.put(`${API_URL}/aprendices/modificar/${id}`, {
                     ficha
                 }, {
                     headers: {
@@ -83,7 +85,7 @@ export const useAprendizStore = defineStore("aprendiz", () => {
                 })
             }
             if (cedula) {
-                r.value = await axios.put(`http://localhost:4000/aprendices/modificar/${id}`, {
+                r.value = await axios.put(`${API_URL}/aprendices/modificar/${id}`, {
                     cedula
                 }, {
                     headers: {
@@ -92,7 +94,7 @@ export const useAprendizStore = defineStore("aprendiz", () => {
                 })
             }
             if (telefono) {
-                r.value = await axios.put(`http://localhost:4000/aprendices/modificar/${id}`, {
+                r.value = await axios.put(`${API_URL}/aprendices/modificar/${id}`, {
                     telefono
                 }, {
                     headers: {
@@ -113,7 +115,7 @@ export const useAprendizStore = defineStore("aprendiz", () => {
     async function putActivarAprendiz(id) {
         const useUsuario = useUsuarioStore()
         try {
-            let r = await axios.put(`http://localhost:4000/aprendices/activar/${id}`, {}, {
+            let r = await axios.put(`${API_URL}/aprendices/activar/${id}`, {}, {
                 headers: {
                     "token": useUsuario.xtoken
                 }
@@ -127,7 +129,7 @@ export const useAprendizStore = defineStore("aprendiz", () => {
     async function putDesactivarAprendiz(id) {
         const useUsuario = useUsuarioStore()
         try {
-            let r = await axios.put(`http://localhost:4000/aprendices/desactivar/${id}`, {}, {
+            let r = await axios.put(`${API_URL}/aprendices/desactivar/${id}`, {}, {
                 headers: {
                     "token": useUsuario.xtoken
                 }
