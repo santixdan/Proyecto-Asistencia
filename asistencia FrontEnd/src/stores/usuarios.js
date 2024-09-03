@@ -12,7 +12,7 @@ export const useUsuarioStore = defineStore("usuario", () => {
     async function getListarUsuarios() {
         loading.value = true
         try {
-            let r = await axios.get("http://localhost:4000/usuarios/listarTodos", {
+            let r = await axios.get("http://localhost:10000/usuarios/listarTodos", {
                 headers: {
                     "token": xtoken.value
                 }
@@ -28,7 +28,7 @@ export const useUsuarioStore = defineStore("usuario", () => {
     async function postCrearUsuario(email, name, password) {
         loading.value = true
         try {
-            let r = await axios.post(`http://localhost:4000/usuarios/crear`, {
+            let r = await axios.post(`http://localhost:10000/usuarios/crear`, {
                 email,
                 nombre: name,
                 password
@@ -51,7 +51,7 @@ export const useUsuarioStore = defineStore("usuario", () => {
     async function postLoginUsuario(email, password) {
         loading.value = true
         try {
-            let r = await axios.post(`http://localhost:4000/usuarios/login`, {
+            let r = await axios.post(`http://localhost:10000/usuarios/login`, {
                 email,
                 password
             })
@@ -72,7 +72,7 @@ export const useUsuarioStore = defineStore("usuario", () => {
         try {
             let r = ref()
             if (email) {
-                r.value = await axios.put(`http://localhost:4000/usuarios/modificar/${id}`, {
+                r.value = await axios.put(`http://localhost:10000/usuarios/modificar/${id}`, {
                     email
                 }, {
                     headers: {
@@ -81,7 +81,7 @@ export const useUsuarioStore = defineStore("usuario", () => {
                 })
             }
             if (name) {
-                r.value = await axios.put(`http://localhost:4000/usuarios/modificar/${id}`, {
+                r.value = await axios.put(`http://localhost:10000/usuarios/modificar/${id}`, {
                     nombre: name
                 }, {
                     headers: {
@@ -90,7 +90,7 @@ export const useUsuarioStore = defineStore("usuario", () => {
                 })
             }
             if (password) {
-                r.value = await axios.put(`http://localhost:4000/usuarios/modificar/${id}`, {
+                r.value = await axios.put(`http://localhost:10000/usuarios/modificar/${id}`, {
                     password
                 }, {
                     headers: {
