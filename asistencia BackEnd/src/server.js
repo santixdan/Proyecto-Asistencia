@@ -22,10 +22,10 @@ class Server {
         this.app.use(express.static('public'));
     }
     routes() {
-        this.app.use(this.paths.aprendices, require('./../routers/aprendices.js'));
-        this.app.use(this.paths.bitacoras, require('./../routers/bitacoras.js'));
-        this.app.use(this.paths.fichas, require('./../routers/fichas.js'));
-        this.app.use(this.paths.usuarios, require('./../routers/usuarios.js'));
+        this.app.use(this.paths.aprendices, require('./routers/aprendices.js'));
+        this.app.use(this.paths.bitacoras, require('./routers/bitacoras.js'));
+        this.app.use(this.paths.fichas, require('./routers/fichas.js'));
+        this.app.use(this.paths.usuarios, require('./routers/usuarios.js'));
     }
     listen() {
         this.app.listen(this.port, () => {
