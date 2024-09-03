@@ -132,7 +132,7 @@ async function guardar() {
                     </template>
                 </q-input>
                 <div>
-                    <q-btn class="btn" label="Inicar sesión" color="green-8" type="submit" />
+                    <q-btn class="btn" label="Inicar sesión" color="green-8" type="submit" loading="useUsuario.loading"/>
                 </div>
                 <!-- <q-tabs class="rutas">
                     <q-route-tab to="/confipass" style="color:green" label="Olvide mi contraseña" />
