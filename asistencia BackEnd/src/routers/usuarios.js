@@ -39,9 +39,8 @@ routerUsuario.put("/modificar/:id", [
     check('id', 'El id no es válido').notEmpty().isMongoId(),
     check('id').custom(usuarioHelpers.validarId),
     check('email', 'El email debe ser válido').optional().isEmail(),
-    // check('email').optional().custom(usuarioHelpers.validarEmailSiEsDiferente),
     check('email').optional().custom(async (email, { req }) => {
-        await usuarioHelpers.validarEmailSiEsDiferente(email, req.headers.id);
+        await usuarioHelpers.validarEmailSiEsDiferente(email, req.params.id);
     }),
     validarCampos
 ], httpUsuario.putModificarUsuarios)

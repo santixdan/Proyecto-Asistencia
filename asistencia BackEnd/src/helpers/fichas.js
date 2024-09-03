@@ -7,6 +7,15 @@ const fichaHelpers = {
             throw new Error("El código ya existe")
         }
     },
+    validarCodigoSiEsDiferente: async (codigo, id) => {
+        const ficha = await Ficha.findById(id);
+        if (codigo && codigo !== ficha.codigo) {
+            let existeCodigoFicha = await Ficha.findOne({ codigo });
+            if (existeCodigoFicha) {
+                throw new Error("El código ya existe");
+            }
+        }
+    },
     validarId: async (id) => {
         let existeId = await Ficha.findById(id)
         if (!existeId) {

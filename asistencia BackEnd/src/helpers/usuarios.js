@@ -9,8 +9,8 @@ const usuarioHelpers = {
         }
     },
     validarEmailSiEsDiferente: async (email, id) => {
-        let usuario = Usuario.findById(id)
-        if (email === usuario.email) {
+        const usuario = await Usuario.findById(id);
+        if (email && email !== usuario.email) {
             let existeEmailUsuario = await Usuario.findOne({ email });
             if (existeEmailUsuario) {
                 throw new Error("El email ya existe");

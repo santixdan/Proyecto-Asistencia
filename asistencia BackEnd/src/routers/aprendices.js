@@ -49,13 +49,22 @@ routerAprendiz.put("/modificar/:id", [
     check('id', 'El id no es válido').notEmpty().isMongoId(),
     check('id').custom(apredizHelpers.validarId),
     check('cedula', 'La cédula debe tener mínimo 8 caracteres').optional().isLength({ min: 8 }),
-    check('cedula').optional().custom(apredizHelpers.validarCedulaAprendiz),
+    // check('cedula').optional().custom(apredizHelpers.validarCedulaAprendiz),
+    check('cedula').optional().custom(async (cedula, { req }) => {
+        await apredizHelpers.validarCedulaSiEsDiferente(cedula, req.params.id);
+    }),
     check('ficha', 'La ficha debe ser mongoId').optional().isMongoId(),
     check('ficha').optional().custom(apredizHelpers.validarFicha),
     check('telefono', 'El teléfono debe ser válido').optional().isMobilePhone(),
-    check('telefono').optional().custom(apredizHelpers.validarTelefonoAprendiz),
+    // check('telefono').optional().custom(apredizHelpers.validarTelefonoAprendiz),
+    check('telefono').optional().custom(async (telefono, { req }) => {
+        await apredizHelpers.validarTelefonoSiEsDiferente(telefono, req.params.id);
+    }),
     check('email', 'El correo debe ser válido').optional().isEmail(),
-    check('email').optional().custom(apredizHelpers.validarEmailAprendiz),
+    // check('email').optional().custom(apredizHelpers.validarEmailAprendiz),
+    check('email').optional().custom(async (email, { req }) => {
+        await apredizHelpers.validarEmailSiEsDiferente(email, req.params.id);
+    }),
     validarCampos
 ], httpAprendices.putModificarAprendiz)
 routerAprendiz.put("/activar/:id", [

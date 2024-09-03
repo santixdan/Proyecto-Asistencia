@@ -28,7 +28,10 @@ routerFicha.put("/modificar/:id", [
     check('id', 'El id no es válido').notEmpty().isMongoId(),
     check('id').custom(fichaHelpers.validarId),
     check('codigo', 'El codigo debe tener mínimo 5 caracteres').optional().isLength({ min: 5 }),
-    check('codigo').optional().custom(fichaHelpers.validarCodigoFicha),
+    // check('codigo').optional().custom(fichaHelpers.validarCodigoFicha),
+    check('codigo').optional().custom(async (codigo, { req }) => {
+        await fichaHelpers.validarCodigoSiEsDiferente(codigo, req.params.id);
+    }),
     validarCampos
 ], httpFichas.putModificarFichas)
 routerFicha.put("/activar/:id", [
