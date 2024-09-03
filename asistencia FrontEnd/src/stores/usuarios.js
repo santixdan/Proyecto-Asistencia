@@ -2,6 +2,7 @@ import { defineStore } from "pinia"
 import axios from "axios"
 import { ref } from "vue"
 
+const API_URL = 'https://proyecto-asistencia-backend.onrender.com';
 
 
 export const useUsuarioStore = defineStore("usuario", () => {
@@ -51,7 +52,7 @@ export const useUsuarioStore = defineStore("usuario", () => {
     async function postLoginUsuario(email, password) {
         loading.value = true
         try {
-            let r = await axios.post(`http://localhost:4000/usuarios/login`, {
+            let r = await axios.post(`${API_URL}/usuarios/login`, {
                 email,
                 password
             })

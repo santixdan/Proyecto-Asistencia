@@ -19,9 +19,11 @@ class Server {
     middlewares() {
         this.app.use(express.json());
         this.app.use(cors({
-            origin: 'https://frontend-domain.onrender.com',
-            credentials: true
-          }));
+            origin: 'https://proyecto-asistencia-cxfa.onrender.com',
+            credentials: true,
+            methods: ['GET', 'POST', 'PUT', 'DELETE'],
+            allowedHeaders: ['Content-Type', 'Authorization']
+        }));
         this.app.use(express.static('public'));
     }
     routes() {
@@ -35,7 +37,7 @@ class Server {
             console.log(`El servidor está funcionando en el puerto ${this.port}`);
             mongoose.connect(this.mongo_uri).then(() => console.log('Connected!'))
         });
-        
+
     }
 }
 module.exports = Server

@@ -174,7 +174,7 @@ async function guardar() {
             color: "red-5",
             textColor: "white",
             icon: "warning",
-            message: res.error.response.data.errors[0].msg,
+            message: "error",
             timeout: 2500,
         });
     }
