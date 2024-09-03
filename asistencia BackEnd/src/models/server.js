@@ -5,8 +5,8 @@ const cors = require('cors');
 class Server {
     constructor() {
         this.app = express();
-        this.port = process.env.PORT || 4000;
-        this.MONGO_URI = process.env.MONGO_URI
+        this.port = process.env.PORT;
+        this.mongo_uri = process.env.MONGO_URI
         this.paths = {
             aprendices: '/aprendices',
             bitacoras: '/bitacoras',
@@ -19,6 +19,7 @@ class Server {
     middlewares() {
         this.app.use(express.json());
         this.app.use(cors())
+        // this.app.use(express.static('public'));
     }
     routes() {
         this.app.use(this.paths.aprendices, require('./../routers/aprendices.js'));
@@ -29,7 +30,7 @@ class Server {
     listen() {
         this.app.listen(this.port, () => {
             console.log(`El servidor está funcionando en el puerto ${this.port}`);
-            mongoose.connect(this.MONGO_URI).then(() => console.log('Connected!'))
+            mongoose.connect(this.mongo_uri).then(() => console.log('Connected!'))
         });
         
     }
