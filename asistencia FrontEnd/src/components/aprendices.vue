@@ -218,7 +218,7 @@ async function traerId(id) {
   let aprendiz = rows.value.find(apprentice => apprentice._id === id);
   email.value = aprendiz.email
   telefono.value = aprendiz.telefono
-  ficha.value = aprendiz.ficha
+  // ficha.value = aprendiz.ficha
   cedula.value = aprendiz.cedula
   name.value = aprendiz.nombre
   idAprendiz.value = id;

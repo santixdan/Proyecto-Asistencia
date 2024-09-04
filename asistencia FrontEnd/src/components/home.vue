@@ -1,7 +1,7 @@
 <template>
   <q-layout view="hHh lpR fFf">
     <q-header elevated class="bg-primary text-with">
-      <q-toolbar class="custom-toolbar-title">
+      <q-toolbar class="custom-toolbar-title" >
         <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
         <q-toolbar-title>
           <q-avatar>
@@ -22,10 +22,10 @@
             ">
         <q-list padding>
           <div class="q-pa-md q-gutter-sm column">
-            <q-btn to="/ficha" label="Fichas" color="green" class="full-width q-mb-sm" />
-            <q-btn to="/bitacora" label="Bitacoras" color="green" class="full-width q-mb-sm" />
-            <q-btn to="/aprendiz" label="Aprendices" color="green" class="full-width q-mb-sm" />
-            <q-btn to="/usuario" label="Usuarios" color="green" class="full-width q-mb-sm" />
+            <q-btn to="/ficha" label="Fichas" color="green-8" class="full-width q-mb-sm" />
+            <q-btn to="/bitacora" label="Bitacoras" color="green-8" class="full-width q-mb-sm" />
+            <q-btn to="/aprendiz" label="Aprendices" color="green-8" class="full-width q-mb-sm" />
+            <q-btn to="/usuario" label="Usuarios" color="green-8" class="full-width q-mb-sm" />
           </div>
         </q-list>
       </q-scroll-area>
@@ -108,8 +108,8 @@ import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { useUsuarioStore } from "./../stores/usuarios.js";
 
 let useUsuario = useUsuarioStore();
-let correo = useUsuario.usuario.email
-let nombre = useUsuario.usuario.nombre
+let correo = ref(useUsuario.usuario.email) 
+let nombre = ref(useUsuario.usuario.nombre)
 
 library.add(faArrowRightFromBracket);
 
@@ -171,7 +171,7 @@ function toggleLeftDrawer() {
 #tituloPrincipal {
   display: flex;
   justify-content: center;
-  margin-top: 50px;
+  margin-top: 40px;
   margin-bottom: 10px;
 }
 
@@ -180,5 +180,14 @@ function toggleLeftDrawer() {
   flex-direction: column;
   align-items: center;
   margin-bottom: 1rem;
+}
+
+@media screen and (max-width:550px) and (min-width:300px){
+  #divCards{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+  }
 }
 </style>
