@@ -53,7 +53,6 @@ async function guardar() {
 
     if (res.validar.value === true) {
         onReset()
-        mensaje.value = "exito"
         await router.replace('/home');
         Notify.create({
             color: "green-3",
