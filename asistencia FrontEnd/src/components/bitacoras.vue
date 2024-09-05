@@ -96,7 +96,7 @@ let aprendiz = ref();
 let fecha = ref();
 let icon = ref(false);
 let estado = ref();
-let optionsEstado = ['Asistió', 'No asistió', 'Excusa', 'Pendiente']
+let optionsEstado = ['Asistió', 'No asistió', 'Excusa']
 let change = ref(); // false: crear, true: modificar
 let options = ref()
 let rows = ref([]);
@@ -106,6 +106,12 @@ let columns = ref([
     align: "center",
     label: "Cédula del aprendiz",
     field: "aprendiz",
+  },
+  {
+    name: "aprendiznombre1",
+    align: "center",
+    label: "Nombre del aprendiz",
+    field: "aprendiznombre",
   },
   {
     name: "fecha1",
@@ -127,7 +133,8 @@ async function traer() {
   rows.value = res.data.bitacora.map(bitacora => {
     return {
       ...bitacora,
-      aprendiz: res2.data.aprendices.find(aprendiz => aprendiz._id === bitacora.aprendiz)?.cedula
+      aprendiz: res2.data.aprendices.find(aprendiz => aprendiz._id === bitacora.aprendiz)?.cedula,
+      aprendiznombre: res2.data.aprendices.find(aprendiz => aprendiz._id === bitacora.aprendiz)?.nombre
     };
   })
 }

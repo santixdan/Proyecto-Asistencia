@@ -130,6 +130,12 @@ let columns = ref([
     field: "ficha",
   },
   {
+    name: "fichanombre1",
+    align: "center",
+    label: "Nombre de la ficha",
+    field: "fichanombre",
+  },
+  {
     name: "cedula1",
     align: "center",
     label: "Cédula",
@@ -170,7 +176,8 @@ async function traer() {
   rows.value = res.data.aprendices.map(aprendiz => {
     return {
       ...aprendiz,
-      ficha: res2.data.fichas.find(ficha => ficha._id === aprendiz.ficha)?.codigo
+      ficha: res2.data.fichas.find(ficha => ficha._id === aprendiz.ficha)?.codigo,
+      fichanombre: res2.data.fichas.find(ficha => ficha._id === aprendiz.ficha)?.nombre
     };
   })
 }
