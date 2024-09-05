@@ -1,10 +1,10 @@
 <template>
   <div class="todo">
     <h3 id="tituloPrincipal">Bitácoras</h3>
-    <hr id="hr">
+    <hr id="hr" class="bg-green-9">
     <div class="q-pa-md">
       <div class="q-pa-md q-gutter-sm">
-        <q-btn label="Crear Bitácora" color="green-8" @click="(icon = true), (change = false)" />
+        <q-btn label="Crear Bitácora" color="green-9" @click="(icon = true), (change = false)" />
       </div>
       <q-table title="Bitácoras" :rows="rows" :columns="columns" row-key="name" :loading="useBitacora.loading">
         <template v-slot:body-cell-opciones="props">
@@ -73,7 +73,7 @@
                   </template>
                 </q-input>
                 <div>
-                  <q-btn :loading="useBitacora.loading" label="Guardar" type="submit" color="green-8" />
+                  <q-btn :loading="useBitacora.loading" label="Guardar" type="submit" color="green-9" />
                 </div>
               </q-form>
             </div>

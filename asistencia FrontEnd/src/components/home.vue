@@ -1,6 +1,6 @@
 <template>
   <q-layout view="hHh lpR lff">
-    <q-header elevated class="bg-primary text-with">
+    <q-header elevated class="bg-green-9 text-with">
       <q-toolbar class="custom-toolbar-title" >
         <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
         <q-toolbar-title>
@@ -22,10 +22,10 @@
             ">
         <q-list padding>
           <div class="q-pa-md q-gutter-sm column">
-            <q-btn to="/ficha" label="Fichas" color="green-8" class="full-width q-mb-sm" />
-            <q-btn to="/bitacora" label="Bitacoras" color="green-8" class="full-width q-mb-sm" />
-            <q-btn to="/aprendiz" label="Aprendices" color="green-8" class="full-width q-mb-sm" />
-            <q-btn to="/usuario" label="Usuarios" color="green-8" class="full-width q-mb-sm" />
+            <q-btn to="/ficha" label="Fichas" color="green-9" class="full-width q-mb-sm" />
+            <q-btn to="/bitacora" label="Bitacoras" color="green-9" class="full-width q-mb-sm" />
+            <q-btn to="/aprendiz" label="Aprendices" color="green-9" class="full-width q-mb-sm" />
+            <q-btn to="/usuario" label="Usuarios" color="green-9" class="full-width q-mb-sm" />
           </div>
         </q-list>
       </q-scroll-area>
@@ -42,8 +42,8 @@
     </q-drawer>
     <q-page-container>
       <div v-if="$route.path === '/home'" class="q-pa-md row items-start q-gutter-md" id="divCards">
-        <q-card class="my-card bg-secondary text-white" id="cards">
-          <q-card-section style="background-color: #4CAF50 !important">
+        <q-card class="my-card text-white" >
+          <q-card-section class="bg-green-9">
             <div class="text-h6" align="center">FICHAS</div>
           </q-card-section>
           <q-separator dark />
@@ -52,11 +52,11 @@
           </q-card-section>
           <q-separator />
           <q-card-actions id="btnSection">
-            <q-btn to="/ficha" flat style="background-color: #4CAF50 !important">BUSCAR</q-btn>
+            <q-btn to="/ficha" color="green-9">BUSCAR</q-btn>
           </q-card-actions>
         </q-card>
-        <q-card class="my-card bg-secondary text-white" id="cards">
-          <q-card-section style="background-color: #4CAF50 !important">
+        <q-card class="my-card text-white" id="cards">
+          <q-card-section class="bg-green-9">
             <div class="text-h6" align="center">BITÁCORAS</div>
           </q-card-section>
           <q-separator dark />
@@ -65,11 +65,11 @@
           </q-card-section>
           <q-separator />
           <q-card-actions id="btnSection">
-            <q-btn to="/bitacora" style="background-color: #4CAF50 !important">BUSCAR</q-btn>
+            <q-btn to="/bitacora" color="green-9">BUSCAR</q-btn>
           </q-card-actions>
         </q-card>
-        <q-card class="my-card bg-secondary text-white" id="cards">
-          <q-card-section style="background-color: #4CAF50 !important">
+        <q-card class="my-card text-white" id="cards">
+          <q-card-section class="bg-green-9">
             <div class="text-h6" align="center">APRENDICES</div>
           </q-card-section>
           <q-separator dark />
@@ -78,11 +78,11 @@
           </q-card-section>
           <q-separator />
           <q-card-actions id="btnSection">
-            <q-btn to="/aprendiz" style="background-color: #4CAF50 !important">BUSCAR</q-btn>
+            <q-btn to="/aprendiz" color="green-9">BUSCAR</q-btn>
           </q-card-actions>
         </q-card>
-        <q-card class="my-card bg-secondary text-white" id="cards">
-          <q-card-section style="background-color: #4CAF50 !important">
+        <q-card class="my-card text-white" id="cards">
+          <q-card-section class="bg-green-9">
             <div class="text-h6" align="center">USUARIOS</div>
           </q-card-section>
           <q-separator dark />
@@ -91,7 +91,7 @@
           </q-card-section>
           <q-separator />
           <q-card-actions id="btnSection">
-            <q-btn to="/usuario" style="background-color: #4CAF50 !important">BUSCAR</q-btn>
+            <q-btn to="/usuario" color="green-9">BUSCAR</q-btn>
           </q-card-actions>
         </q-card>
       </div>
@@ -128,9 +128,9 @@ function toggleLeftDrawer() {
 </script>
 
 <style>
-.custom-toolbar-title {
+/* .custom-toolbar-title {
   background-color: #2E7D32;
-}
+} */
 
 #cards {
   background-color: white !important;
@@ -171,7 +171,7 @@ function toggleLeftDrawer() {
 #hr {
   width: 90%;
   height: 5px !important;
-  background-color: #2E7D32;
+  /* background-color: #2E7D32; */
   border: 0px;
 }
 
