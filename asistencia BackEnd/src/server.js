@@ -39,10 +39,7 @@ class Server {
         this.app.listen(this.port, () => {
             console.log(`El servidor está funcionando en el puerto ${this.port}`);
             // mongoose.connect(this.mongo_uri).then(() => console.log('Connected!'))});
-            mongoose.connect(this.mongo_uri, {
-                useNewUrlParser: true,
-                useUnifiedTopology: true,
-            }).then(() => console.log('Connected!'))
+            mongoose.connect(this.mongo_uri).then(() => console.log('Connected!'))
                 .catch((error) => console.error('Error de conexión a MongoDB:', error));
         });
     }
