@@ -148,7 +148,7 @@ async function crear() {
     onReset()
     traer();
     Notify.create({
-      color: "green-3",
+      color: "green-6",
       message: "Registro exitoso",
       icon: "cloud_done",
       timeout: 2500,

@@ -5,6 +5,7 @@
     <div class="q-pa-md">
       <div class="q-pa-md q-gutter-sm">
         <q-btn label="Crear Bitácora" color="green-9" @click="(icon = true), (change = false)" />
+        <!-- <q-btn style="float: right;" round color="green-9" icon="print" /> -->
       </div>
       <q-table title="Bitácoras" :rows="rows" :columns="columns" row-key="name" :loading="useBitacora.loading">
         <template v-slot:body-cell-opciones="props">
@@ -178,7 +179,7 @@ async function crear() {
     onReset()
     traer();
     Notify.create({
-      color: "green-3",
+      color: "green-6",
       message: "Registro exitoso",
       icon: "cloud_done",
       timeout: 2500,
