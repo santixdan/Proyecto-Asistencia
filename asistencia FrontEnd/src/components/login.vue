@@ -1,7 +1,7 @@
 <template>
     <div class="q-pa-md row items-start q-gutter-md col-10 col-xs-10 col-sm-8 col-md-4 col-lg-4 items-center flex q-my-lg"
-                align="center" id="superContainer">
-                <q-card class="my-card">
+                align="center" id="superContainer" style="margin: 0px;">
+                <q-card style="margin: 0px;" class="my-card">
                     <q-card-section class="bg-green-9 text-white">
                         <h4 data-v-8ea77ebc class="q-mt-sm q-mb-sm text-white text-center text-weight-bold">ASISTENCIA
                         </h4>
@@ -35,8 +35,8 @@
                         </q-form>
                     </q-card-actions>
                 </q-card>
-                <div class="q-pa-md q-gutter-sm">
-                    <q-dialog v-model="icon" persistent>
+                <div v-show="icon===true" class="q-pa-md q-gutter-sm">
+                    <q-dialog v-show="icon===true" v-model="icon" persistent>
                         <q-card>
                             <q-card-section class="row items-center q-pb-none">
                                 <div class="text-h6">Cambiar contraseña</div>
@@ -175,10 +175,10 @@ function onReset() {
 }
 
 #superContainer {
-    height: 570px;
-    justify-content: center;
-    align-content: center;
-
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    height: 100vh !important;
 }
 
 #logintxt {
