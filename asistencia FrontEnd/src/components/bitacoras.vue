@@ -11,13 +11,9 @@
         <template v-slot:body-cell-opciones="props">
           <q-td :props="props">
             <div class="q-pa-md" align="center">
-              <q-select filled
-                v-model="props.row.estado"
-                label="Estado"
-                style="max-width: 300px;"
-                :options="optionsEstado"
-                :loading="useBitacora.loading"
-                @change="updateEstado(props.row.estado, props.row._id )"/>
+              <q-select filled v-model="props.row.estado" label="Estado" style="max-width: 300px;"
+                :options="optionsEstado" emit-value map-options :loading="loadingButtons[props.row._id]"
+                @update:model-value="updateEstado($event, props.row._id)" />
             </div>
           </q-td>
         </template>
@@ -37,8 +33,7 @@
               <q-form @submit="crear()" @reset="onReset()" class="q-gutter-md">
                 <q-select filled type="number" v-model="aprendiz" use-input input-debounce="0" label="Aprendiz"
                   :options="options" @filter="filterFn" style="width: 250px" behavior="menu" emit-value map-options
-                  lazy-rules
-                        :rules="[val => (val && val.length > 0) || 'Por favor, dígite la cédila del aprendiz']">
+                  lazy-rules :rules="[val => (val && val.length > 0) || 'Por favor, dígite la cédila del aprendiz']">
                   <template v-slot:no-option>
                     <q-item>
                       <q-item-section class="text-grey">
@@ -48,7 +43,7 @@
                   </template>
                 </q-select>
                 <q-input filled v-model="fecha" label="Fecha" mask="date" lazy-rules
-                :rules="[val => (val && val.length > 0) || 'Por favor, dígite la fecha de la bitácora']">
+                  :rules="[val => (val && val.length > 0) || 'Por favor, dígite la fecha de la bitácora']">
                   <template v-slot:append>
                     <q-icon name="event" class="cursor-pointer">
                       <q-popup-proxy cover transition-show="scale" transition-hide="scale">
@@ -85,8 +80,9 @@ let aprendiz = ref();
 let fecha = ref();
 let icon = ref(false);
 let optionsEstado = ['Asistió', 'No asistió', 'Excusa']
- //let change = ref(false); false: crear, true: modificar
+//let change = ref(false); false: crear, true: modificar
 let options = ref()
+let loadingButtons = ref({});
 let rows = ref([]);
 let columns = ref([
   {
@@ -100,6 +96,7 @@ let columns = ref([
     align: "center",
     label: "Nombre del aprendiz",
     field: "aprendiznombre",
+    sortable: true,
   },
   {
     name: "fecha1",
@@ -116,9 +113,26 @@ onBeforeMount(() => {
 })
 
 async function updateEstado(estado, id) {
-  console.log(estado);
+  loadingButtons.value[id] = true;
   let res = await useBitacora.putModificarBitacora(estado, id);
-  traer();
+  if (useBitacora.loading == false) {
+    loadingButtons.value[id] = false;
+  }
+  if (res.validar.value === true) {
+    traer();
+  } else {
+    Notify.create({
+      color: "red-5",
+      textColor: "white",
+      icon: "warning",
+      message: "Error en la petición",
+      timeout: 2500,
+    });
+  }
+
+
+
+
 }
 
 async function traer() {
@@ -163,7 +177,7 @@ const filterFn = async (val, update) => {
 // }
 
 async function crear() {
-  let res= await useBitacora.postCrearBitacora(aprendiz.value.trim(), fecha.value.trim())
+  let res = await useBitacora.postCrearBitacora(aprendiz.value.trim(), fecha.value.trim())
   if (res.validar.value === true) {
     icon.value = false
     onReset()

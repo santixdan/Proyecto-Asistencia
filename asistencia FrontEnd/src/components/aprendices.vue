@@ -33,7 +33,7 @@
             <div class="text-h6" v-if="change == false">Crear Aprendiz</div>
             <div class="text-h6" v-else>Editar Aprendiz</div>
             <q-space />
-            <q-btn icon="close" flat round dense v-close-popup @click="onReset()"/>
+            <q-btn icon="close" flat round dense v-close-popup @click="onReset()" />
           </q-card-section>
 
           <q-card-section>
@@ -124,6 +124,20 @@ let options = ref()
 let rows = ref([]);
 let columns = ref([
   {
+    name: "nombre1",
+    required: true,
+    label: "Nombre del aprendiz",
+    align: "center",
+    field: "nombre",
+    sortable: true,
+  }, 
+  {
+    name: "cedula1",
+    align: "center",
+    label: "Cédula",
+    field: "cedula",
+  },
+  {
     name: "ficha1",
     align: "center",
     label: "Código de la ficha",
@@ -134,20 +148,6 @@ let columns = ref([
     align: "center",
     label: "Nombre de la ficha",
     field: "fichanombre",
-  },
-  {
-    name: "cedula1",
-    align: "center",
-    label: "Cédula",
-    field: "cedula",
-  },
-  {
-    name: "nombre1",
-    required: true,
-    label: "Nombre del aprendiz",
-    align: "center",
-    field: "nombre",
-    sortable: true,
   },
   {
     name: "telefono1",

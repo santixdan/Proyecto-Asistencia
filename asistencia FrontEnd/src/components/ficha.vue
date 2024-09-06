@@ -96,6 +96,7 @@ let columns = ref([
     align: "center",
     label: "Código de la ficha",
     field: "codigo",
+    sortable: true,
   },
   { name: "estado1", align: "center", label: "Estado", field: "estado" },
   { name: "opciones", align: "center", label: "Opciones" },
