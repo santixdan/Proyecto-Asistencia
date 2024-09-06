@@ -1,75 +1,79 @@
 <template>
     <div class="q-pa-md row items-start q-gutter-md col-10 col-xs-10 col-sm-8 col-md-4 col-lg-4 items-center flex q-my-lg"
-        align="center" id="superContainer">
-        <q-card class="my-card">
-            <q-card-section class="bg-green-9 text-white">
-                <h4 data-v-8ea77ebc class="q-mt-sm q-mb-sm text-white text-center text-weight-bold">ASISTENCIA</h4>
-            </q-card-section>
-
-            <q-card-actions class="cardContent" align="center">
-                <div data-v-8ea77ebc class="column items-center q-mt-md">
-                    <img style="height: 100px; width: 100px;"
-                        src="https://www1.funcionpublica.gov.co/documents/28587425/42384076/logoSena.png/b8131ab9-4c1f-4ef9-8dd4-569d6b7169b6?t=1701956509586">
-                </div>
-                <div data-v-8ea77ebc class="text-h5 text-weight-bold" id="logintxt">LOG IN</div>
-                <hr data-v-8ea77ebc class="q-separator q-separator--horizontal" aria-orientation="horizontal" id="hr2">
-                <q-form @submit="guardar()" @reset="onReset()" class="q-gutter-md">
-                    <q-input filled v-model="email" label="Correo" lazy-rules
-                        :rules="[val => (val && val.length > 0) || 'Por favor, dígite el correo']" />
-                    <q-input :type="isPwd ? 'password' : 'text'" filled v-model="password" label="Contraseña" lazy-rules
-                        :rules="[val => (val && val.length > 0) || 'Por favor, dígite la contraseña']">
-                        <template v-slot:append>
-                            <q-icon :name="isPwd ? 'visibility_off' : 'visibility'" class="cursor-pointer"
-                                @click="isPwd = !isPwd" />
-                        </template>
-                    </q-input>
-                    <q-btn label="Olvidé mi contraseña" color="green-9" flat class="q-ml-sm" @click="(icon = true)" />
-                    <div>
-                        <q-btn class="btn" label="Iniciar sesión" color="green-9" type="submit"
-                            :loading="useUsuario.loading" />
-                    </div>
-                </q-form>
-            </q-card-actions>
-        </q-card>
-        <div class="q-pa-md q-gutter-sm">
-            <q-dialog v-model="icon" persistent>
-                <q-card>
-                    <q-card-section class="row items-center q-pb-none">
-                        <div class="text-h6">Cambiar contraseña</div>
-                        <q-space />
-                        <q-btn icon="close" flat round dense v-close-popup @click="onReset()" />
+                align="center" id="superContainer">
+                <q-card class="my-card">
+                    <q-card-section class="bg-green-9 text-white">
+                        <h4 data-v-8ea77ebc class="q-mt-sm q-mb-sm text-white text-center text-weight-bold">ASISTENCIA
+                        </h4>
                     </q-card-section>
 
-                    <q-card-section>
-                        <div class="q-pa-md" style="max-width: 400px">
-                            <q-form @submit="recuperar()" @reset="onReset()" class="q-gutter-md">
-                                <q-input filled v-model="email2" label="Correo" lazy-rules
-                                    :rules="[val => (val && val.length > 0) || 'Por favor, dígite el correo']" />
-                                <q-input :type="isPwd ? 'password' : 'text'" filled v-model="newPassword"
-                                    label="Nueva contraseña" lazy-rules
-                                    :rules="[val => (val && val.length > 0) || 'Por favor, dígite la nueva contraseña']"><template
-                                        v-slot:append>
-                                        <q-icon :name="isPwd ? 'visibility_off' : 'visibility'" class="cursor-pointer"
-                                            @click="isPwd = !isPwd" />
-                                    </template></q-input>
-                                <q-input :type="isPwd ? 'password' : 'text'" filled v-model="confirmPassword"
-                                    label="Confirmar contraseña" lazy-rules
-                                    :rules="[val => (val && val.length > 0) || 'Por favor, dígite la confirmación de la contraseña']"><template
-                                        v-slot:append>
-                                        <q-icon :name="isPwd ? 'visibility_off' : 'visibility'" class="cursor-pointer"
-                                            @click="isPwd = !isPwd" />
-                                    </template></q-input>
-                                <div>
-                                    <q-btn :loading="useUsuario.loading" label="Guardar" type="submit"
-                                        color="green-9" />
-                                </div>
-                            </q-form>
+                    <q-card-actions class="cardContent" align="center">
+                        <div data-v-8ea77ebc class="column items-center q-mt-md">
+                            <img style="height: 100px; width: 100px;"
+                                src="https://www1.funcionpublica.gov.co/documents/28587425/42384076/logoSena.png/b8131ab9-4c1f-4ef9-8dd4-569d6b7169b6?t=1701956509586">
                         </div>
-                    </q-card-section>
+                        <div data-v-8ea77ebc class="text-h5 text-weight-bold" id="logintxt">LOG IN</div>
+                        <hr data-v-8ea77ebc class="q-separator q-separator--horizontal" aria-orientation="horizontal"
+                            id="hr2">
+                        <q-form @submit="guardar()" class="q-gutter-md">
+                            <q-input filled v-model="email" label="Correo" lazy-rules
+                                :rules="[val => (val && val.length > 0) || 'Por favor, dígite el correo']" />
+                            <q-input :type="isPwd ? 'password' : 'text'" filled v-model="password" label="Contraseña"
+                                lazy-rules
+                                :rules="[val => (val && val.length > 0) || 'Por favor, dígite la contraseña']">
+                                <template v-slot:append>
+                                    <q-icon :name="isPwd ? 'visibility_off' : 'visibility'" class="cursor-pointer"
+                                        @click="isPwd = !isPwd" />
+                                </template>
+                            </q-input>
+                            <q-btn label="Olvidé mi contraseña" color="green-9" flat class="q-ml-sm"
+                                @click="(icon = true)" />
+                            <div>
+                                <q-btn class="btn" label="Iniciar sesión" color="green-9" type="submit"
+                                    :loading="useUsuario.loading" />
+                            </div>
+                        </q-form>
+                    </q-card-actions>
                 </q-card>
-            </q-dialog>
-        </div>
-    </div>
+                <div class="q-pa-md q-gutter-sm">
+                    <q-dialog v-model="icon" persistent>
+                        <q-card>
+                            <q-card-section class="row items-center q-pb-none">
+                                <div class="text-h6">Cambiar contraseña</div>
+                                <q-space />
+                                <q-btn icon="close" flat round dense v-close-popup @click="onReset()" />
+                            </q-card-section>
+
+                            <q-card-section>
+                                <div class="q-pa-md" style="max-width: 400px">
+                                    <q-form @submit="recuperar()" class="q-gutter-md">
+                                        <q-input filled v-model="email2" label="Correo" lazy-rules
+                                            :rules="[val => (val && val.length > 0) || 'Por favor, dígite el correo']" />
+                                        <q-input :type="isPwd ? 'password' : 'text'" filled v-model="newPassword"
+                                            label="Nueva contraseña" lazy-rules
+                                            :rules="[val => (val && val.length > 0) || 'Por favor, dígite la nueva contraseña']"><template
+                                                v-slot:append>
+                                                <q-icon :name="isPwd ? 'visibility_off' : 'visibility'"
+                                                    class="cursor-pointer" @click="isPwd = !isPwd" />
+                                            </template></q-input>
+                                        <q-input :type="isPwd ? 'password' : 'text'" filled v-model="confirmPassword"
+                                            label="Confirmar contraseña" @paste.prevent lazy-rules
+                                            :rules="[val => (val && val.length > 0) || 'Por favor, dígite la confirmación de la contraseña']"><template
+                                                v-slot:append>
+                                                <q-icon :name="isPwd ? 'visibility_off' : 'visibility'"
+                                                    class="cursor-pointer" @click="isPwd = !isPwd" />
+                                            </template></q-input>
+                                        <div>
+                                            <q-btn label="Guardar" type="submit" color="green-9" />
+                                        </div>
+                                    </q-form>
+                                </div>
+                            </q-card-section>
+                        </q-card>
+                    </q-dialog>
+                </div>
+            </div>
+
 
 
 </template>
@@ -103,14 +107,22 @@ async function recuperar() {
             timeout: 2500,
         });
     } else {
-        let res2 = await useUsuario.putModificarPassword(email2.value.trim(), newPassword.value.trim(), confirmPassword.value.trim())
-        if (res2.validar.value === true) {
+        let res = await useUsuario.putModificarPassword(email2.value.trim(), newPassword.value.trim(), confirmPassword.value.trim())
+        if (res.validar.value === true) {
             icon.value = false
             onReset()
             Notify.create({
                 color: "green-6",
                 message: "Registro exitoso",
                 icon: "cloud_done",
+                timeout: 2500,
+            });
+        } else {
+            Notify.create({
+                color: "red-5",
+                textColor: "white",
+                icon: "warning",
+                message: res.error.response.data.errors[0].msg,
                 timeout: 2500,
             });
         }
@@ -153,7 +165,7 @@ function onReset() {
 <style scoped>
 .my-card {
     width: 100%;
-    max-width: 400px;
+    max-width: 450px;
 }
 
 #hr2 {
@@ -163,6 +175,7 @@ function onReset() {
 }
 
 #superContainer {
+    height: 570px;
     justify-content: center;
     align-content: center;
 

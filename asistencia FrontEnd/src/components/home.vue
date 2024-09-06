@@ -35,8 +35,8 @@
           <q-avatar size="56px" class="q-mb-sm">
             <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
           </q-avatar>
-          <div class="text-weight-bold">{{ nombre }}</div>
-          <div>{{ correo }}</div>
+          <div class="text-weight-bold">{{ !nombre?"":nombre }}</div>
+          <div>{{ !correo?"":correo }}</div>
         </div>
       </q-img>
     </q-drawer>
