@@ -53,15 +53,14 @@ const httpUsuario = {
     },
     putModificarPassword: async (req, res) => {
         try {
-            const id = req.params.id;
-            const { newPassword } = req.body
-            const usuario = await Usuario.findById(id)
+            const { email, newPassword } = req.body
+            const usuario = await Usuario.findOne({ email })
             const salt = bcryptjs.genSaltSync();
             usuario.password = bcryptjs.hashSync(newPassword, salt)
             await usuario.save();
             res.json({ usuario });
         } catch (error) {
-            res.status(400).json({ error })
+            res.status(400).json({ error:"algo mal" })
         }
     },
     putActivarUsuario: async (req, res) => {

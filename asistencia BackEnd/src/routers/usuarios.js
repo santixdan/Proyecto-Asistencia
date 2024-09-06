@@ -44,10 +44,10 @@ routerUsuario.put("/modificar/:id", [
     }),
     validarCampos
 ], httpUsuario.putModificarUsuarios)
-routerUsuario.put("/modificarPassword/:id", [
-    check('id', 'El id es obligatorio').notEmpty(),
-    check('id', 'El id debe ser MongoId').isMongoId(),
-    check('id').custom(usuarioHelpers.validarId),
+routerUsuario.put("/modificarPassword", [
+    check('email', 'El email es obligatorio').notEmpty(),
+    check('email', 'El email debe ser válido').isEmail(),
+    check('email').custom(usuarioHelpers.validarNoEmailUsuario),
     check('newPassword', 'La nueva contraseña es obligatoria').notEmpty(),
     check('confirmPassword', 'La confirmacion contraseña es obligatoria').notEmpty(),
     check('newPassword').custom(async (newPassword, { req }) => {

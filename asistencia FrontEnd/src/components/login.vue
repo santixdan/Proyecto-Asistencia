@@ -91,10 +91,9 @@ let newPassword = ref()
 let confirmPassword = ref()
 
 async function recuperar() {
-    let res1 = await useUsuario.getListarUsuarios();
-    let usuario = res1.data.usuarios.find(usuario => email2.value === usuario.email);
-    let id = ref(usuario._id) ;
-    console.log(id.value);
+    // let res1 = await useUsuario.getListarUsuarios();
+    // let usuario = res1.data.usuarios.find(usuario => email2.value === usuario.email);
+    // let id = ref(usuario._id);
     if (newPassword.value !== confirmPassword.value) {
         Notify.create({
             color: "red-5",
@@ -104,8 +103,10 @@ async function recuperar() {
             timeout: 2500,
         });
     } else {
-        let res2 = await useUsuario.putModificarPassword(newPassword.value.trim(), confirmPassword.value.trim(), id.value)
+        let res2 = await useUsuario.putModificarPassword(email2.value.trim(), newPassword.value.trim(), confirmPassword.value.trim())
         if (res2.validar.value === true) {
+            icon.value = false
+            onReset()
             Notify.create({
                 color: "green-6",
                 message: "Registro exitoso",
@@ -143,6 +144,9 @@ async function guardar() {
 function onReset() {
     email.value = "";
     password.value = "";
+    confirmPassword.value = "";
+    newPassword.value = "";
+    email2.value = "";
 }
 </script>
 

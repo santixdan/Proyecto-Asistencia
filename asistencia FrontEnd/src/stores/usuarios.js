@@ -100,10 +100,11 @@ export const useUsuarioStore = defineStore("usuario", () => {
         }
     }
 
-    async function putModificarPassword(newPassword, confirmPassword, id) {
+    async function putModificarPassword(email, newPassword, confirmPassword) {
         loading.value = true
         try {
-            let r = await axios.put(`${API_URL}/usuarios/modificarPassword/${id}`, {
+            let r = await axios.put(`${API_URL}/usuarios/modificarPassword`, {
+                email,
                 newPassword,
                 confirmPassword
             })

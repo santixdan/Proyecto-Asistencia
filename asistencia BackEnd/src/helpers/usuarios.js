@@ -8,6 +8,12 @@ const usuarioHelpers = {
             throw new Error("El email ya existe")
         }
     },
+    validarNoEmailUsuario: async (email) => {
+        let existeEmailUsuario = await Usuario.findOne({ email })
+        if (!existeEmailUsuario) {
+            throw new Error("El email no existe en la base de datos")
+        }
+    },
     validarEmailSiEsDiferente: async (email, id) => {
         const usuario = await Usuario.findById(id);
         if (email && email !== usuario.email) {
