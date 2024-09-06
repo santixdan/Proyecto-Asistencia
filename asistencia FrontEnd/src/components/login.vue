@@ -4,7 +4,6 @@
         <q-card class="my-card">
             <q-card-section class="bg-green-9 text-white">
                 <h4 data-v-8ea77ebc class="q-mt-sm q-mb-sm text-white text-center text-weight-bold">ASISTENCIA</h4>
-                <!-- <div class="text-subtitle2">by John Doe</div> -->
             </q-card-section>
 
             <q-card-actions class="cardContent" align="center">
@@ -52,8 +51,8 @@ async function guardar() {
     let res = await useUsuario.postLoginUsuario(email.value.trim(), password.value.trim())
 
     if (res.validar.value === true) {
-        onReset()
         await router.replace('/home');
+        onReset()
         Notify.create({
             color: "green-3",
             message: "Registro exitoso",
@@ -85,8 +84,6 @@ function onReset() {
 
 #hr2 {
     width: 100%;
-    /* height: 1px !important; */
-    /* border: 0px; */
     margin-top: 10px;
     margin-bottom: 10px;
 }
