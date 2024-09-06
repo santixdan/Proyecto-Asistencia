@@ -4,7 +4,7 @@
     <hr id="hr" class="bg-green-9">
     <div class="q-pa-md">
       <div class="q-pa-md q-gutter-sm">
-        <q-btn label="Crear Bitácora" color="green-9" @click="(icon = true), (change = false)" />
+        <q-btn label="Crear Bitácora" color="green-9" @click="(icon = true)" />
         <!-- <q-btn style="float: right;" round color="green-9" icon="print" /> -->
       </div>
       <q-table title="Bitácoras" :rows="rows" :columns="columns" row-key="name" :loading="useBitacora.loading">
@@ -16,7 +16,8 @@
                 label="Estado"
                 style="max-width: 300px;"
                 :options="optionsEstado"
-                @update:model-value="updateEstado(props.row)"/>
+                :loading="useBitacora.loading"
+                @change="updateEstado(props.row.estado, props.row._id )"/>
             </div>
           </q-td>
         </template>
@@ -26,8 +27,7 @@
       <q-dialog v-model="icon" persistent>
         <q-card>
           <q-card-section class="row items-center q-pb-none">
-            <div class="text-h6" v-if="change == false">Crear Bitácora</div>
-            <div class="text-h6" v-else>Editar Bitácora</div>
+            <div class="text-h6">Crear Bitácora</div>
             <q-space />
             <q-btn icon="close" flat round dense v-close-popup />
           </q-card-section>
@@ -37,14 +37,8 @@
               <q-form @submit="crear()" @reset="onReset()" class="q-gutter-md">
                 <q-select filled type="number" v-model="aprendiz" use-input input-debounce="0" label="Aprendiz"
                   :options="options" @filter="filterFn" style="width: 250px" behavior="menu" emit-value map-options
-                  lazy-rules :rules="[
-                    (val) => {
-                      if (change === false) {
-                        return (val && val.length > 0) ||
-                          'Por favor, dígite la cédula del aprendiz'
-                      } else { return true }
-                    }
-                  ]">
+                  lazy-rules
+                        :rules="[val => (val && val.length > 0) || 'Por favor, dígite la cédila del aprendiz']">
                   <template v-slot:no-option>
                     <q-item>
                       <q-item-section class="text-grey">
@@ -53,14 +47,8 @@
                     </q-item>
                   </template>
                 </q-select>
-                <q-input filled v-model="fecha" mask="date" lazy-rules :rules="[
-                  (val) => {
-                    if (change === false) {
-                      return (val && val.length > 0) ||
-                        'Por favor, dígite la fecha de la bitácora'
-                    } else { return true }
-                  }
-                ]">
+                <q-input filled v-model="fecha" label="Fecha" mask="date" lazy-rules
+                :rules="[val => (val && val.length > 0) || 'Por favor, dígite la fecha de la bitácora']">
                   <template v-slot:append>
                     <q-icon name="event" class="cursor-pointer">
                       <q-popup-proxy cover transition-show="scale" transition-hide="scale">
@@ -96,9 +84,8 @@ let useAprendiz = useAprendizStore()
 let aprendiz = ref();
 let fecha = ref();
 let icon = ref(false);
-let estado = ref();
 let optionsEstado = ['Asistió', 'No asistió', 'Excusa']
-let change = ref(); // false: crear, true: modificar
+ //let change = ref(false); false: crear, true: modificar
 let options = ref()
 let rows = ref([]);
 let columns = ref([
@@ -127,6 +114,12 @@ onBeforeMount(() => {
   traer()
   // traerAprendices()
 })
+
+async function updateEstado(estado, id) {
+  console.log(estado);
+  let res = await useBitacora.putModificarBitacora(estado, id);
+  traer();
+}
 
 async function traer() {
   let res = await useBitacora.getListarBitacora();
@@ -170,10 +163,7 @@ const filterFn = async (val, update) => {
 // }
 
 async function crear() {
-  let res;
-  if (change.value === false) {
-    res = await useBitacora.postCrearBitacora(aprendiz.value.trim(), fecha.value.trim())
-  }
+  let res= await useBitacora.postCrearBitacora(aprendiz.value.trim(), fecha.value.trim())
   if (res.validar.value === true) {
     icon.value = false
     onReset()

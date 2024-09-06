@@ -48,23 +48,14 @@ export const useBitacoraStore = defineStore("bitacora", () => {
         }
     }
 
-    async function putModificarBitacora(aprendiz, fecha, id) {
+    async function putModificarBitacora(estado, id) {
         loading.value = true
         const useUsuario = useUsuarioStore()
         try {
             let r = ref()
-            if (aprendiz) {
+            if (estado) {
                 r.value = await axios.put(`${API_URL}/bitacoras/modificar/${id}`, {
-                    aprendiz
-                }, {
-                    headers: {
-                        "token": useUsuario.xtoken
-                    }
-                })
-            }
-            if (fecha) {
-                r.value = await axios.put(`${API_URL}/bitacoras/modificar/${id}`, {
-                    fecha
+                    estado
                 }, {
                     headers: {
                         "token": useUsuario.xtoken

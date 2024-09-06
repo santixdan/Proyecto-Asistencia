@@ -14,7 +14,7 @@ const bitacoraHelpers = {
             throw new Error("La bitácora no existe en la base de datos")
         }
     },
-    validarEstado: async (estado) => {
+    validarEstado: (estado) => {
         const estadosValidos = ["Asistió", "No asistió", "Excusa", "Pendiente"];
         if (!estadosValidos.includes(estado)) {
             throw new Error("El estado de la bitácora debe ser 'Asistió', 'No asistió', 'Excusa' o 'Pendiente'");
