@@ -47,7 +47,7 @@
                     (val) => {
                       if (change === false) {
                         return (val && val.length > 0) ||
-                          'Por favor, dígite el nombre del usuario'
+                          'Por favor, dígite el código de la ficha'
                       } else { return true }
                     }
                   ]">
@@ -63,7 +63,7 @@
                   (val) => {
                     if (change === false) {
                       return (val && val.length > 0) ||
-                        'Por favor, dígite el nombre del usuario'
+                        'Por favor, dígite el nombre del aprendiz'
                     } else { return true }
                   }
                 ]" />

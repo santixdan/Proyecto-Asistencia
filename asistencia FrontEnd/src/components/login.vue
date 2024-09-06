@@ -4,6 +4,7 @@
         <q-card class="my-card">
             <q-card-section class="bg-green-9 text-white">
                 <h4 data-v-8ea77ebc class="q-mt-sm q-mb-sm text-white text-center text-weight-bold">ASISTENCIA</h4>
+                <!-- <div class="text-subtitle2">by John Doe</div> -->
             </q-card-section>
 
             <q-card-actions class="cardContent" align="center">
@@ -13,7 +14,34 @@
                 </div>
                 <div data-v-8ea77ebc class="text-h5 text-weight-bold" id="logintxt">LOG IN</div>
                 <hr data-v-8ea77ebc class="q-separator q-separator--horizontal" aria-orientation="horizontal" id="hr2">
-                <q-form @submit="guardar()" @reset="onReset()" class="q-gutter-md">
+                <div class="q-pa-md" style="max-width: 300px">
+                    <div class="q-gutter-md">
+                        <q-select filled v-model="model" :options="options" label="Rol" style="width: 230px"
+                            behavior="menu" emit-value map-options />
+                    </div>
+                </div> <br>
+                <q-form v-show="model == 'APRENDIZ'" @submit="crear()" @reset="onReset()" class="q-gutter-md">
+                    <q-input filled type="number" v-model="aprendiz" label="Aprendiz" lazy-rules
+                        :rules="[val => val && val.length > 0 || 'Por favor, dígite la cédula del aprendiz']" />
+                    <q-input filled v-model="fecha" label="Fecha" mask="date" lazy-rules
+                        :rules="[val => val && val.length > 0 || 'Por favor, dígite la fecha de la bitácora']">
+                        <template v-slot:append>
+                            <q-icon name="event" class="cursor-pointer">
+                                <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                                    <q-date v-model="fecha" today-btn>
+                                        <div class="row items-center justify-end">
+                                            <q-btn v-close-popup label="Close" color="primary" flat />
+                                        </div>
+                                    </q-date>
+                                </q-popup-proxy>
+                            </q-icon>
+                        </template>
+                    </q-input>
+                    <div>
+                        <q-btn label="Registrar" type="submit" color="green-9" />
+                    </div>
+                </q-form>
+                <q-form v-show="model == 'USUARIO'" @submit="login()" @reset="onReset()" class="q-gutter-md">
                     <q-input filled v-model="email" label="Correo" lazy-rules
                         :rules="[val => (val && val.length > 0) || 'Por favor, dígite la correo']" />
                     <q-input :type="isPwd ? 'password' : 'text'" filled v-model="password" label="Contraseña" lazy-rules
@@ -36,25 +64,53 @@
 </template>
 
 <script setup>
-import { Loading, Notify } from 'quasar'
-import { ref } from "vue";
+import { Notify } from 'quasar'
+import { onBeforeMount, ref } from "vue";
 import { useUsuarioStore } from "./../stores/usuarios.js";
 import { useRouter } from 'vue-router'
+import { useBitacoraStore } from '../stores/bitacoras.js';
 
 const router = useRouter()
+let useBitacora = useBitacoraStore()
 let useUsuario = useUsuarioStore();
 let email = ref("");
+let fecha = ref();
 let password = ref("");
 let isPwd = ref(true);
+let aprendiz = ref();
+let model = ref("APRENDIZ"); // true: aprendiz, false: usuario
+let options = ['APRENDIZ', 'USUARIO']
 
-async function guardar() {
+
+async function crear() {
+    let res = await useBitacora.postCrearBitacora(aprendiz.value.trim(), fecha.value.trim())
+    if (res.validar.value === true) {
+        onReset()
+        Notify.create({
+            color: "green-3",
+            message: "Registro exitoso",
+            icon: "cloud_done",
+            timeout: 2500,
+        });
+    } else {
+        Notify.create({
+            color: "red-5",
+            textColor: "white",
+            icon: "warning",
+            message: res.error.response.data.errors[0].msg,
+            timeout: 2500,
+        });
+    }
+}
+
+async function login() {
     let res = await useUsuario.postLoginUsuario(email.value.trim(), password.value.trim())
 
     if (res.validar.value === true) {
-        await router.replace('/home');
         onReset()
+        await router.replace('/home');
         Notify.create({
-            color: "green-6",
+            color: "green-3",
             message: "Registro exitoso",
             icon: "cloud_done",
             timeout: 2500,
@@ -84,6 +140,8 @@ function onReset() {
 
 #hr2 {
     width: 100%;
+    /* height: 1px !important; */
+    /* border: 0px; */
     margin-top: 10px;
     margin-bottom: 10px;
 }

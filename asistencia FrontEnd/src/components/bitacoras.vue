@@ -41,7 +41,7 @@
                     (val) => {
                       if (change === false) {
                         return (val && val.length > 0) ||
-                          'Por favor, dígite el nombre del usuario'
+                          'Por favor, dígite la cédula del aprendiz'
                       } else { return true }
                     }
                   ]">
@@ -57,7 +57,7 @@
                   (val) => {
                     if (change === false) {
                       return (val && val.length > 0) ||
-                        'Por favor, dígite el nombre del usuario'
+                        'Por favor, dígite la fecha de la bitácora'
                     } else { return true }
                   }
                 ]">

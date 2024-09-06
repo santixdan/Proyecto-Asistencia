@@ -25,7 +25,7 @@ routerBitacora.get('/listarPorFicha/:ficha', [
 //POST
 routerBitacora.post('/crear', [
     validarJWT,
-    check('aprendiz', 'El aprendiz es obligatorio').notEmpty().isMongoId(),
+    check('aprendiz', 'El aprendiz es obligatorio').notEmpty(),
     check('aprendiz', 'El aprendiz debe ser un MongoId').isMongoId(),
     check('fecha', 'La fecha debe ser válida').notEmpty(),
     check('aprendiz').custom(bitacoraHelpers.validarAprendiz),
