@@ -25,7 +25,8 @@ routerFicha.post("/crear", [
 //PUT
 routerFicha.put("/modificar/:id", [
     validarJWT,
-    check('id', 'El id no es válido').notEmpty().isMongoId(),
+    check('id', 'El id es obligatorio').notEmpty(),
+    check('id', 'El id debe ser MongoId').isMongoId(),
     check('id').custom(fichaHelpers.validarId),
     check('codigo', 'El codigo debe tener mínimo 5 caracteres').optional().isLength({ min: 5 }),
     // check('codigo').optional().custom(fichaHelpers.validarCodigoFicha),
@@ -36,13 +37,15 @@ routerFicha.put("/modificar/:id", [
 ], httpFichas.putModificarFichas)
 routerFicha.put("/activar/:id", [
     validarJWT,
-    check('id', 'El id no es válido').notEmpty().isMongoId(),
+    check('id', 'El id es obligatorio').notEmpty(),
+    check('id', 'El id debe ser MongoId').isMongoId(),
     check('id').custom(fichaHelpers.validarId),
     validarCampos
 ], httpFichas.putActivarFichas)
 routerFicha.put("/desactivar/:id", [
     validarJWT,
-    check('id', 'El id no es válido').notEmpty().isMongoId(),
+    check('id', 'El id es obligatorio').notEmpty(),
+    check('id', 'El id debe ser MongoId').isMongoId(),
     check('id').custom(fichaHelpers.validarId),
     validarCampos
 ], httpFichas.putDesactivarFichas)

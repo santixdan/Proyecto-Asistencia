@@ -15,9 +15,11 @@ const bitacoraHelpers = {
         }
     },
     validarEstado: async (estado) => {
-        if (estado !== "Asistió" && estado !== "No asistió" && estado !== "Excusa" && estado !== "Pendiente" ){
-            throw new Error("El estado de la bitácora debe ser 'asistió', 'no asistió', 'excusa' o 'pendiente'")
+        const estadosValidos = ["Asistió", "No asistió", "Excusa", "Pendiente"];
+        if (!estadosValidos.includes(estado)) {
+            throw new Error("El estado de la bitácora debe ser 'Asistió', 'No asistió', 'Excusa' o 'Pendiente'");
         }
+        return true;
     }
 }
 module.exports = { bitacoraHelpers };

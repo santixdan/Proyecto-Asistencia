@@ -10,6 +10,14 @@ const httpBitacora = {
             res.status(400).json({ error })
         }
     },
+    getListarBitacorasPorEstado: async (req, res) => {
+        try {
+            const bitacora = await Bitacora.find({estado : "Asistió"})
+            res.json({ bitacora })
+        } catch (error) {
+            res.status(400).json({ error })
+        }
+    },
     getListarPorAprendiz: async (req, res) => {
         try {
             const aprendiz = req.params.aprendiz
@@ -44,21 +52,11 @@ const httpBitacora = {
             res.status(400).json({ error })
         }
     },
-    putModificarBitacora: async (req, res) => {
+    putModificarBitacoraEstado: async (req, res) => {
         try {
             const id = req.params.id;
-            const { aprendiz, fecha, estado } = req.body
-            const bitacora = await Bitacora.findById(id)
-            if (aprendiz) {
-                bitacora.aprendiz = aprendiz
-            }
-            if (fecha) {
-                bitacora.fecha = fecha
-            }
-            if (estado) {
-                bitacora.estado = estado
-            }
-            await bitacora.save()
+            const { estado } = req.body
+            const bitacora = await Bitacora.findByIdAndUpdate(id, {estado})
             res.json({ bitacora })
         } catch (error) {
             res.status(400).json({ error })

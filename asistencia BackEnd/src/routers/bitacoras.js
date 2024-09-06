@@ -11,6 +11,10 @@ routerBitacora.get('/listarTodo', [
     validarJWT,
     validarCampos
 ], httpBitacora.getListarBitacoras)
+routerBitacora.get('/listarPorEstado', [
+    validarJWT,
+    validarCampos
+], httpBitacora.getListarBitacorasPorEstado)
 routerBitacora.get('/listarPorAprendiz/:aprendiz', [
     validarJWT,
     check('aprendiz', 'El aprendiz es obligatorio').notEmpty().isMongoId(),
@@ -27,7 +31,7 @@ routerBitacora.post('/crear', [
     validarJWT,
     check('aprendiz', 'El aprendiz es obligatorio').notEmpty(),
     check('aprendiz', 'El aprendiz debe ser un MongoId').isMongoId(),
-    check('fecha', 'La fecha debe ser válida').notEmpty(),
+    check('fecha', 'La fecha es obligatoria').notEmpty(),
     check('aprendiz').custom(bitacoraHelpers.validarAprendiz),
     check('estado').optional().custom(bitacoraHelpers.validarEstado),
     validarCampos
@@ -36,12 +40,11 @@ routerBitacora.post('/crear', [
 //PUT
 routerBitacora.put('/modificar/:id', [
     validarJWT,
-    check('id', 'El id no es válido').notEmpty().isMongoId(),
+    check('id', 'El id es obligatorio').notEmpty(),
+    check('id', 'El id debe ser MongoId').isMongoId(),
     check('id').custom(bitacoraHelpers.validarId),
-    check('aprendiz', 'El Id debe ser válido').optional().isMongoId(),
-    check('aprendiz').optional().custom(bitacoraHelpers.validarAprendiz),
-    check('estado').optional().custom(bitacoraHelpers.validarEstado),
+    check('estado').custom(bitacoraHelpers.validarEstado),
     validarCampos
-], httpBitacora.putModificarBitacora)
+], httpBitacora.putModificarBitacoraEstado)
 
 module.exports = routerBitacora

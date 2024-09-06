@@ -46,7 +46,8 @@ routerAprendiz.post("/crear", [
 //PUT
 routerAprendiz.put("/modificar/:id", [
     validarJWT,
-    check('id', 'El id no es válido').notEmpty().isMongoId(),
+    check('id', 'El id es obligatorio').notEmpty(),
+    check('id', 'El id debe ser MongoId').isMongoId(),
     check('id').custom(apredizHelpers.validarId),
     check('cedula', 'La cédula debe tener mínimo 8 caracteres').optional().isLength({ min: 8 }),
     // check('cedula').optional().custom(apredizHelpers.validarCedulaAprendiz),
@@ -69,13 +70,15 @@ routerAprendiz.put("/modificar/:id", [
 ], httpAprendices.putModificarAprendiz)
 routerAprendiz.put("/activar/:id", [
     validarJWT,
-    check('id', 'El id no es válido').notEmpty().isMongoId(),
+    check('id', 'El id es obligatorio').notEmpty(),
+    check('id', 'El id debe ser MongoId').isMongoId(),
     check('id').custom(apredizHelpers.validarId),
     validarCampos
 ], httpAprendices.putActivarAprendiz)
 routerAprendiz.put("/desactivar/:id", [
     validarJWT,
-    check('id', 'El id no es válido').notEmpty().isMongoId(),
+    check('id', 'El id es obligatorio').notEmpty(),
+    check('id', 'El id debe ser MongoId').isMongoId(),
     check('id').custom(apredizHelpers.validarId),
     validarCampos
 ], httpAprendices.putDesactivarAprendiz)
