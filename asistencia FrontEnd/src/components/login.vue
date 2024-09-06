@@ -24,7 +24,7 @@
                         </template>
                     </q-input>
                     <div>
-                        <q-btn class="btn" label="Inicar sesión" color="green-9" type="submit"
+                        <q-btn class="btn" label="Iniciar sesión" color="green-9" type="submit"
                             :loading="useUsuario.loading" />
                     </div>
                 </q-form>
