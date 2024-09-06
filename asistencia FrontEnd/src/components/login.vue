@@ -15,9 +15,9 @@
                 <hr data-v-8ea77ebc class="q-separator q-separator--horizontal" aria-orientation="horizontal" id="hr2">
                 <q-form @submit="guardar()" @reset="onReset()" class="q-gutter-md">
                     <q-input filled v-model="email" label="Correo" lazy-rules
-                        :rules="[val => (val && val.length > 0) || 'Por favor, dígite la correo']" />
+                        :rules="[val => (val && val.length > 0) || 'Por favor, dígite el correo']" />
                     <q-input :type="isPwd ? 'password' : 'text'" filled v-model="password" label="Contraseña" lazy-rules
-                        :rules="[val => (val && val.length > 0) || 'Por favor, dígite el contraseña']">
+                        :rules="[val => (val && val.length > 0) || 'Por favor, dígite la contraseña']">
                         <template v-slot:append>
                             <q-icon :name="isPwd ? 'visibility_off' : 'visibility'" class="cursor-pointer"
                                 @click="isPwd = !isPwd" />
