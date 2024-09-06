@@ -92,7 +92,7 @@
                   }
                 ]" />
                 <div>
-                  <q-btn :loading="useAprendiz.loading" label="Guardar" type="submit" color="9" />
+                  <q-btn :loading="useAprendiz.loading" label="Guardar" type="submit" color="green-9" />
                 </div>
               </q-form>
             </div>
