@@ -57,14 +57,8 @@
                   }
                 ]" />
                 <q-input v-if="change === false" :type="isPwd ? 'password' : 'text'" filled v-model="password"
-                  label="Contraseña" lazy-rules :rules="[
-                    (val) => {
-                      if (change === false) {
-                        return (val && val.length > 0) ||
-                          'Por favor, dígite la contraseña'
-                      } else { return true }
-                    }
-                  ]"><template v-slot:append>
+                  label="Contraseña" lazy-rules
+                  :rules="[val => (val && val.length > 0) || 'Por favor, dígite la contraseña']"><template v-slot:append>
                     <q-icon :name="isPwd ? 'visibility_off' : 'visibility'" class="cursor-pointer"
                       @click="isPwd = !isPwd" />
                   </template></q-input>
@@ -154,7 +148,7 @@ async function crear() {
     res = await useUsuario.postCrearUsuario(email.value.trim(), name.value.trim(), password.value.trim());
   }
   else {
-    res = await useUsuario.putModificarUsuario(email.value, name.value, password.value, idUsuario.value);
+    res = await useUsuario.putModificarUsuario(email.value, name.value, idUsuario.value);
   }
   if (res.validar.value === true) {
     icon.value = false

@@ -27,6 +27,11 @@ const usuarioHelpers = {
             throw new Error("Usuario o contraseña incorrecta")
         }
     },
+    validarNewPassword: async (newPassword, confirmPassword) => {
+        if (newPassword !== confirmPassword) {
+            throw new Error("Las contraseñas no coinciden")
+        }
+    },
     validarId: async (id) => {
         let existeId = await Usuario.findById(id)
         if (!existeId) {

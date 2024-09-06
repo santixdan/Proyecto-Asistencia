@@ -67,7 +67,7 @@ export const useUsuarioStore = defineStore("usuario", () => {
         }
     }
 
-    async function putModificarUsuario(email, name, password, id) {
+    async function putModificarUsuario(email, name, id) {
         loading.value = true
         try {
             let r = ref()
@@ -89,15 +89,6 @@ export const useUsuarioStore = defineStore("usuario", () => {
                     }
                 })
             }
-            if (password) {
-                r.value = await axios.put(`${API_URL}/usuarios/modificar/${id}`, {
-                    password
-                }, {
-                    headers: {
-                        "token": xtoken.value
-                    }
-                })
-            }
             validar.value = true
             return { r, validar }
         } catch (error) {
@@ -108,6 +99,25 @@ export const useUsuarioStore = defineStore("usuario", () => {
             loading.value = false
         }
     }
+
+    async function putModificarPassword(newPassword, confirmPassword, id) {
+        loading.value = true
+        try {
+            let r = await axios.put(`${API_URL}/usuarios/modificarPassword/${id}`, {
+                newPassword,
+                confirmPassword
+            })
+            validar.value = true
+            return { r, validar }
+        } catch (error) {
+            validar.value = false
+            console.log(error);
+            return { error, validar }
+        } finally {
+            loading.value = false
+        }
+    }
+
     async function putActivarUsuario(id) {
         loading.value = true
         try {
@@ -141,7 +151,7 @@ export const useUsuarioStore = defineStore("usuario", () => {
         }
     }
     return {
-        getListarUsuarios, postCrearUsuario, postLoginUsuario, putActivarUsuario, putDesactivarUsuario, putModificarUsuario, loading, xtoken, usuario
+        getListarUsuarios, postCrearUsuario, postLoginUsuario, putActivarUsuario, putDesactivarUsuario, putModificarPassword, putModificarUsuario, loading, xtoken, usuario
     }
 }, {
     persist: {

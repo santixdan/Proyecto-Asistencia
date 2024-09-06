@@ -44,6 +44,17 @@ routerUsuario.put("/modificar/:id", [
     }),
     validarCampos
 ], httpUsuario.putModificarUsuarios)
+routerUsuario.put("/modificarPassword/:id", [
+    check('id', 'El id es obligatorio').notEmpty(),
+    check('id', 'El id debe ser MongoId').isMongoId(),
+    check('id').custom(usuarioHelpers.validarId),
+    check('newPassword', 'La nueva contraseña es obligatoria').notEmpty(),
+    check('confirmPassword', 'La confirmacion contraseña es obligatoria').notEmpty(),
+    check('newPassword').custom(async (newPassword, { req }) => {
+        await usuarioHelpers.validarNewPassword(newPassword, req.body.confirmPassword);
+    }),
+    validarCampos
+], httpUsuario.putModificarPassword)
 routerUsuario.put("/activar/:id", [
     validarJWT,
     check('id', 'El id es obligatorio').notEmpty(),

@@ -23,6 +23,7 @@
                                 @click="isPwd = !isPwd" />
                         </template>
                     </q-input>
+                    <q-btn label="Olvidé mi contraseña" color="green-9" flat class="q-ml-sm" @click="(icon = true)" />
                     <div>
                         <q-btn class="btn" label="Iniciar sesión" color="green-9" type="submit"
                             :loading="useUsuario.loading" />
@@ -30,13 +31,51 @@
                 </q-form>
             </q-card-actions>
         </q-card>
+        <div class="q-pa-md q-gutter-sm">
+            <q-dialog v-model="icon" persistent>
+                <q-card>
+                    <q-card-section class="row items-center q-pb-none">
+                        <div class="text-h6">Cambiar contraseña</div>
+                        <q-space />
+                        <q-btn icon="close" flat round dense v-close-popup @click="onReset()" />
+                    </q-card-section>
+
+                    <q-card-section>
+                        <div class="q-pa-md" style="max-width: 400px">
+                            <q-form @submit="recuperar()" @reset="onReset()" class="q-gutter-md">
+                                <q-input filled v-model="email2" label="Correo" lazy-rules
+                                    :rules="[val => (val && val.length > 0) || 'Por favor, dígite el correo']" />
+                                <q-input :type="isPwd ? 'password' : 'text'" filled v-model="newPassword"
+                                    label="Nueva contraseña" lazy-rules
+                                    :rules="[val => (val && val.length > 0) || 'Por favor, dígite la nueva contraseña']"><template
+                                        v-slot:append>
+                                        <q-icon :name="isPwd ? 'visibility_off' : 'visibility'" class="cursor-pointer"
+                                            @click="isPwd = !isPwd" />
+                                    </template></q-input>
+                                <q-input :type="isPwd ? 'password' : 'text'" filled v-model="confirmPassword"
+                                    label="Confirmar contraseña" lazy-rules
+                                    :rules="[val => (val && val.length > 0) || 'Por favor, dígite la confirmación de la contraseña']"><template
+                                        v-slot:append>
+                                        <q-icon :name="isPwd ? 'visibility_off' : 'visibility'" class="cursor-pointer"
+                                            @click="isPwd = !isPwd" />
+                                    </template></q-input>
+                                <div>
+                                    <q-btn :loading="useUsuario.loading" label="Guardar" type="submit"
+                                        color="green-9" />
+                                </div>
+                            </q-form>
+                        </div>
+                    </q-card-section>
+                </q-card>
+            </q-dialog>
+        </div>
     </div>
 
 
 </template>
 
 <script setup>
-import { Loading, Notify } from 'quasar'
+import { Notify } from 'quasar'
 import { ref } from "vue";
 import { useUsuarioStore } from "./../stores/usuarios.js";
 import { useRouter } from 'vue-router'
@@ -44,8 +83,39 @@ import { useRouter } from 'vue-router'
 const router = useRouter()
 let useUsuario = useUsuarioStore();
 let email = ref("");
+let email2 = ref("");
 let password = ref("");
 let isPwd = ref(true);
+let icon = ref(false);
+let newPassword = ref()
+let confirmPassword = ref()
+
+async function recuperar() {
+    let res1 = await useUsuario.getListarUsuarios();
+    let usuario = res1.data.usuarios.find(usuario => email2.value === usuario.email);
+    let id = ref(usuario._id) ;
+    console.log(id.value);
+    if (newPassword.value !== confirmPassword.value) {
+        Notify.create({
+            color: "red-5",
+            textColor: "white",
+            icon: "warning",
+            message: "Las contraseñas no coinciden",
+            timeout: 2500,
+        });
+    } else {
+        let res2 = await useUsuario.putModificarPassword(newPassword.value.trim(), confirmPassword.value.trim(), id.value)
+        if (res2.validar.value === true) {
+            Notify.create({
+                color: "green-6",
+                message: "Registro exitoso",
+                icon: "cloud_done",
+                timeout: 2500,
+            });
+        }
+    }
+
+}
 
 async function guardar() {
     let res = await useUsuario.postLoginUsuario(email.value.trim(), password.value.trim())
