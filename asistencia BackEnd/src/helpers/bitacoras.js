@@ -14,6 +14,18 @@ const bitacoraHelpers = {
             throw new Error("El aprendiz no existe en la base de datos")
         }
     },
+    validarAprendizActivo1: async (aprendiz) => {
+        let existeAprendiz = await Aprendiz.findOne({_id:aprendiz})
+        if (existeAprendiz.estado === 0) {
+            throw new Error("El aprendiz está inactivo")
+        }
+    },
+    validarAprendizActivo2: async (cedula) => {
+        let existeAprendiz = await Aprendiz.findOne({cedula})
+        if (existeAprendiz.estado === 0) {
+            throw new Error("El aprendiz está inactivo")
+        }
+    },
     validarId: async (id) => {
         let existeId = await Bitacora.findById(id)
         if (!existeId) {

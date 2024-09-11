@@ -186,11 +186,37 @@ async function traer() {
   })
 }
 
+// const filterFn = async (val, update) => {
+//   let res = await useAprendiz.getListarAprendiz();
+//   const aprendicesActivos = res.data.aprendices.filter(aprendiz => aprendiz.estado === 1);
+
+//   if (val === '') {
+//     update(() => {
+//       options.value = aprendicesActivos.map(aprendiz => ({
+//         label: aprendiz.cedula,
+//         value: aprendiz._id
+//       }));
+//     });
+//     return;
+//   }
+
+//   update(() => {
+//     const needle = val.toLowerCase();
+//     options.value = aprendicesActivos
+//       .map(aprendiz => ({
+//         label: aprendiz.cedula,
+//         value: aprendiz._id
+//       }))
+//       .filter(option => option.label.toLowerCase().includes(needle));
+//   });
+// }
+
 const filterFn = async (val, update) => {
   let res = await useFicha.getListarFichas();
+  const fichasActivas = res.data.fichas.filter(ficha => ficha.estado === 1);
   if (val === '') {
     update(() => {
-      options.value = res.data.fichas.map(ficha => ({
+      options.value = fichasActivas.map(ficha => ({
         label: ficha.codigo,
         value: ficha._id
       }));
@@ -200,7 +226,7 @@ const filterFn = async (val, update) => {
 
   update(() => {
     const needle = val.toLowerCase();
-    options.value = res.data.fichas.map(ficha => ({
+    options.value = fichasActivas.map(ficha => ({
       label: ficha.codigo,
       value: ficha._id
     })).filter(option => option.label.toLowerCase().includes(needle));

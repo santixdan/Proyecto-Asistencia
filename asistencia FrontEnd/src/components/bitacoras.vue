@@ -154,9 +154,11 @@ async function traer() {
 
 const filterFn = async (val, update) => {
   let res = await useAprendiz.getListarAprendiz();
+  const aprendicesActivos = res.data.aprendices.filter(aprendiz => aprendiz.estado === 1);
+
   if (val === '') {
     update(() => {
-      options.value = res.data.aprendices.map(aprendiz => ({
+      options.value = aprendicesActivos.map(aprendiz => ({
         label: aprendiz.cedula,
         value: aprendiz._id
       }));
@@ -166,12 +168,15 @@ const filterFn = async (val, update) => {
 
   update(() => {
     const needle = val.toLowerCase();
-    options.value = res.data.aprendices.map(aprendiz => ({
-      label: aprendiz.cedula,
-      value: aprendiz._id
-    })).filter(option => option.label.toLowerCase().includes(needle));
+    options.value = aprendicesActivos
+      .map(aprendiz => ({
+        label: aprendiz.cedula,
+        value: aprendiz._id
+      }))
+      .filter(option => option.label.toLowerCase().includes(needle));
   });
 }
+
 
 // async function traerAprendices() {
 //   let res = await useAprendiz.getListarAprendiz();

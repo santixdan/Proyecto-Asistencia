@@ -8,6 +8,12 @@ const apredizHelpers = {
             throw new Error("La ficha no existe en la base de datos")
         }
     },
+    validarFichaActiva: async (ficha) => {
+        let existeFicha = await Ficha.findOne({ _id: ficha })
+        if (existeFicha.estado === 0) {
+            throw new Error("La ficha está inactiva")
+        }
+    },
     validarId: async (id) => {
         let existeId = await Aprendiz.findById(id)
         if (!existeId) {

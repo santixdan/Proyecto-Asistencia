@@ -34,6 +34,7 @@ routerAprendiz.post("/crear", [
     check('ficha', 'La ficha es obligatoria').notEmpty().isMongoId(),
     check('ficha', 'La ficha debe ser MongoId').isMongoId(),
     check('ficha').custom(apredizHelpers.validarFicha),
+    check('ficha').custom(apredizHelpers.validarFichaActiva),
     check('telefono', 'El teléfono es obligatorio').notEmpty().isMobilePhone(),
     check('telefono', 'El teléfono debe ser válido').isMobilePhone(),
     check('telefono').custom(apredizHelpers.validarTelefonoAprendiz),
@@ -56,6 +57,7 @@ routerAprendiz.put("/modificar/:id", [
     }),
     check('ficha', 'La ficha debe ser mongoId').optional().isMongoId(),
     check('ficha').optional().custom(apredizHelpers.validarFicha),
+    check('ficha').optional().custom(apredizHelpers.validarFichaActiva),
     check('telefono', 'El teléfono debe ser válido').optional().isMobilePhone(),
     // check('telefono').optional().custom(apredizHelpers.validarTelefonoAprendiz),
     check('telefono').optional().custom(async (telefono, { req }) => {
