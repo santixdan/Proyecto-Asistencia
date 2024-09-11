@@ -25,6 +25,23 @@ export const useBitacoraStore = defineStore("bitacora", () => {
             loading.value = false
         }
     }
+    async function getListarBitacoraPorEstado() {
+        const useUsuario = useUsuarioStore()
+        loading.value = true
+        try {
+            let r = await axios.get(`${API_URL}/bitacoras/listarPorEstado`, {
+                headers: {
+                    "token": useUsuario.xtoken
+                }
+            })
+            return r
+        } catch (error) {
+            console.log(error);
+            return error
+        } finally {
+            loading.value = false
+        }
+    }
     async function postCrearBitacora1(aprendiz, fecha) {
         loading.value = true
         const useUsuario = useUsuarioStore()
@@ -92,6 +109,6 @@ export const useBitacoraStore = defineStore("bitacora", () => {
     }
 
     return {
-        getListarBitacora, postCrearBitacora1, postCrearBitacora2, putModificarBitacora, loading
+        getListarBitacora, getListarBitacoraPorEstado, postCrearBitacora1, postCrearBitacora2, putModificarBitacora, loading
     }
 })

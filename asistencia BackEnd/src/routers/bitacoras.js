@@ -18,7 +18,7 @@ routerBitacora.get('/listarPorEstado', [
 routerBitacora.get('/listarPorAprendiz/:aprendiz', [
     validarJWT,
     check('aprendiz', 'El aprendiz es obligatorio').notEmpty().isMongoId(),
-    check('aprendiz').custom(bitacoraHelpers.validarAprendiz),
+    check('aprendiz').custom(bitacoraHelpers.validarAprendiz1),
     validarCampos
 ], httpBitacora.getListarPorAprendiz)
 routerBitacora.get('/listarPorFicha/:ficha', [
