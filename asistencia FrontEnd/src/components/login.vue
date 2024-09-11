@@ -55,7 +55,8 @@
                         </template>
                     </q-input>
                     <div>
-                        <q-btn push :loading="useBitacora.loading" class="btn" label="Crear" color="green-9" type="submit" />
+                        <q-btn push :loading="useBitacora.loading" class="btn" label="Crear" color="green-9"
+                            type="submit" />
                     </div>
                 </q-form>
             </q-card-actions>
@@ -164,10 +165,30 @@ async function recuperar() {
 }
 
 async function login() {
-    let res = await useUsuario.postLoginUsuario(email.value.trim(), password.value.trim())
-
+    let res = await useUsuario.postLoginUsuario(email.value.trim(), password.value.trim());
     if (res.validar.value === true) {
         await router.replace('/home');
+        onReset();
+        Notify.create({
+            color: "green-6",
+            message: "Registro exitoso",
+            icon: "cloud_done",
+            timeout: 2500,
+        });
+    } else {
+        Notify.create({
+            color: "red-5",
+            textColor: "white",
+            icon: "warning",
+            message: res.error?.response?.data?.errors?.[0]?.msg || "Error desconocido",
+            timeout: 2500,
+        });
+    }
+}
+
+async function crear() {
+    let res = await useBitacora.postCrearBitacora2(cedula.value.trim(), fecha.value.trim())
+    if (res.validar.value === true) {
         onReset()
         Notify.create({
             color: "green-6",
@@ -184,27 +205,6 @@ async function login() {
             timeout: 2500,
         });
     }
-}
-
-async function crear() {
-  let res = await useBitacora.postCrearBitacora2(cedula.value.trim(), fecha.value.trim())
-  if (res.validar.value === true) {
-    onReset()
-    Notify.create({
-      color: "green-6",
-      message: "Registro exitoso",
-      icon: "cloud_done",
-      timeout: 2500,
-    });
-  } else {
-    Notify.create({
-      color: "red-5",
-      textColor: "white",
-      icon: "warning",
-      message: res.error.response.data.errors[0].msg,
-      timeout: 2500,
-    });
-  }
 }
 
 function onReset() {

@@ -25,6 +25,7 @@ routerUsuario.post("/crear", [
 ], httpUsuario.postCrearUsuarios)
 routerUsuario.post('/login', [
     check('email', 'El email es obligatorio').notEmpty(),
+    check('email').custom(usuarioHelpers.validarUsuarioActivo),
     check('password', 'La contraseña es obligatoria').notEmpty(),
     check('email').custom(async (email, { req }) => {
         await usuarioHelpers.validarPasswordUsuario(email, req.body.password);

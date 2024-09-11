@@ -43,6 +43,12 @@ const usuarioHelpers = {
         if (!existeId) {
             throw new Error("El usuario no existe en la base de datos")
         }
+    },
+    validarUsuarioActivo: async (email) => {
+        const usuario = await Usuario.findOne({ email });
+        if (usuario.estado === 0) {
+            throw new Error("El usuario está inactivo");
+        }
     }
 }
 
