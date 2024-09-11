@@ -46,7 +46,7 @@ const httpBitacora = {
         try {
             const aprendiz = req.body.aprendiz.trim();
             const fecha = req.body.fecha.trim();
-            const estado = req.body.estado.trim();
+            const estado = req.body.estado
 
             const newBitacora = new Bitacora({ aprendiz, fecha, estado });
             await newBitacora.save();
@@ -59,7 +59,7 @@ const httpBitacora = {
         try {
             const cedula = req.body.cedula.trim();
             const fecha = req.body.fecha.trim();
-            const estado = req.body.estado.trim();
+            const estado = req.body.estado;
 
             const theAprendiz = await Aprendiz.findOne({ cedula });
             const newBitacora = new Bitacora({ aprendiz: theAprendiz._id, fecha, estado });

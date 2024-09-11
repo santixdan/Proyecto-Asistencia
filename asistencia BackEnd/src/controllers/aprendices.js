@@ -35,8 +35,7 @@ const httpAprendices = {
             const ficha = req.body.ficha.trim();      
             const cedula = req.body.cedula.trim();    
             const nombre = req.body.nombre.trim();    
-            const telefono = req.body.telefono.trim();
-            const email = req.body.email.trim();      
+            const telefono = req.body.telefono.trim();     
             
             const newAprendiz = new Aprendiz({ ficha, cedula, nombre, telefono, email });
             await newAprendiz.save();
@@ -52,7 +51,7 @@ const httpAprendices = {
             const cedula = req.body.cedula?.trim();    
             const nombre = req.body.nombre?.trim();    
             const telefono = req.body.telefono?.trim();
-            const email = req.body.email?.trim();      
+            const email = req.body.email?.trim();
 
             const aprendiz = await Aprendiz.findById(id);
 

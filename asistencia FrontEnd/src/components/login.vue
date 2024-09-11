@@ -156,7 +156,7 @@ async function recuperar() {
                 color: "red-5",
                 textColor: "white",
                 icon: "warning",
-                message: res.error.response.data.errors[0].msg,
+                message: res.error?.response?.data?.errors?.[0]?.msg || "Error desconocido",
                 timeout: 2500,
             });
         }
@@ -201,7 +201,7 @@ async function crear() {
             color: "red-5",
             textColor: "white",
             icon: "warning",
-            message: res.error.response.data.errors[0].msg,
+            message: res.error?.response?.data?.errors?.[0]?.msg || "Error desconocido",
             timeout: 2500,
         });
     }
