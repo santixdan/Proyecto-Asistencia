@@ -2,8 +2,14 @@ const Aprendiz = require("./../models/aprendices.js")
 const Bitacora = require("./../models/bitacoras.js")
 
 const bitacoraHelpers = {
-    validarAprendiz: async (aprendiz) => {
+    validarAprendiz1: async (aprendiz) => {
         let existeAprendiz = await Aprendiz.findOne({_id:aprendiz})
+        if (!existeAprendiz) {
+            throw new Error("El aprendiz no existe en la base de datos")
+        }
+    },
+    validarAprendiz2: async (cedula) => {
+        let existeAprendiz = await Aprendiz.findOne({cedula})
         if (!existeAprendiz) {
             throw new Error("El aprendiz no existe en la base de datos")
         }

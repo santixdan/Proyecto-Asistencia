@@ -42,12 +42,24 @@ const httpBitacora = {
             res.status(500).json({ error: error.message });
         }
     },
-    postCrearBitacora: async (req, res) => {
+    postCrearBitacora1: async (req, res) => {
         try {
             const { aprendiz, fecha, estado } = req.body;
             const newBitacora = new Bitacora({ aprendiz, fecha, estado })
             await newBitacora.save()
             res.json({ newBitacora })
+        } catch (error) {
+            res.status(400).json({ error })
+        }
+    },
+    postCrearBitacora2: async (req, res) => {
+        try {
+            const { cedula, fecha, estado } = req.body;
+            const theAprendiz = await Aprendiz.findOne({cedula})
+            const newBitacora = new Bitacora({ aprendiz: theAprendiz._id, fecha, estado })
+            await newBitacora.save()
+            res.json({ newBitacora })
+
         } catch (error) {
             res.status(400).json({ error })
         }
