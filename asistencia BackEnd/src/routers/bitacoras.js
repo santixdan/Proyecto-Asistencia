@@ -43,7 +43,7 @@ routerBitacora.post('/crear2', [
     // check('cedula', 'El aprendiz debe ser un MongoId').isMongoId(),
     check('fecha', 'La fecha es obligatoria').notEmpty(),
     check('cedula').custom(bitacoraHelpers.validarAprendiz2),
-    check('aprendiz').custom(bitacoraHelpers.validarAprendizActivo2),
+    check('cedula').custom(bitacoraHelpers.validarAprendizActivo2),
     check('estado').optional().custom(bitacoraHelpers.validarEstado),
     validarCampos
 ], httpBitacora.postCrearBitacora2)
