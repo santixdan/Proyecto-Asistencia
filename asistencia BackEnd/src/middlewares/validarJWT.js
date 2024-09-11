@@ -41,6 +41,12 @@ const validarJWT = async (req, res, next) => {
             })
         }
 
+        if (usuario.estado == 0) {
+            return res.status(401).json({
+                msg: "Token no válido!!  " //- instructor con estado: false
+            })
+        }
+
         next();
 
     } catch (error) {
