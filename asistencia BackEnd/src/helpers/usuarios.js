@@ -46,8 +46,12 @@ const usuarioHelpers = {
     },
     validarUsuarioActivo: async (email) => {
         const usuario = await Usuario.findOne({ email });
-        if (usuario.estado === 0) {
+        if (!usuario) {
+            throw new Error("Usuario o contraseña incorrecta")
+        } else if (usuario.estado === 0) {
             throw new Error("El usuario está inactivo");
+        } else {
+            return true
         }
     }
 }
