@@ -37,7 +37,27 @@
                             :loading="useUsuario.loading" />
                     </div>
                 </q-form>
-                <q-form v-if="model === 'USUARIO'" @submit="login()" class="q-gutter-md"></q-form>
+                <q-form v-if="model === 'APRENDIZ'" @submit="crear()" class="q-gutter-md">
+                    <q-input filled type="number" v-model="cedula" label="Cédula" lazy-rules
+                        :rules="[val => val && val.length > 0 || 'Por favor, dígite la cédula del aprendiz']" />
+                    <q-input filled v-model="fecha" label="Fecha" mask="date" lazy-rules
+                        :rules="[val => (val && val.length > 0) || 'Por favor, dígite la fecha de la bitácora']">
+                        <template v-slot:append>
+                            <q-icon name="event" class="cursor-pointer">
+                                <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                                    <q-date v-model="fecha" today-btn>
+                                        <div class="row items-center justify-end">
+                                            <q-btn v-close-popup label="Close" color="primary" flat />
+                                        </div>
+                                    </q-date>
+                                </q-popup-proxy>
+                            </q-icon>
+                        </template>
+                    </q-input>
+                    <div>
+                        <q-btn push :loading="useBitacora.loading" class="btn" label="Crear" color="green-9" type="submit" />
+                    </div>
+                </q-form>
             </q-card-actions>
         </q-card>
         <div v-show="icon === true" class="q-pa-md q-gutter-sm">
@@ -88,8 +108,10 @@ import { Notify } from 'quasar'
 import { ref } from "vue";
 import { useUsuarioStore } from "./../stores/usuarios.js";
 import { useRouter } from 'vue-router'
+import { useBitacoraStore } from '../stores/bitacoras.js';
 
 const router = useRouter()
+let useBitacora = useBitacoraStore()
 let useUsuario = useUsuarioStore();
 let email = ref("");
 let email2 = ref("");
@@ -98,6 +120,8 @@ let isPwd1 = ref(true);
 let isPwd2 = ref(true);
 let isPwd3 = ref(true);
 let icon = ref(false);
+let fecha = ref("");
+let cedula = ref("");
 let model = ref("APRENDIZ")
 let options = ['APRENDIZ', 'USUARIO']
 let newPassword = ref()
@@ -162,12 +186,35 @@ async function login() {
     }
 }
 
+async function crear() {
+  let res = await useBitacora.postCrearBitacora2(cedula.value.trim(), fecha.value.trim())
+  if (res.validar.value === true) {
+    onReset()
+    Notify.create({
+      color: "green-6",
+      message: "Registro exitoso",
+      icon: "cloud_done",
+      timeout: 2500,
+    });
+  } else {
+    Notify.create({
+      color: "red-5",
+      textColor: "white",
+      icon: "warning",
+      message: res.error.response.data.errors[0].msg,
+      timeout: 2500,
+    });
+  }
+}
+
 function onReset() {
     email.value = "";
     password.value = "";
     confirmPassword.value = "";
     newPassword.value = "";
     email2.value = "";
+    fecha.value = "";
+    cedula.value = "";
 }
 </script>
 

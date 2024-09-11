@@ -25,17 +25,35 @@ export const useBitacoraStore = defineStore("bitacora", () => {
             loading.value = false
         }
     }
-    async function postCrearBitacora(aprendiz, fecha) {
+    async function postCrearBitacora1(aprendiz, fecha) {
         loading.value = true
         const useUsuario = useUsuarioStore()
         try {
-            let r = await axios.post(`${API_URL}/bitacoras/crear`, {
+            let r = await axios.post(`${API_URL}/bitacoras/crear1`, {
                 aprendiz,
                 fecha
             }, {
                 headers: {
                     "token": useUsuario.xtoken
                 }
+            })
+            validar.value = true
+            return { r, validar }
+        } catch (error) {
+            validar.value = false
+            console.log(error);
+            return { error, validar }
+        } finally {
+            loading.value = false
+        }
+    }
+
+    async function postCrearBitacora2(cedula, fecha) {
+        loading.value = true
+        try {
+            let r = await axios.post(`${API_URL}/bitacoras/crear2`, {
+                cedula,
+                fecha
             })
             validar.value = true
             return { r, validar }
@@ -74,6 +92,6 @@ export const useBitacoraStore = defineStore("bitacora", () => {
     }
 
     return {
-        getListarBitacora, postCrearBitacora, putModificarBitacora, loading
+        getListarBitacora, postCrearBitacora1, postCrearBitacora2, putModificarBitacora, loading
     }
 })

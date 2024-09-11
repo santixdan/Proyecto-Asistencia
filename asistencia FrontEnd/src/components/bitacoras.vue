@@ -5,7 +5,8 @@
     <div class="q-pa-md">
       <div class="q-pa-md q-gutter-sm">
         <q-btn push label="Crear Bitácora" color="green-9" @click="(icon = true)" />
-        <q-btn push style="float: right;" round color="green-9" icon="print" />
+        <q-btn push style="float: right;" round color="green-9" icon="print" to="/tabla" target="_blank"/>
+        <a href="" target="_blank"></a>
       </div>
       <q-table title="Bitácoras" :rows="rows" :columns="columns" row-key="name" :loading="useBitacora.loading">
         <template v-slot:body-cell-opciones="props">
@@ -181,7 +182,7 @@ const filterFn = async (val, update) => {
 // }
 
 async function crear() {
-  let res = await useBitacora.postCrearBitacora(aprendiz.value.trim(), fecha.value.trim())
+  let res = await useBitacora.postCrearBitacora1(aprendiz.value.trim(), fecha.value.trim())
   if (res.validar.value === true) {
     icon.value = false
     onReset()
