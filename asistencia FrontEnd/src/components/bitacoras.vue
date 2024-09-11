@@ -4,8 +4,8 @@
     <hr id="hr" class="bg-green-9">
     <div class="q-pa-md">
       <div class="q-pa-md q-gutter-sm">
-        <q-btn label="Crear Bitácora" color="green-9" @click="(icon = true)" />
-        <!-- <q-btn style="float: right;" round color="green-9" icon="print" /> -->
+        <q-btn push label="Crear Bitácora" color="green-9" @click="(icon = true)" />
+        <q-btn push style="float: right;" round color="green-9" icon="print" />
       </div>
       <q-table title="Bitácoras" :rows="rows" :columns="columns" row-key="name" :loading="useBitacora.loading">
         <template v-slot:body-cell-opciones="props">
@@ -57,7 +57,7 @@
                   </template>
                 </q-input>
                 <div>
-                  <q-btn :loading="useBitacora.loading" label="Guardar" type="submit" color="green-9" />
+                  <q-btn push :loading="useBitacora.loading" label="Guardar" type="submit" color="green-9" />
                 </div>
               </q-form>
             </div>
@@ -69,11 +69,15 @@
 </template>
 
 <script setup>
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { faArrowRightFromBracket, faPenToSquare, faCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { Notify } from 'quasar'
 import { onBeforeMount, ref } from "vue";
 import { useAprendizStore } from '../stores/aprendices.js';
 import { useBitacoraStore } from '../stores/bitacoras.js';
 
+library.add(faArrowRightFromBracket, faPenToSquare, faCheck, faXmark);
 let useBitacora = useBitacoraStore()
 let useAprendiz = useAprendizStore()
 let aprendiz = ref();

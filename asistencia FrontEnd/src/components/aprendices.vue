@@ -4,23 +4,23 @@
     <hr id="hr" class="bg-green-9">
     <div class="q-pa-md">
       <div class="q-pa-md q-gutter-sm">
-        <q-btn label="Crear Aprendiz" color="green-9" @click="(icon = true), (change = false)" />
+        <q-btn push label="Crear Aprendiz" color="green-9" @click="(icon = true), (change = false)" />
       </div>
       <q-table title="Aprendices" :rows="rows" :columns="columns" row-key="name" :loading="useAprendiz.loading">
         <template v-slot:body-cell-opciones="props">
           <q-td :props="props">
             <div class="q-pa-md q-gutter-sm">
-              <q-btn label="📝" @click="(icon = true), (change = true), traerId(props.row._id)" />
-              <q-btn v-if="props.row.estado == 0" @click="activar(props.row._id)"
-                :loading="loadingButtons[props.row._id]">✅</q-btn>
-              <q-btn v-else @click="desactivar(props.row._id)" :loading="loadingButtons[props.row._id]">❌</q-btn>
+              <q-btn push @click="(icon = true), (change = true), traerId(props.row._id)" ><font-awesome-icon style="font-size: 20px;" icon="pen-to-square" /></q-btn>
+              <q-btn push v-if="props.row.estado == 0" @click="activar(props.row._id)"
+                :loading="loadingButtons[props.row._id]" color="green-6"><font-awesome-icon style="font-size: 20px;" :icon="['fas', 'check']" /></q-btn>
+              <q-btn push v-else @click="desactivar(props.row._id)" :loading="loadingButtons[props.row._id]" color="red-6"><font-awesome-icon style="font-size: 20px;" :icon="['fas', 'xmark']" /></q-btn>
             </div>
           </q-td>
         </template>
         <template v-slot:body-cell-estado1="props">
           <q-td :props="props">
-            <p style="color: green" v-if="props.row.estado == 1">Activo</p>
-            <p style="color: red" v-else>Inactivo</p>
+            <p style="color: green" v-if="props.row.estado == 1"><strong>Activo</strong></p>
+            <p style="color: red" v-else><strong>Inactivo</strong></p>
           </q-td>
         </template>
       </q-table>
@@ -92,7 +92,7 @@
                   }
                 ]" />
                 <div>
-                  <q-btn :loading="useAprendiz.loading" label="Guardar" type="submit" color="green-9" />
+                  <q-btn push :loading="useAprendiz.loading" label="Guardar" type="submit" color="green-9" />
                 </div>
               </q-form>
             </div>
@@ -104,11 +104,15 @@
 </template>
 
 <script setup>
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { faArrowRightFromBracket, faPenToSquare, faCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { Notify } from 'quasar'
 import { onBeforeMount, ref } from "vue";
 import { useAprendizStore } from '../stores/aprendices.js';
 import { useFichaStore } from '../stores/fichas.js';
 
+library.add(faArrowRightFromBracket, faPenToSquare, faCheck, faXmark);
 let useFicha = useFichaStore();
 let useAprendiz = useAprendizStore()
 let email = ref("");

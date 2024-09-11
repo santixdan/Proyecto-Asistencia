@@ -22,10 +22,10 @@
             ">
         <q-list padding>
           <div class="q-pa-md q-gutter-sm column">
-            <q-btn to="/ficha" label="Fichas" color="green-9" class="full-width q-mb-sm" />
-            <q-btn to="/bitacora" label="Bitacoras" color="green-9" class="full-width q-mb-sm" />
-            <q-btn to="/aprendiz" label="Aprendices" color="green-9" class="full-width q-mb-sm" />
-            <q-btn to="/usuario" label="Usuarios" color="green-9" class="full-width q-mb-sm" />
+            <q-btn push to="/ficha" label="Fichas" color="green-9" class="full-width q-mb-sm" />
+            <q-btn push to="/bitacora" label="Bitacoras" color="green-9" class="full-width q-mb-sm" />
+            <q-btn push to="/aprendiz" label="Aprendices" color="green-9" class="full-width q-mb-sm" />
+            <q-btn push to="/usuario" label="Usuarios" color="green-9" class="full-width q-mb-sm" />
           </div>
         </q-list>
       </q-scroll-area>
@@ -52,7 +52,7 @@
           </q-card-section>
           <q-separator />
           <q-card-actions id="btnSection">
-            <q-btn to="/ficha" color="green-9">BUSCAR</q-btn>
+            <q-btn push to="/ficha" color="green-9">BUSCAR</q-btn>
           </q-card-actions>
         </q-card>
         <q-card class="my-card text-white" id="cards">
@@ -65,7 +65,7 @@
           </q-card-section>
           <q-separator />
           <q-card-actions id="btnSection">
-            <q-btn to="/bitacora" color="green-9">BUSCAR</q-btn>
+            <q-btn push to="/bitacora" color="green-9">BUSCAR</q-btn>
           </q-card-actions>
         </q-card>
         <q-card class="my-card text-white" id="cards">
@@ -78,7 +78,7 @@
           </q-card-section>
           <q-separator />
           <q-card-actions id="btnSection">
-            <q-btn to="/aprendiz" color="green-9">BUSCAR</q-btn>
+            <q-btn push to="/aprendiz" color="green-9">BUSCAR</q-btn>
           </q-card-actions>
         </q-card>
         <q-card class="my-card text-white" id="cards">
@@ -91,7 +91,7 @@
           </q-card-section>
           <q-separator />
           <q-card-actions id="btnSection">
-            <q-btn to="/usuario" color="green-9">BUSCAR</q-btn>
+            <q-btn push to="/usuario" color="green-9">BUSCAR</q-btn>
           </q-card-actions>
         </q-card>
       </div>
