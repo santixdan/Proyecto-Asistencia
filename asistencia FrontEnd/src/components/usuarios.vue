@@ -56,7 +56,7 @@
                     } else { return true }
                   }
                 ]" />
-                <q-input @paste.prevent v-if="change === false" :type="isPwd ? 'password' : 'text'" filled v-model="password"
+                <q-input v-if="change === false" :type="isPwd ? 'password' : 'text'" filled v-model="password"
                   label="Contraseña" lazy-rules
                   :rules="[val => (val && val.length > 0) || 'Por favor, dígite la contraseña']"><template v-slot:append>
                     <q-icon :name="isPwd ? 'visibility_off' : 'visibility'" class="cursor-pointer"

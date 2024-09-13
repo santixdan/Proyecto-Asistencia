@@ -23,12 +23,6 @@ routerUsuario.post("/crear", [
     check('password', 'La contraseña debe tener más de 5 caracteres').isLength({ min: 5 }),
     validarCampos
 ], httpUsuario.postCrearUsuarios)
-routerUsuario.post("/enviarEmail", [
-    check('email', 'El email es obligatorio').notEmpty(),
-    check('email', 'El email debe ser válido').isEmail(),
-    check('email').custom(usuarioHelpers.validarNoEmailUsuario),
-    validarCampos
-], httpUsuario.postEnviarEmail)
 routerUsuario.post('/login', [
     check('email', 'El email es obligatorio').notEmpty(),
     check('email').custom(usuarioHelpers.validarUsuarioActivo),
@@ -52,7 +46,9 @@ routerUsuario.put("/modificar/:id", [
     validarCampos
 ], httpUsuario.putModificarUsuarios)
 routerUsuario.put("/modificarPassword", [
-    check('token', 'El token es obligatorio').notEmpty(),
+    check('email', 'El email es obligatorio').notEmpty(),
+    check('email', 'El email debe ser válido').isEmail(),
+    check('email').custom(usuarioHelpers.validarNoEmailUsuario),
     check('newPassword', 'La nueva contraseña es obligatoria').notEmpty(),
     check('confirmPassword', 'La confirmacion contraseña es obligatoria').notEmpty(),
     check('newPassword').custom(async (newPassword, { req }) => {

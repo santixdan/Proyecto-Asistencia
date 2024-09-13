@@ -1,7 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const nodemailer = require('nodemailer');
 
 class Server {
     constructor() {
@@ -29,7 +28,6 @@ class Server {
             allowedHeaders: ['Content-Type', 'Authorization', 'token']
         }));
         this.app.use(express.static('public'));
-        // this.app.use(nodemailer());
     }
     routes() {
         this.app.use(this.paths.aprendices, require('./routers/aprendices.js'));

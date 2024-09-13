@@ -67,22 +67,6 @@ export const useUsuarioStore = defineStore("usuario", () => {
         }
     }
 
-    async function postEnviarEmail(email) {
-        loading.value = true
-        try {
-            let r = await axios.post(`${API_URL}/usuarios/enviarEmail`, {
-                email
-            })
-            validar.value = true
-            return { r, validar }
-        } catch (error) {
-            validar.value = false
-            return { error, validar }
-        } finally {
-            loading.value = false
-        }
-    }
-
     async function putModificarUsuario(email, name, id) {
         loading.value = true
         try {
@@ -116,13 +100,13 @@ export const useUsuarioStore = defineStore("usuario", () => {
         }
     }
 
-    async function putModificarPassword( newPassword, confirmPassword, token) {
+    async function putModificarPassword(email, newPassword, confirmPassword) {
         loading.value = true
         try {
             let r = await axios.put(`${API_URL}/usuarios/modificarPassword`, {
+                email,
                 newPassword,
-                confirmPassword,
-                token
+                confirmPassword
             })
             validar.value = true
             return { r, validar }
@@ -168,7 +152,7 @@ export const useUsuarioStore = defineStore("usuario", () => {
         }
     }
     return {
-        getListarUsuarios, postCrearUsuario, postLoginUsuario, postEnviarEmail, putActivarUsuario, putDesactivarUsuario, putModificarPassword, putModificarUsuario, loading, xtoken, usuario
+        getListarUsuarios, postCrearUsuario, postLoginUsuario, putActivarUsuario, putDesactivarUsuario, putModificarPassword, putModificarUsuario, loading, xtoken, usuario
     }
 }, {
     persist: {
