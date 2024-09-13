@@ -28,18 +28,18 @@ routerAprendiz.get("/listarPorId/:id", [
 routerAprendiz.post("/crear", [
     validarJWT,
     check('nombre', 'El nombre es obligatorio').notEmpty(),
-    check('cedula', 'La cédula es obligatoria').notEmpty().isLength({ min: 8 }),
+    check('cedula', 'La cédula es obligatoria').notEmpty(),
     check('cedula', 'La cédula debe tener mínimo 8 caracteres').isLength({ min: 8 }),
     check('cedula').custom(apredizHelpers.validarCedulaAprendiz),
-    check('ficha', 'La ficha es obligatoria').notEmpty().isMongoId(),
+    check('ficha', 'La ficha es obligatoria').notEmpty(),
     check('ficha', 'La ficha debe ser MongoId').isMongoId(),
     check('ficha').custom(apredizHelpers.validarFicha),
     check('ficha').custom(apredizHelpers.validarFichaActiva),
     check('telefono', 'El teléfono es obligatorio').notEmpty(),
     check('telefono', 'El teléfono debe ser válido').isMobilePhone(),
     check('telefono').custom(apredizHelpers.validarTelefonoAprendiz),
-    check('email', 'El correo es obligatorio').notEmpty().isEmail(),
-    check('email', 'El correo debe ser válido').notEmpty().isEmail(),
+    check('email', 'El correo es obligatorio').notEmpty(),
+    check('email', 'El correo debe ser válido').isEmail(),
     check('email').custom(apredizHelpers.validarEmailAprendiz),
     validarCampos
 ], httpAprendices.postCrearAprendiz)

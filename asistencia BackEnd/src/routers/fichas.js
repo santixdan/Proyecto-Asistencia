@@ -16,8 +16,8 @@ routerFicha.get("/listarTodo", [
 routerFicha.post("/crear", [
     validarJWT,
     check('nombre', 'El nombre es obligatorio').notEmpty(),
-    check('codigo', 'El codigo es obligatorio').notEmpty(),
-    check('codigo', 'El codigo debe tener mínimo 5 caracteres').isLength({ min: 5 }),
+    check('codigo', 'El código es obligatorio').notEmpty(),
+    check('codigo', 'El código debe tener mínimo 5 caracteres').isLength({ min: 5 }),
     check('codigo').custom(fichaHelpers.validarCodigoFicha),
     validarCampos
 ], httpFichas.postCrearFichas)
