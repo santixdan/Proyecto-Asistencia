@@ -35,7 +35,7 @@ routerAprendiz.post("/crear", [
     check('ficha', 'La ficha debe ser MongoId').isMongoId(),
     check('ficha').custom(apredizHelpers.validarFicha),
     check('ficha').custom(apredizHelpers.validarFichaActiva),
-    check('telefono', 'El teléfono es obligatorio').notEmpty().isMobilePhone(),
+    check('telefono', 'El teléfono es obligatorio').notEmpty(),
     check('telefono', 'El teléfono debe ser válido').isMobilePhone(),
     check('telefono').custom(apredizHelpers.validarTelefonoAprendiz),
     check('email', 'El correo es obligatorio').notEmpty().isEmail(),

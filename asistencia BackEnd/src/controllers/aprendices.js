@@ -35,7 +35,8 @@ const httpAprendices = {
             const ficha = req.body.ficha.trim();      
             const cedula = req.body.cedula.trim();    
             const nombre = req.body.nombre.trim();    
-            const telefono = req.body.telefono.trim();     
+            const telefono = req.body.telefono.trim();
+            const email = req.body.email.trim();
             
             const newAprendiz = new Aprendiz({ ficha, cedula, nombre, telefono, email });
             await newAprendiz.save();
