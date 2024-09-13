@@ -7,9 +7,9 @@
           <q-avatar>
             <img src="https://lostramites.com.co/wp-content/uploads/logo-de-Sena-sin-fondo-Blanco-300x300.png" />
           </q-avatar>
-          <q-btn v-if="$route.path != '/home'" to="/home" id="btnBack"><font-awesome-icon
+          <q-btn flat v-if="$route.path != '/home'" to="/home" id="btnBack"><font-awesome-icon
               :icon="['fas', 'arrow-right-from-bracket']" style="font-size: 24px;" /></q-btn>
-          <q-btn v-else to="/" id="btnBack"><font-awesome-icon :icon="['fas', 'arrow-right-from-bracket']"
+          <q-btn flat v-else to="/" id="btnBack"><font-awesome-icon :icon="['fas', 'arrow-right-from-bracket']"
               style="font-size: 24px;" /></q-btn>
         </q-toolbar-title>
       </q-toolbar>
