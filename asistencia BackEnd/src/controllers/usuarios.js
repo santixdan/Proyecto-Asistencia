@@ -26,7 +26,7 @@ const httpUsuario = {
             const email = req.body.email.trim();
             const user = await Usuario.findOne({ email })
             const token = jwt.sign({ userId: user._id }, process.env.SECRETORPRIVATEKEY, { expiresIn: "1h" });
-            const resetLink = `https://proyecto-asistencia-cxfa.onrender.com/#/recuperar?token=${token}`
+            const resetLink = `https://proyecto-asistencia-cxfa.onrender.com/#/recuperar/${token}`
 
             const mailOptions = {
                 from: "greycharlie812@gmail.com",

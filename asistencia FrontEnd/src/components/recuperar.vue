@@ -31,6 +31,9 @@
 
 <script setup>
 import { ref } from 'vue';
+import { useRoute } from 'vue-router';
+
+const route = useRoute();
 const newPassword = ref('');
 const confirmPassword = ref('');
 let isPwd2 = ref(true);
@@ -39,11 +42,10 @@ import { useUsuarioStore } from "./../stores/usuarios.js";
 
 let useUsuario = useUsuarioStore();
 async function resetPassword() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const token = urlParams.get('token');
+    const token = route.params.token;
 
     try {
-        const res = await useUsuario.putModificarPassword(newPassword, confirmPassword, token)
+        const res = await useUsuario.putModificarPassword(newPassword.value.trim(), confirmPassword.value.trim(), token)
 
         if (res.validar.value === true) {
             icon.value = false
