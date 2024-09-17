@@ -6,7 +6,7 @@ const aprendizSchema = new mongoose.Schema({
     nombre: { type: String, required: true },
     telefono: { type: String, required: true, unique: true },
     email: { type: String, required: true, unique: true },
-    estado: { type: Number, default: 1 }
+    estado: { type: Number, default: 1, enum: [1, 0] }
 }, { timestamps: true })
 
 module.exports = mongoose.model("Aprendiz", aprendizSchema)
