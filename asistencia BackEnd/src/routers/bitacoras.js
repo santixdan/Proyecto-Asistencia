@@ -11,6 +11,12 @@ routerBitacora.get('/listarTodo', [
     validarJWT,
     validarCampos
 ], httpBitacora.getListarBitacoras)
+routerBitacora.get('/listarPorId/:id', [
+    validarJWT,
+    check('id', 'El id no es válido').notEmpty().isMongoId(),
+    check('id').custom(bitacoraHelpers.validarId),
+    validarCampos
+], httpBitacora.getListarBitacoras)
 routerBitacora.get('/listarPorEstado', [
     validarJWT,
     validarCampos
@@ -27,7 +33,27 @@ routerBitacora.get('/listarPorFicha/:ficha', [
     check('ficha', 'La ficha debe ser MongoId').isMongoId(),
     check('ficha').optional().custom(bitacoraHelpers.validarFicha),
     validarCampos
-], httpBitacora.getListarPorFichaYFecha)
+], httpBitacora.getListarPorFicha)
+routerBitacora.get('/listarPorFecha', [
+    validarJWT,
+    check('fechaInicio', 'La fecha es obligatoria').notEmpty(),
+    check('fechaInicio', 'La fecha debe ser valida').isDate(),
+    check('fechaFin', 'La fecha es obligatoria').notEmpty(),
+    check('fechaFin', 'La fecha debe ser valida').isDate(),
+    validarCampos
+], httpBitacora.getListarPorFecha)
+routerBitacora.get('/listarPorFechaYFicha/:ficha', [
+    validarJWT,
+    check('ficha', 'La ficha es obligatoria').notEmpty(),
+    check('ficha', 'La ficha debe ser MongoId').isMongoId(),
+    check('ficha').optional().custom(bitacoraHelpers.validarFicha),
+    check('fechaInicio', 'La fecha es obligatoria').notEmpty(),
+    check('fechaInicio', 'La fecha debe ser valida').isDate(),
+    check('fechaFin', 'La fecha es obligatoria').notEmpty(),
+    check('fechaFin', 'La fecha debe ser valida').isDate(),
+    validarCampos
+], httpBitacora.getListarPorFechaYFicha)
+
 
 //POST
 routerBitacora.post('/crear1', [

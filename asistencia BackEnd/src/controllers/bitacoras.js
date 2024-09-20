@@ -5,6 +5,16 @@ const httpBitacora = {
     getListarBitacoras: async (req, res) => {
         try {
             const bitacora = await Bitacora.find();
+            console.log('Bitácoras encontradas:', bitacora.length);
+            res.json({ bitacora });
+        } catch (error) {
+            res.status(400).json({ error });
+        }
+    },
+    getListarBitacorasPorId: async (req, res) => {
+        try {
+            const id = req.params.id.trim();
+            const bitacora = await Bitacora.findById(id);
             res.json({ bitacora });
         } catch (error) {
             res.status(400).json({ error });
@@ -27,26 +37,36 @@ const httpBitacora = {
             res.status(400).json({ error });
         }
     },
-    getListarPorFichaYFecha: async (req, res) => {
+    getListarPorFicha: async (req, res) => {
         try {
             const ficha = req.params.ficha.trim();
-            const { fecha } = req.query;
-
-            console.log('Ficha:', ficha);
-            console.log('Fecha:', fecha);
 
             const aprendices = await Aprendiz.find({ ficha });
             const ids_Aprendiz = aprendices.map(aprendiz => aprendiz._id);
-            console.log('IDs de Aprendices:', ids_Aprendiz);
+            const bitacoras = await Bitacora.find({ aprendiz: { $in: ids_Aprendiz } });
 
-            // Buscar bitácoras directamente con el filtro de fecha
-            const bitacoras = await Bitacora.find({
-                aprendiz: { $in: ids_Aprendiz },
-                fecha: new Date(fecha) // Asegúrate de que `fecha` esté en el formato correcto
-            });
-
-            console.log('Bitácoras encontradas:', bitacoras.length);
-
+            res.json({ bitacoras });
+        } catch (error) {
+            res.status(400).json({ error });
+        }
+    },
+    getListarPorFecha: async (req, res) => {
+        try {
+            const { fechaInicio, fechaFin } = req.body;
+            const bitacoras = await Bitacora.find({ fecha: { $gte: fechaInicio, $lte: fechaFin } }).sort({ fecha: 1 });
+            res.json({ bitacoras });
+        } catch (error) {
+            res.status(400).json({ error });
+        }
+    },
+    getListarPorFechaYFicha: async (req, res) => {
+        try {
+            const ficha = req.params.ficha
+            const { fechaInicio, fechaFin } = req.body;
+            const aprendices = await Aprendiz.find({ ficha });
+            const ids_Aprendiz = aprendices.map(aprendiz => aprendiz._id);
+            
+            const bitacoras = await Bitacora.find({aprendiz : { $in: ids_Aprendiz },  fecha: { $gte: fechaInicio, $lte: fechaFin } });
             res.json({ bitacoras });
         } catch (error) {
             res.status(400).json({ error });
