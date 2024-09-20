@@ -62,7 +62,7 @@ const httpBitacora = {
     getListarPorFechaYFicha: async (req, res) => {
         try {
             const ficha = req.params.ficha
-            const { fechaInicio, fechaFin } = req.body;
+            const { fechaInicio, fechaFin } = req.query;
             const aprendices = await Aprendiz.find({ ficha });
             const ids_Aprendiz = aprendices.map(aprendiz => aprendiz._id);
             

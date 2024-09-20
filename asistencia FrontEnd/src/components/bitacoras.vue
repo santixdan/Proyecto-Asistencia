@@ -5,8 +5,7 @@
     <div class="q-pa-md">
       <div class="q-pa-md q-gutter-sm">
         <q-btn push label="Crear Bitácora" color="green-9" @click="(icon = true)" />
-        <q-btn push style="float: right;" round color="green-9" icon="print" to="/tabla" target="_blank"/>
-        <a href="" target="_blank"></a>
+        <!-- <q-btn push style="float: right;" round color="green-9" icon="print" to="/tabla" target="_blank"/> -->
       </div>
       <q-table title="Bitácoras" :rows="rows" :columns="columns" row-key="name" :loading="useBitacora.loading">
         <template v-slot:body-cell-opciones="props">

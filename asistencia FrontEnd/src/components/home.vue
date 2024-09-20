@@ -26,6 +26,7 @@
             <q-btn push to="/bitacora" label="Bitacoras" color="green-9" class="full-width q-mb-sm" />
             <q-btn push to="/aprendiz" label="Aprendices" color="green-9" class="full-width q-mb-sm" />
             <q-btn push to="/usuario" label="Usuarios" color="green-9" class="full-width q-mb-sm" />
+            <q-btn push to="/informe" label="Informe" color="green-9" class="full-width q-mb-sm" />
           </div>
         </q-list>
       </q-scroll-area>

@@ -25,6 +25,29 @@ export const useBitacoraStore = defineStore("bitacora", () => {
             loading.value = false
         }
     }
+    async function getListarBitacoraPorFechaYFicha(fecha, ficha) {
+        const useUsuario = useUsuarioStore();
+        console.log(useUsuario.xtoken);
+        loading.value = true;
+    
+        try {
+            let r = await axios.get(`${API_URL}/bitacoras/listarPorFechaYFicha/${ficha}`, {
+                params: {
+                    fechaInicio: fecha,
+                    fechaFin: fecha
+                },
+                headers: {
+                    "token": useUsuario.xtoken
+                }
+            });
+            return r;
+        } catch (error) {
+            console.log(error);
+            return error;
+        } finally {
+            loading.value = false;
+        }
+    }
     async function getListarBitacoraPorEstado() {
         const useUsuario = useUsuarioStore()
         loading.value = true
@@ -109,6 +132,6 @@ export const useBitacoraStore = defineStore("bitacora", () => {
     }
 
     return {
-        getListarBitacora, getListarBitacoraPorEstado, postCrearBitacora1, postCrearBitacora2, putModificarBitacora, loading
+        getListarBitacora, getListarBitacoraPorFechaYFicha, getListarBitacoraPorEstado, postCrearBitacora1, postCrearBitacora2, putModificarBitacora, loading
     }
 })
