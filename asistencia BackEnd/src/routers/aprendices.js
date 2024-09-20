@@ -27,7 +27,7 @@ routerAprendiz.get("/listarPorId/:id", [
 //POST
 routerAprendiz.post("/crear", [
     validarJWT,
-    check('nombre', 'El nombre es obligatorio').notEmpty(),
+    check('nombre', 'El nombre es obligatorio y debe ser texto').notEmpty().isString(),
     check('cedula', 'La cédula es obligatoria').notEmpty(),
     check('cedula', 'La cédula debe tener mínimo 8 caracteres').isLength({ min: 8 }),
     check('cedula').custom(apredizHelpers.validarCedulaAprendiz),
@@ -35,7 +35,7 @@ routerAprendiz.post("/crear", [
     check('ficha', 'La ficha debe ser MongoId').isMongoId(),
     check('ficha').custom(apredizHelpers.validarFicha),
     check('ficha').custom(apredizHelpers.validarFichaActiva),
-    check('telefono', 'El teléfono es obligatorio').notEmpty(),
+    check('telefono', 'El teléfono es obligatorio').notEmpty().isMobilePhone(),
     check('telefono', 'El teléfono debe ser válido').isMobilePhone(),
     check('telefono').custom(apredizHelpers.validarTelefonoAprendiz),
     check('email', 'El correo es obligatorio').notEmpty(),
@@ -50,6 +50,7 @@ routerAprendiz.put("/modificar/:id", [
     check('id', 'El id es obligatorio').notEmpty(),
     check('id', 'El id debe ser MongoId').isMongoId(),
     check('id').custom(apredizHelpers.validarId),
+    check('nombre', 'El nombre es obligatorio').optional().isString(),
     check('cedula', 'La cédula debe tener mínimo 8 caracteres').optional().isLength({ min: 8 }),
     // check('cedula').optional().custom(apredizHelpers.validarCedulaAprendiz),
     check('cedula').optional().custom(async (cedula, { req }) => {

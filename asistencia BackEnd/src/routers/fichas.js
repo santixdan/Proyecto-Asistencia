@@ -15,8 +15,8 @@ routerFicha.get("/listarTodo", [
 //POST
 routerFicha.post("/crear", [
     validarJWT,
-    check('nombre', 'El nombre es obligatorio').notEmpty(),
-    check('codigo', 'El código es obligatorio').notEmpty(),
+    check('nombre', 'El nombre es obligatorio y debe ser texto').notEmpty().isString(),
+    check('codigo', 'El código es obligatorio y debe ser texto').notEmpty(),
     check('codigo', 'El código debe tener mínimo 5 caracteres').isLength({ min: 5 }),
     check('codigo').custom(fichaHelpers.validarCodigoFicha),
     validarCampos
@@ -28,6 +28,7 @@ routerFicha.put("/modificar/:id", [
     check('id', 'El id es obligatorio').notEmpty(),
     check('id', 'El id debe ser MongoId').isMongoId(),
     check('id').custom(fichaHelpers.validarId),
+    check('nombre', 'El nombre es obligatorio y debe ser texto').optional().isString(),
     check('codigo', 'El codigo debe tener mínimo 5 caracteres').optional().isLength({ min: 5 }),
     // check('codigo').optional().custom(fichaHelpers.validarCodigoFicha),
     check('codigo').optional().custom(async (codigo, { req }) => {

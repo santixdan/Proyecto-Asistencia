@@ -31,17 +31,15 @@ routerBitacora.post('/crear1', [
     validarJWT,
     check('aprendiz', 'El aprendiz es obligatorio').notEmpty(),
     check('aprendiz', 'El aprendiz debe ser un MongoId').isMongoId(),
-    check('fecha', 'La fecha es obligatoria').notEmpty(),
+    check('fecha', 'La fecha es obligatoria y debe ser valida').notEmpty().isDate(),
     check('aprendiz').custom(bitacoraHelpers.validarAprendiz1),
     check('aprendiz').custom(bitacoraHelpers.validarAprendizActivo1),
     check('estado').optional().custom(bitacoraHelpers.validarEstado),
     validarCampos
 ], httpBitacora.postCrearBitacora1)
 routerBitacora.post('/crear2', [
-    // validarJWT,
     check('cedula', 'El aprendiz es obligatorio').notEmpty(),
-    // check('cedula', 'El aprendiz debe ser un MongoId').isMongoId(),
-    check('fecha', 'La fecha es obligatoria').notEmpty(),
+    check('fecha', 'La fecha es obligatoria y debe ser valida').notEmpty().isDate(),
     check('cedula').custom(bitacoraHelpers.validarAprendiz2),
     check('cedula').custom(bitacoraHelpers.validarAprendizActivo2),
     check('estado').optional().custom(bitacoraHelpers.validarEstado),

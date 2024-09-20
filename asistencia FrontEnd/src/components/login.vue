@@ -24,7 +24,8 @@
                     <q-input filled v-model="email" label="Correo" lazy-rules
                         :rules="[val => (val && val.length > 0) || 'Por favor, dígite el correo']" />
                     <q-input :type="isPwd1 ? 'password' : 'text'" filled v-model="password" label="Contraseña"
-                        lazy-rules @paste.prevent :rules="[val => (val && val.length > 0) || 'Por favor, dígite la contraseña']">
+                        lazy-rules @paste.prevent
+                        :rules="[val => (val && val.length > 0) || 'Por favor, dígite la contraseña']">
                         <template v-slot:append>
                             <q-icon :name="isPwd1 ? 'visibility_off' : 'visibility'" class="cursor-pointer"
                                 @click="isPwd1 = !isPwd1" />
@@ -90,7 +91,8 @@
                                             @click="isPwd3 = !isPwd3" />
                                     </template></q-input>
                                 <div>
-                                    <q-btn push :loading="useUsuario.loading" label="Guardar" type="submit" color="green-9" />
+                                    <q-btn push :loading="useUsuario.loading" label="Guardar" type="submit"
+                                        color="green-9" />
                                 </div>
                             </q-form>
                         </div>
