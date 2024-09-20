@@ -87,7 +87,11 @@ let loading = ref(true);
 function obtenerFechaActual() {
   let fechaObj = new Date(useBitacora.fechaBitacora);
   day.value = fechaObj.getDate();
-  month.value = fechaObj.getMonth() + 1;
+  const meses = [
+    "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", 
+    "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+  ];
+  month.value = meses[fechaObj.getMonth()];
   year.value = fechaObj.getFullYear();
 }
 
