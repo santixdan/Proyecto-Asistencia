@@ -72,6 +72,19 @@ const httpBitacora = {
             res.status(400).json({ error });
         }
     },
+    getListarPorFechaYFichaYEstado: async (req, res) => {
+        try {
+            const ficha = req.params.ficha
+            const { fechaInicio, fechaFin } = req.query;
+            const aprendices = await Aprendiz.find({ ficha });
+            const ids_Aprendiz = aprendices.map(aprendiz => aprendiz._id);
+            
+            const bitacoras = await Bitacora.find({aprendiz : { $in: ids_Aprendiz },  fecha: { $gte: fechaInicio, $lte: fechaFin }, estado: 'Asistió' });
+            res.json({ bitacoras });
+        } catch (error) {
+            res.status(400).json({ error });
+        }
+    },
     postCrearBitacora1: async (req, res) => {
         try {
             const aprendiz = req.body.aprendiz.trim();

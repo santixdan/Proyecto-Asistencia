@@ -4,52 +4,38 @@
         <hr id="hr" class="bg-green-9">
         <div class="q-pa-md">
             <div class="q-pa-md q-gutter-sm">
-                <q-input filled v-model="fecha" label="Fecha" mask="date" lazy-rules
-                    :rules="[val => (val && val.length > 0) || 'Por favor, dígite la fecha de la bitácora']">
-                    <template v-slot:append>
-                        <q-icon name="event" class="cursor-pointer">
-                            <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                                <q-date v-model="fecha" today-btn>
-                                    <div class="row items-center justify-end">
-                                        <q-btn v-close-popup label="Close" color="primary" flat />
-                                    </div>
-                                </q-date>
-                            </q-popup-proxy>
-                        </q-icon>
-                    </template>
-                </q-input>
-                <q-select filled type="number" v-model="ficha" use-input input-debounce="0" label="Ficha"
-                    :options="options" @filter="filterFn" style="width: 250px" behavior="menu" emit-value map-options
-                    lazy-rules :rules="[
-                        (val) => {
-                            if (change === false) {
-                                return (val && val.length > 0) ||
-                                    'Por favor, dígite el código de la ficha'
-                            } else { return true }
-                        }
-                    ]">
-                    <template v-slot:no-option>
-                        <q-item>
-                            <q-item-section class="text-grey">
-                                No results
-                            </q-item-section>
-                        </q-item>
-                    </template>
-                </q-select>
-                <q-btn push label="Buscar" color="green-9" @click="traer()"/>
-                <q-btn push style="float: right;" round color="green-9" icon="print" to="/tabla" target="_blank" />
+                <q-form @submit="traer()" @reset="onReset" class="q-gutter-md">
+                    <q-input filled v-model="fecha" label="Fecha" mask="date" lazy-rules
+                        :rules="[val => (val && val.length > 0) || 'Por favor, dígite la fecha de la bitácora']">
+                        <template v-slot:append>
+                            <q-icon name="event" class="cursor-pointer">
+                                <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                                    <q-date v-model="fecha" today-btn>
+                                        <div class="row items-center justify-end">
+                                            <q-btn v-close-popup label="Close" color="primary" flat />
+                                        </div>
+                                    </q-date>
+                                </q-popup-proxy>
+                            </q-icon>
+                        </template>
+                    </q-input>
+                    <q-select filled type="number" v-model="ficha" use-input input-debounce="0" label="Ficha"
+                        :options="options" @filter="filterFn" behavior="menu" emit-value map-options lazy-rules
+                        :rules="[val => val && val.length > 0 || 'Por favor, dígite el código de la ficha']">
+                        <template v-slot:no-option>
+                            <q-item>
+                                <q-item-section class="text-grey">
+                                    No results
+                                </q-item-section>
+                            </q-item>
+                        </template>
+                    </q-select>
+                    <q-btn push label="Buscar" color="green-9" type="submit" />
+                    <q-btn push style="float: right;" round color="green-9" icon="print" to="/tabla" target="_blank" />
+                </q-form>
             </div>
-            <q-table title="Informes" :rows="rows" :columns="columns" row-key="name" :loading="useBitacora.loading">
-                <!-- <template v-slot:body-cell-opciones="props">
-                    <q-td :props="props">
-                        <div class="q-pa-md" align="center">
-                            <q-select filled v-model="props.row.estado" label="Estado" style="max-width: 300px;"
-                                :options="optionsEstado" emit-value map-options :loading="loadingButtons[props.row._id]"
-                                @update:model-value="updateEstado($event, props.row._id)" />
-                        </div>
-                    </q-td>
-                </template> -->
-            </q-table>
+            <q-table title="Informes" :rows="rows" :columns="columns" row-key="name"
+                :loading="useBitacora.loading"></q-table>
         </div>
     </div>
 </template>
@@ -100,42 +86,63 @@ let columns = ref([
 
 async function traer() {
     let res = await useBitacora.getListarBitacoraPorFechaYFicha(fecha.value.trim(), ficha.value.trim());
-    console.log(res);
-    let res2 = await useAprendiz.getListarAprendiz();
-    rows.value = res.data.bitacoras.map(bitacora => {
-        return {
-            ...bitacora,
-            aprendiz: res2.data.aprendices.find(aprendiz => aprendiz._id === bitacora.aprendiz)?.cedula,
-            aprendiznombre: res2.data.aprendices.find(aprendiz => aprendiz._id === bitacora.aprendiz)?.nombre
-        };
-    })
+    if (res.validar.value === true) {
+        let res2 = await useAprendiz.getListarAprendiz();
+        rows.value = res.r.data.bitacoras.map(bitacora => {
+            return {
+                ...bitacora,
+                aprendiz: res2.data.aprendices.find(aprendiz => aprendiz._id === bitacora.aprendiz)?.cedula,
+                aprendiznombre: res2.data.aprendices.find(aprendiz => aprendiz._id === bitacora.aprendiz)?.nombre
+            };
+        })
+
+    } else {
+        Notify.create({
+            color: "red-5",
+            textColor: "white",
+            icon: "warning",
+            message: res.error?.response?.data?.errors?.[0]?.msg || "Error desconocido",
+            timeout: 2500,
+        });
+    }
+
 }
 
 const filterFn = async (val, update) => {
-  let res = await useFicha.getListarFichas();
-  const fichasActivas = res.data.fichas.filter(ficha => ficha.estado === 1);
-  if (val === '') {
-    update(() => {
-      options.value = fichasActivas.map(ficha => ({
-        label: ficha.codigo,
-        value: ficha._id
-      }));
-    });
-    return;
-  }
+    let res = await useFicha.getListarFichas();
+    const fichasActivas = res.data.fichas.filter(ficha => ficha.estado === 1);
+    if (val === '') {
+        update(() => {
+            options.value = fichasActivas.map(ficha => ({
+                label: ficha.codigo,
+                value: ficha._id
+            }));
+        });
+        return;
+    }
 
-  update(() => {
-    const needle = val.toLowerCase();
-    options.value = fichasActivas.map(ficha => ({
-      label: ficha.codigo,
-      value: ficha._id
-    })).filter(option => option.label.toLowerCase().includes(needle));
-  });
+    update(() => {
+        const needle = val.toLowerCase();
+        options.value = fichasActivas.map(ficha => ({
+            label: ficha.codigo,
+            value: ficha._id
+        })).filter(option => option.label.toLowerCase().includes(needle));
+    });
 }
 
 function onReset() {
     fecha.value = ""
-    aprendiz.value = ""
+    ficha.value = ""
 }
 
 </script>
+<style>
+#filtracion {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    width: 50%;
+}
+</style>

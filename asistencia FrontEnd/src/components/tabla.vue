@@ -4,7 +4,7 @@
     <div class="info">
       <span> {{ day }} de {{ month }} del año {{ year }}</span>
     </div>
-    
+
     <!-- Indicador de carga -->
     <div v-if="loading" class="loading-container">
       <p>Cargando datos...</p>
@@ -35,16 +35,36 @@
       <tbody>
         <tr v-for="(row, index) in rows" :key="row.id">
           <td>{{ index + 1 }}</td>
-          <td><p>{{ row.nombre }}</p></td>
-          <td><p>{{ row.cedula }}</p></td>
-          <td><p>{{ row.planta }}</p></td>
-          <td><p>{{ row.contratista }}</p></td>
-          <td><p>{{ row.otro }}</p></td>
-          <td><p>{{ row.dependencia }}</p></td>
-          <td><p>{{ row.correo }}</p></td>
-          <td><p>{{ row.telefono }}</p></td>
-          <td><p>{{ row.autorizaGrabacion ? 'Sí' : 'No' }}</p></td>
-          <td><p>{{ row.firma }}</p></td>
+          <td>
+            <p>{{ row.nombre }}</p>
+          </td>
+          <td>
+            <p>{{ row.cedula }}</p>
+          </td>
+          <td>
+            <p>{{ row.planta }}</p>
+          </td>
+          <td>
+            <p>{{ row.contratista }}</p>
+          </td>
+          <td>
+            <p>{{ row.otro }}</p>
+          </td>
+          <td>
+            <p>{{ row.dependencia }}</p>
+          </td>
+          <td>
+            <p>{{ row.correo }}</p>
+          </td>
+          <td>
+            <p>{{ row.telefono }}</p>
+          </td>
+          <td>
+            <p>{{ row.autorizaGrabacion ? 'Sí' : 'No' }}</p>
+          </td>
+          <td>
+            <p>{{ row.firma }}</p>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -65,24 +85,18 @@ let rows = ref([]);
 let loading = ref(true);
 
 function obtenerFechaActual() {
-  let fecha = new Date();
-  day.value = fecha.getDate();
-  year.value = fecha.getFullYear();
-
-  // Lista de meses para convertir el número de mes en nombre del mes
-  const meses = [
-    "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", 
-    "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
-  ];
-  month.value = meses[fecha.getMonth()]; // Obtener el nombre del mes actual
+  let fechaObj = new Date(useBitacora.fechaBitacora);
+  day.value = fechaObj.getDate();
+  month.value = fechaObj.getMonth() + 1;
+  year.value = fechaObj.getFullYear();
 }
 
 async function traer() {
   try {
-    let res = await useBitacora.getListarBitacoraPorEstado();
+    let res = await useBitacora.getListarBitacoraPorFechaYFichaYEstado();
     let res2 = await useAprendiz.getListarAprendiz();
 
-    rows.value = res.data.bitacora.map(bitacora => {
+    rows.value = res.r.data.bitacoras.map(bitacora => {
       let aprendiz = res2.data.aprendices.find(aprendiz => aprendiz._id === bitacora.aprendiz);
       return {
         nombre: aprendiz?.nombre || '',
@@ -122,7 +136,8 @@ table {
   margin-top: 20px;
 }
 
-th, td {
+th,
+td {
   border: 1px solid #000;
   padding: 10px;
   text-align: center;

@@ -8,6 +8,8 @@ const API_URL = 'https://proyecto-asistencia-backend.onrender.com';
 export const useBitacoraStore = defineStore("bitacora", () => {
     let validar = ref(true)
     let loading = ref(false)
+    let fechaBitacora = ref()
+    let fichaBitacora = ref()
     async function getListarBitacora() {
         const useUsuario = useUsuarioStore()
         loading.value = true
@@ -27,9 +29,10 @@ export const useBitacoraStore = defineStore("bitacora", () => {
     }
     async function getListarBitacoraPorFechaYFicha(fecha, ficha) {
         const useUsuario = useUsuarioStore();
-        console.log(useUsuario.xtoken);
+        fechaBitacora.value = fecha
+        fichaBitacora.value = ficha
         loading.value = true;
-    
+
         try {
             let r = await axios.get(`${API_URL}/bitacoras/listarPorFechaYFicha/${ficha}`, {
                 params: {
@@ -40,10 +43,36 @@ export const useBitacoraStore = defineStore("bitacora", () => {
                     "token": useUsuario.xtoken
                 }
             });
-            return r;
+            validar.value = true
+            return { r, validar }
         } catch (error) {
+            validar.value = false
             console.log(error);
-            return error;
+            return { error, validar }
+        } finally {
+            loading.value = false;
+        }
+    }
+    async function getListarBitacoraPorFechaYFichaYEstado() {
+        const useUsuario = useUsuarioStore();
+        loading.value = true;
+
+        try {
+            let r = await axios.get(`${API_URL}/bitacoras/listarPorFechaYFichaYEstado/${fichaBitacora.value}`, {
+                params: {
+                    fechaInicio: fechaBitacora.value,
+                    fechaFin: fechaBitacora.value
+                },
+                headers: {
+                    "token": useUsuario.xtoken
+                }
+            });
+            validar.value = true
+            return { r, validar }
+        } catch (error) {
+            validar.value = false
+            console.log(error);
+            return { error, validar }
         } finally {
             loading.value = false;
         }
@@ -132,6 +161,10 @@ export const useBitacoraStore = defineStore("bitacora", () => {
     }
 
     return {
-        getListarBitacora, getListarBitacoraPorFechaYFicha, getListarBitacoraPorEstado, postCrearBitacora1, postCrearBitacora2, putModificarBitacora, loading
+        getListarBitacora, getListarBitacoraPorFechaYFicha, getListarBitacoraPorFechaYFichaYEstado, getListarBitacoraPorEstado, postCrearBitacora1, postCrearBitacora2, putModificarBitacora, loading, fechaBitacora, fichaBitacora
+    }
+}, {
+    persist: {
+        paths: ['fechaBitacora', 'fichaBitacora']
     }
 })

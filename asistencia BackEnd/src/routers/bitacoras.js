@@ -53,6 +53,17 @@ routerBitacora.get('/listarPorFechaYFicha/:ficha', [
     check('fechaFin', 'La fecha debe ser valida').isDate(),
     validarCampos
 ], httpBitacora.getListarPorFechaYFicha)
+routerBitacora.get('/listarPorFechaYFichaYEstado/:ficha', [
+    validarJWT,
+    check('ficha', 'La ficha es obligatoria').notEmpty(),
+    check('ficha', 'La ficha debe ser MongoId').isMongoId(),
+    check('ficha').optional().custom(bitacoraHelpers.validarFicha),
+    check('fechaInicio', 'La fecha es obligatoria').notEmpty(),
+    check('fechaInicio', 'La fecha debe ser valida').isDate(),
+    check('fechaFin', 'La fecha es obligatoria').notEmpty(),
+    check('fechaFin', 'La fecha debe ser valida').isDate(),
+    validarCampos
+], httpBitacora.getListarPorFechaYFichaYEstado)
 
 
 //POST
