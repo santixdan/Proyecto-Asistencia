@@ -23,8 +23,11 @@ routerBitacora.get('/listarPorAprendiz/:aprendiz', [
 ], httpBitacora.getListarPorAprendiz)
 routerBitacora.get('/listarPorFicha/:ficha', [
     validarJWT,
+    check('ficha', 'La ficha es obligatoria').notEmpty(),
+    check('ficha', 'La ficha debe ser MongoId').isMongoId(),
+    check('ficha').optional().custom(bitacoraHelpers.validarFicha),
     validarCampos
-], httpBitacora.getListarPorFicha)
+], httpBitacora.getListarPorFichaYFecha)
 
 //POST
 routerBitacora.post('/crear1', [

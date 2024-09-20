@@ -27,19 +27,29 @@ const httpBitacora = {
             res.status(400).json({ error });
         }
     },
-    getListarPorFicha: async (req, res) => {
-        const ficha = req.params.ficha.trim();
+    getListarPorFichaYFecha: async (req, res) => {
         try {
-            const aprendices = await Aprendiz.find({ ficha });
+            const ficha = req.params.ficha.trim();
+            const { fecha } = req.query;
 
-            if (aprendices.length === 0) {
-                return res.json({ mensaje: "No hay aprendices para la ficha proporcionada" });
-            }
-            const aprendizIds = aprendices.map(aprendiz => aprendiz);
-            res.json({ aprendizIds });
+            console.log('Ficha:', ficha);
+            console.log('Fecha:', fecha);
+
+            const aprendices = await Aprendiz.find({ ficha });
+            const ids_Aprendiz = aprendices.map(aprendiz => aprendiz._id);
+            console.log('IDs de Aprendices:', ids_Aprendiz);
+
+            // Buscar bitácoras directamente con el filtro de fecha
+            const bitacoras = await Bitacora.find({
+                aprendiz: { $in: ids_Aprendiz },
+                fecha: new Date(fecha) // Asegúrate de que `fecha` esté en el formato correcto
+            });
+
+            console.log('Bitácoras encontradas:', bitacoras.length);
+
+            res.json({ bitacoras });
         } catch (error) {
-            console.error("Error en getListarBitacorasPorFicha:", error);
-            res.status(500).json({ error: error.message });
+            res.status(400).json({ error });
         }
     },
     postCrearBitacora1: async (req, res) => {

@@ -1,5 +1,6 @@
 const Aprendiz = require("./../models/aprendices.js")
 const Bitacora = require("./../models/bitacoras.js")
+const Ficha = require("./../models/fichas.js")
 
 const bitacoraHelpers = {
     validarAprendiz1: async (aprendiz) => {
@@ -36,8 +37,16 @@ const bitacoraHelpers = {
         const estadosValidos = ["Asistió", "No asistió", "Excusa", "Pendiente"];
         if (!estadosValidos.includes(estado)) {
             throw new Error("El estado de la bitácora debe ser 'Asistió', 'No asistió', 'Excusa' o 'Pendiente'");
+        } else {
+            return true;
         }
-        return true;
+
+    },
+    validarFicha: async (ficha) => {
+        let existeFicha = await Ficha.findOne({ _id: ficha })
+        if (!existeFicha) {
+            throw new Error("La ficha no existe en la base de datos")
+        }
     }
 }
 module.exports = { bitacoraHelpers };
