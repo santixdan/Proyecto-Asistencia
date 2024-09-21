@@ -3,10 +3,10 @@
     <h3 id="tituloPrincipal">Bitácoras</h3>
     <hr id="hr" class="bg-green-9">
     <div class="q-pa-md">
-      <div class="q-pa-md q-gutter-sm">
+      <!--<div class="q-pa-md q-gutter-sm">
         <q-btn push label="Crear Bitácora" color="green-9" @click="(icon = true)" />
-        <!-- <q-btn push style="float: right;" round color="green-9" icon="print" to="/tabla" target="_blank"/> -->
-      </div>
+         <q-btn push style="float: right;" round color="green-9" icon="print" to="/tabla" target="_blank"/> 
+      </div>-->
       <q-table title="Bitácoras" :rows="rows" :columns="columns" row-key="name" :loading="useBitacora.loading">
         <template v-slot:body-cell-opciones="props">
           <q-td :props="props">
