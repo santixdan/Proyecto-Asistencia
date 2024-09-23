@@ -1,7 +1,7 @@
 <template>
-  <q-layout view="hHh lpR lff">
+  <q-layout view="hHh lpR fff">
     <q-header elevated class="bg-green-9 text-with">
-      <q-toolbar class="custom-toolbar-title" >
+      <q-toolbar class="custom-toolbar-title">
         <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
         <q-toolbar-title>
           <q-avatar>
@@ -9,8 +9,8 @@
           </q-avatar>
           <q-btn flat v-if="$route.path != '/home'" to="/home" id="btnBack"><font-awesome-icon
               :icon="['fas', 'arrow-right-from-bracket']" style="font-size: 24px;" /></q-btn>
-          <q-btn flat v-else to="/" id="btnBack"><font-awesome-icon :icon="['fas', 'arrow-right-from-bracket']"
-              style="font-size: 24px;" /></q-btn>
+          <q-btn flat v-else @click="useUsuario.logout()" to="/" id="btnBack"><font-awesome-icon
+              :icon="['fas', 'arrow-right-from-bracket']" style="font-size: 24px;" /></q-btn>
         </q-toolbar-title>
       </q-toolbar>
     </q-header>
@@ -27,23 +27,28 @@
             <q-btn push to="/aprendiz" label="Aprendices" color="green-9" class="full-width q-mb-sm" />
             <q-btn push to="/usuario" label="Usuarios" color="green-9" class="full-width q-mb-sm" />
             <q-btn push to="/informe" label="Informe" color="green-9" class="full-width q-mb-sm" />
+            <q-btn push flat to="/" label="Cerrar sesión" color="green-9" class="full-width q-mb-sm"
+              @click="useUsuario.logout()" />
           </div>
         </q-list>
       </q-scroll-area>
 
-      <q-img align="center" class="absolute-top" src="https://img.freepik.com/vector-premium/fondo-diferentes-formas-verdes_23-2148358648.jpg" style="height: 150px">
+      <q-img align="center" class="absolute-top"
+        src="https://img.freepik.com/vector-premium/fondo-diferentes-formas-verdes_23-2148358648.jpg"
+        style="height: 150px">
         <div class="absolute-bottom bg-transparent">
           <q-avatar size="56px" class="q-mb-sm">
             <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
           </q-avatar>
-          <div class="text-weight-bold">{{ !nombre?"":nombre }}</div>
-          <div>{{ !correo?"":correo }}</div>
+          <div class="text-weight-bold">{{ nombre }}</div>
+          <div>{{ correo }}</div>
         </div>
       </q-img>
     </q-drawer>
     <q-page-container>
-      <div v-if="$route.path === '/home'" class="q-pa-md row items-start q-gutter-md" id="divCards">
-        <q-card class="my-card text-white" >
+      <div v-if="$route.path === '/home'" class="q-pa-md row justify-center items-center q-gutter-md"
+        style="min-height: 100vh;">
+        <q-card class="my-card text-white">
           <q-card-section class="bg-green-9">
             <div class="text-h6" align="center">FICHAS</div>
           </q-card-section>
@@ -56,7 +61,7 @@
             <q-btn push to="/ficha" color="green-9">BUSCAR</q-btn>
           </q-card-actions>
         </q-card>
-        <q-card class="my-card text-white" id="cards">
+        <q-card class="my-card text-white">
           <q-card-section class="bg-green-9">
             <div class="text-h6" align="center">BITÁCORAS</div>
           </q-card-section>
@@ -69,7 +74,7 @@
             <q-btn push to="/bitacora" color="green-9">BUSCAR</q-btn>
           </q-card-actions>
         </q-card>
-        <q-card class="my-card text-white" id="cards">
+        <q-card class="my-card text-white">
           <q-card-section class="bg-green-9">
             <div class="text-h6" align="center">APRENDICES</div>
           </q-card-section>
@@ -82,7 +87,7 @@
             <q-btn push to="/aprendiz" color="green-9">BUSCAR</q-btn>
           </q-card-actions>
         </q-card>
-        <q-card class="my-card text-white" id="cards">
+        <q-card class="my-card text-white">
           <q-card-section class="bg-green-9">
             <div class="text-h6" align="center">USUARIOS</div>
           </q-card-section>
@@ -95,13 +100,27 @@
             <q-btn push to="/usuario" color="green-9">BUSCAR</q-btn>
           </q-card-actions>
         </q-card>
+        <q-card class="my-card text-white">
+          <q-card-section class="bg-green-9">
+            <div class="text-h6" align="center">INFORMES</div>
+          </q-card-section>
+          <q-separator dark />
+          <q-card-section id="imgSection">
+            <img id="imgCards" src="https://media-public.canva.com/NKnUU/MAFiIINKnUU/1/t.png" alt="">
+          </q-card-section>
+          <q-separator />
+          <q-card-actions id="btnSection">
+            <q-btn push to="/informe" color="green-9">BUSCAR</q-btn>
+          </q-card-actions>
+        </q-card>
       </div>
       <router-view></router-view>
     </q-page-container>
     <q-footer class="bg-grey-4 text-black">
       <q-toolbar>
         <q-toolbar-title>
-          <div class="text-center text-h6 text-weight-bold text-subtitle1">REPFORA - Sena 2024 © Todos los derechos reservados</div>
+          <div class="text-center text-h6 text-weight-bold text-subtitle1">REPFORA - Sena 2024 © Todos los derechos
+            reservados</div>
         </q-toolbar-title>
       </q-toolbar>
     </q-footer>
@@ -116,8 +135,10 @@ import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { useUsuarioStore } from "./../stores/usuarios.js";
 
 let useUsuario = useUsuarioStore();
-let correo = ref(useUsuario.usuario.email) 
-let nombre = ref(useUsuario.usuario.nombre)
+let correo = ref(useUsuario?.usuario?.email || "")
+let nombre = ref(useUsuario?.usuario?.nombre || "")
+
+
 
 library.add(faArrowRightFromBracket);
 
@@ -190,8 +211,8 @@ function toggleLeftDrawer() {
   margin-bottom: 1rem;
 }
 
-@media screen and (max-width:550px) and (min-width:300px){
-  #divCards{
+@media screen and (max-width:550px) and (min-width:300px) {
+  #divCards {
     display: flex;
     flex-direction: column;
     justify-content: center;

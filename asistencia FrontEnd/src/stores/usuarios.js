@@ -17,6 +17,15 @@ export const useUsuarioStore = defineStore("usuario", () => {
                     "token": xtoken.value
                 }
             })
+            if (xtoken.value === null || xtoken.value === "" || xtoken.value === 0){
+                Notify.create({
+                    color: "red-5",
+                    textColor: "white",
+                    icon: "warning",
+                    message: "No hay Token",
+                    timeout: 2500,
+                });
+            }
             return r
         } catch (error) {
             console.log(error);
@@ -151,8 +160,12 @@ export const useUsuarioStore = defineStore("usuario", () => {
             loading.value = false
         }
     }
+    function logout() {
+        xtoken.value = null;
+        usuario.value = null;
+    };
     return {
-        getListarUsuarios, postCrearUsuario, postLoginUsuario, putActivarUsuario, putDesactivarUsuario, putModificarPassword, putModificarUsuario, loading, xtoken, usuario
+        getListarUsuarios, postCrearUsuario, postLoginUsuario, putActivarUsuario, putDesactivarUsuario, putModificarPassword, putModificarUsuario, loading, xtoken, usuario, logout
     }
 }, {
     persist: {

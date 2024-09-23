@@ -10,10 +10,13 @@
         <template v-slot:body-cell-opciones="props">
           <q-td :props="props">
             <div class="q-pa-md q-gutter-sm">
-              <q-btn @click="(icon = true), (change = true), traerId(props.row._id)" push><font-awesome-icon style="font-size: 20px;" icon="pen-to-square" /></q-btn>
+              <q-btn @click="(icon = true), (change = true), traerId(props.row._id)" push><font-awesome-icon
+                  style="font-size: 20px;" icon="pen-to-square" /></q-btn>
               <q-btn v-if="props.row.estado == 0" @click="activar(props.row._id)"
-                :loading="loadingButtons[props.row._id]" push color="green-6"><font-awesome-icon style="font-size: 20px;" :icon="['fas', 'check']" /></q-btn>
-              <q-btn v-else @click="desactivar(props.row._id)" :loading="loadingButtons[props.row._id]" push color="red-6"><font-awesome-icon style="font-size: 20px;" :icon="['fas', 'xmark']" /></q-btn>
+                :loading="loadingButtons[props.row._id]" push color="green-6"><font-awesome-icon
+                  style="font-size: 20px;" :icon="['fas', 'check']" /></q-btn>
+              <q-btn v-else @click="desactivar(props.row._id)" :loading="loadingButtons[props.row._id]" push
+                color="red-6"><font-awesome-icon style="font-size: 20px;" :icon="['fas', 'xmark']" /></q-btn>
             </div>
           </q-td>
         </template>
@@ -56,9 +59,10 @@
                     } else { return true }
                   }
                 ]" />
-                <q-input @paste.prevent v-if="change === false" :type="isPwd ? 'password' : 'text'" filled v-model="password"
-                  label="Contraseña" lazy-rules
-                  :rules="[val => (val && val.length > 0) || 'Por favor, dígite la contraseña']"><template v-slot:append>
+                <q-input @paste.prevent v-if="change === false" :type="isPwd ? 'password' : 'text'" filled
+                  v-model="password" label="Contraseña" lazy-rules
+                  :rules="[val => (val && val.length > 0) || 'Por favor, dígite la contraseña']"><template
+                    v-slot:append>
                     <q-icon :name="isPwd ? 'visibility_off' : 'visibility'" class="cursor-pointer"
                       @click="isPwd = !isPwd" />
                   </template></q-input>
@@ -77,13 +81,12 @@
 <script setup>
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faArrowRightFromBracket, faPenToSquare, faCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
-library.add(faArrowRightFromBracket, faPenToSquare, faCheck, faXmark);
+import {  faPenToSquare, faCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { Notify } from 'quasar'
 import { onBeforeMount, ref } from "vue";
 import { useUsuarioStore } from "./../stores/usuarios.js";
 
-
+library.add( faPenToSquare, faCheck, faXmark);
 let useUsuario = useUsuarioStore();
 let email = ref("");
 let name = ref("");
@@ -119,7 +122,17 @@ onBeforeMount(() => {
 
 async function traer() {
   let res = await useUsuario.getListarUsuarios();
-  rows.value = res.data.usuarios;
+  if (res.data.usuarios.length === 0) {
+    Notify.create({
+      color: "red-5",
+      textColor: "white",
+      icon: "warning",
+      message: "No hay registros con esas especificaciones",
+      timeout: 2500,
+    });
+  } else {
+    rows.value = res.data.usuarios;
+  }
 }
 
 async function activar(id) {

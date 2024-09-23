@@ -72,12 +72,12 @@
 <script setup>
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faArrowRightFromBracket, faPenToSquare, faCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faPenToSquare, faCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { Notify } from 'quasar'
 import { onBeforeMount, ref } from "vue";
 import { useFichaStore } from '../stores/fichas.js';
 
-library.add(faArrowRightFromBracket, faPenToSquare, faCheck, faXmark);
+library.add( faPenToSquare, faCheck, faXmark);
 let useFicha = useFichaStore();
 let code = ref("");
 let name = ref("");

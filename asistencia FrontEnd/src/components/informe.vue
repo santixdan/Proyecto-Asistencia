@@ -42,7 +42,7 @@
 
 <script setup>
 import { Notify } from 'quasar'
-import { onBeforeMount, ref } from "vue";
+import { ref } from "vue";
 import { useAprendizStore } from '../stores/aprendices.js';
 import { useBitacoraStore } from '../stores/bitacoras.js';
 import { useFichaStore } from '../stores/fichas.js';
@@ -51,9 +51,8 @@ let useBitacora = useBitacoraStore()
 let useAprendiz = useAprendizStore()
 let useFicha = useFichaStore()
 let ficha = ref();
-let fecha = ref();
+let fecha = ref('');
 let options = ref()
-// let loadingButtons = ref({});
 let rows = ref([]);
 let columns = ref([
     {
@@ -78,24 +77,34 @@ let columns = ref([
     { name: "estado1", align: "center", label: "Estado", field: "estado" }
 ]);
 
-// onBeforeMount(() => {
-//     traer()
-//     // traerAprendices()
-// })
 
 
 async function traer() {
     let res = await useBitacora.getListarBitacoraPorFechaYFicha(fecha.value.trim(), ficha.value.trim());
-    if (res.validar.value === true) {
+    if (res.r.data.bitacoras.length === 0) {
+        Notify.create({
+            color: "red-5",
+            textColor: "white",
+            icon: "warning",
+            message: "No hay registros con esas especificaciones",
+            timeout: 2500,
+        });
+    } else if (res.validar.value === true) {
         let res2 = await useAprendiz.getListarAprendiz();
         rows.value = res.r.data.bitacoras.map(bitacora => {
             return {
                 ...bitacora,
+                fecha: formatFecha(bitacora.fecha),
                 aprendiz: res2.data.aprendices.find(aprendiz => aprendiz._id === bitacora.aprendiz)?.cedula,
                 aprendiznombre: res2.data.aprendices.find(aprendiz => aprendiz._id === bitacora.aprendiz)?.nombre
             };
         })
-
+        Notify.create({
+            color: "green-6",
+            message: "Busqueda exitosa",
+            icon: "cloud_done",
+            timeout: 2500,
+        });
     } else {
         Notify.create({
             color: "red-5",
@@ -133,6 +142,11 @@ const filterFn = async (val, update) => {
 function onReset() {
     fecha.value = ""
     ficha.value = ""
+}
+
+function formatFecha(fecha) {
+    const options = { year: "numeric", month: "2-digit", day: "2-digit" };
+    return new Date(fecha).toLocaleDateString("es-ES", options);
 }
 
 </script>

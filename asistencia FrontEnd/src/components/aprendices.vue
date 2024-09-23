@@ -10,10 +10,13 @@
         <template v-slot:body-cell-opciones="props">
           <q-td :props="props">
             <div class="q-pa-md q-gutter-sm">
-              <q-btn push @click="(icon = true), (change = true), traerId(props.row._id)" ><font-awesome-icon style="font-size: 20px;" icon="pen-to-square" /></q-btn>
+              <q-btn push @click="(icon = true), (change = true), traerId(props.row._id)"><font-awesome-icon
+                  style="font-size: 20px;" icon="pen-to-square" /></q-btn>
               <q-btn push v-if="props.row.estado == 0" @click="activar(props.row._id)"
-                :loading="loadingButtons[props.row._id]" color="green-6"><font-awesome-icon style="font-size: 20px;" :icon="['fas', 'check']" /></q-btn>
-              <q-btn push v-else @click="desactivar(props.row._id)" :loading="loadingButtons[props.row._id]" color="red-6"><font-awesome-icon style="font-size: 20px;" :icon="['fas', 'xmark']" /></q-btn>
+                :loading="loadingButtons[props.row._id]" color="green-6"><font-awesome-icon style="font-size: 20px;"
+                  :icon="['fas', 'check']" /></q-btn>
+              <q-btn push v-else @click="desactivar(props.row._id)" :loading="loadingButtons[props.row._id]"
+                color="red-6"><font-awesome-icon style="font-size: 20px;" :icon="['fas', 'xmark']" /></q-btn>
             </div>
           </q-td>
         </template>
@@ -39,8 +42,6 @@
           <q-card-section>
             <div class="q-pa-md" style="max-width: 400px">
               <q-form @submit="crear()" @reset="onReset()" class="q-gutter-md">
-                <!-- <q-select filled type="number" v-model="ficha" :options="options" label="Ficha" emit-value
-                  map-options /> -->
                 <q-select filled type="number" v-model="ficha" use-input input-debounce="0" label="Ficha"
                   :options="options" @filter="filterFn" style="width: 250px" behavior="menu" emit-value map-options
                   lazy-rules :rules="[
@@ -106,13 +107,13 @@
 <script setup>
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faArrowRightFromBracket, faPenToSquare, faCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faPenToSquare, faCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { Notify } from 'quasar'
 import { onBeforeMount, ref } from "vue";
 import { useAprendizStore } from '../stores/aprendices.js';
 import { useFichaStore } from '../stores/fichas.js';
 
-library.add(faArrowRightFromBracket, faPenToSquare, faCheck, faXmark);
+library.add( faPenToSquare, faCheck, faXmark);
 let useFicha = useFichaStore();
 let useAprendiz = useAprendizStore()
 let email = ref("");
@@ -134,7 +135,7 @@ let columns = ref([
     align: "center",
     field: "nombre",
     sortable: true,
-  }, 
+  },
   {
     name: "cedula1",
     align: "center",
@@ -177,39 +178,24 @@ onBeforeMount(() => {
 async function traer() {
   let res = await useAprendiz.getListarAprendiz();
   let res2 = await useFicha.getListarFichas();
-  rows.value = res.data.aprendices.map(aprendiz => {
-    return {
-      ...aprendiz,
-      ficha: res2.data.fichas.find(ficha => ficha._id === aprendiz.ficha)?.codigo,
-      fichanombre: res2.data.fichas.find(ficha => ficha._id === aprendiz.ficha)?.nombre
-    };
-  })
+  if (res.data.aprendices.length === 0) {
+    Notify.create({
+      color: "red-5",
+      textColor: "white",
+      icon: "warning",
+      message: "No hay registros con esas especificaciones",
+      timeout: 2500,
+    });
+  } else {
+    rows.value = res.data.aprendices.map(aprendiz => {
+      return {
+        ...aprendiz,
+        ficha: res2.data.fichas.find(ficha => ficha._id === aprendiz.ficha)?.codigo,
+        fichanombre: res2.data.fichas.find(ficha => ficha._id === aprendiz.ficha)?.nombre
+      };
+    })
+  }
 }
-
-// const filterFn = async (val, update) => {
-//   let res = await useAprendiz.getListarAprendiz();
-//   const aprendicesActivos = res.data.aprendices.filter(aprendiz => aprendiz.estado === 1);
-
-//   if (val === '') {
-//     update(() => {
-//       options.value = aprendicesActivos.map(aprendiz => ({
-//         label: aprendiz.cedula,
-//         value: aprendiz._id
-//       }));
-//     });
-//     return;
-//   }
-
-//   update(() => {
-//     const needle = val.toLowerCase();
-//     options.value = aprendicesActivos
-//       .map(aprendiz => ({
-//         label: aprendiz.cedula,
-//         value: aprendiz._id
-//       }))
-//       .filter(option => option.label.toLowerCase().includes(needle));
-//   });
-// }
 
 const filterFn = async (val, update) => {
   let res = await useFicha.getListarFichas();
