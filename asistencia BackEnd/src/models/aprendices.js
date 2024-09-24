@@ -6,6 +6,7 @@ const aprendizSchema = new mongoose.Schema({
     nombre: { type: String, required: true },
     telefono: { type: String, required: true, unique: true },
     email: { type: String, required: true, unique: true },
+    firma: { type: String, required: true },
     estado: { type: Number, default: 1, enum: [1, 0] }
 }, { timestamps: true })
 

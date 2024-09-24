@@ -37,8 +37,9 @@ const httpAprendices = {
             const nombre = req.body.nombre.trim();    
             const telefono = req.body.telefono.trim();
             const email = req.body.email.trim();
+            const firma = req.body.firma.trim();
             
-            const newAprendiz = new Aprendiz({ ficha, cedula, nombre, telefono, email });
+            const newAprendiz = new Aprendiz({ ficha, cedula, nombre, telefono, email, firma });
             await newAprendiz.save();
             res.json({ newAprendiz });
         } catch (error) {
@@ -53,6 +54,7 @@ const httpAprendices = {
             const nombre = req.body.nombre?.trim();    
             const telefono = req.body.telefono?.trim();
             const email = req.body.email?.trim();
+            const firma = req.body.firma?.trim();
 
             const aprendiz = await Aprendiz.findById(id);
 
@@ -61,6 +63,7 @@ const httpAprendices = {
             if (nombre) aprendiz.nombre = nombre;
             if (telefono) aprendiz.telefono = telefono;
             if (email) aprendiz.email = email;
+            if (firma) aprendiz.firma = firma;
 
             await aprendiz.save();
             res.json({ aprendiz });

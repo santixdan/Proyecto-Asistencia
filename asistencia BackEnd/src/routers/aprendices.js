@@ -26,7 +26,7 @@ routerAprendiz.get("/listarPorId/:id", [
 
 //POST
 routerAprendiz.post("/crear", [
-    validarJWT,
+    // validarJWT,
     check('nombre', 'El nombre es obligatorio y debe ser texto').notEmpty().isString(),
     check('cedula', 'La cédula es obligatoria').notEmpty(),
     check('cedula', 'La cédula debe tener mínimo 8 caracteres').isLength({ min: 8 }),
@@ -41,6 +41,7 @@ routerAprendiz.post("/crear", [
     check('email', 'El correo es obligatorio').notEmpty(),
     check('email', 'El correo debe ser válido').isEmail(),
     check('email').custom(apredizHelpers.validarEmailAprendiz),
+    check('firma','La firma es obligatoria').notEmpty(),
     validarCampos
 ], httpAprendices.postCrearAprendiz)
 
