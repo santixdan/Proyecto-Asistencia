@@ -41,16 +41,16 @@
 <script setup>
 import { Notify } from 'quasar'
 import { ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRouter } from 'vue-router';
 import { useUsuarioStore } from "./../stores/usuarios.js";
 
-const route = useRoute();
+const router = useRouter();
 const useUsuario = useUsuarioStore();
 let newPassword = ref('');
 let confirmPassword = ref('');
 let isPwd2 = ref(true);
 let isPwd3 = ref(true);
-let token = route.params.token;
+let token = router.currentRoute.value.params.token;
 
 async function resetPassword() {
     try {
@@ -66,7 +66,7 @@ async function resetPassword() {
             const res = await useUsuario.putModificarPassword(newPassword.value.trim(), confirmPassword.value.trim(), token)
             if (res.validar.value === true) {
                 onReset()
-                await route.replace('/');
+                await router.push('/');
                 Notify.create({
                     color: "green-6",
                     message: "Cambio exitoso",
@@ -84,7 +84,7 @@ async function resetPassword() {
             }
         }
     } catch (error) {
-        console.error('Error:', error);
+        console.error(error);
     }
 };
 
