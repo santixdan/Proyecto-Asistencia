@@ -32,6 +32,12 @@ routerUsuario.post('/login', [
     }),
     validarCampos
 ], httpUsuario.postLoginUsuario)
+routerUsuario.post("/enviarEmail", [
+    check('email', 'El email es obligatorio').notEmpty(),
+    check('email', 'El email debe ser válido').isEmail(),
+    check('email').custom(usuarioHelpers.validarNoEmailUsuario),
+    validarCampos
+], httpUsuario.postCrearUsuarios)
 
 //PUT
 routerUsuario.put("/modificar/:id", [
@@ -46,10 +52,7 @@ routerUsuario.put("/modificar/:id", [
     validarCampos
 ], httpUsuario.putModificarUsuarios)
 routerUsuario.put("/modificarPassword", [
-    check('email', 'El email es obligatorio').notEmpty(),
-    check('email', 'El email debe ser válido').isEmail(),
-    check('email').custom(usuarioHelpers.validarNoEmailUsuario),
-    check('email').custom(usuarioHelpers.validarUsuarioActivo),
+    check('token', 'El token es obligatorio').notEmpty(),
     check('newPassword', 'La nueva contraseña es obligatoria').notEmpty(),
     check('confirmPassword', 'La confirmacion contraseña es obligatoria').notEmpty(),
     check('newPassword').custom(async (newPassword, { req }) => {

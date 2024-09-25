@@ -1,6 +1,15 @@
 const Usuario = require("./../models/usuarios.js");
 const bcryptjs = require("bcryptjs");
 const { generarJWT } = require("../middlewares/validarJWT");
+const nodemailer = require("nodemailer")
+const jwt = require('jsonwebtoken');
+const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+        user: "greycharlie812@gmail.com",
+        pass: "grey12345"
+    }
+});
 
 const httpUsuario = {
     getListarUsuarios: async (req, res) => {
@@ -39,6 +48,29 @@ const httpUsuario = {
             res.status(400).json({ error });
         }
     },
+    postEnviarEmail: async (req, res) => {
+        try {
+            const email = req.body.email.trim();
+            const user = await Usuario.findOne({ email })
+            const token = jwt.sign({ userId: user._id }, process.env.SECRETORPRIVATEKEY, { expiresIn: "1h" });
+            const resetLink = `https://proyecto-asistencia-cxfa.onrender.com/#/recuperar?token=${token}`
+            const mailOptions = {
+                from: "greycharlie812@gmail.com",
+                to: email,
+                subject: "Restablecimiento de contraseña",
+                text: `Haz clic en el siguiente enlace para restablecer tu contraseña: ${resetLink}`
+            };
+            transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                    console.error(error);
+                    return res.status(500).send("Error al enviar el correo electrónico.");
+                }
+                res.status(200).send("Correo electrónico enviado.");
+            });
+        } catch (error) {
+            res.status(400).json({ error });
+        }
+    },
     putModificarUsuarios: async (req, res) => {
         try {
             const id = req.params.id.trim();
@@ -58,21 +90,38 @@ const httpUsuario = {
             res.status(400).json({ error });
         }
     },
+    // putModificarPassword: async (req, res) => {
+    //     try {
+    //         const email = req.body.email.trim();
+    //         const newPassword = req.body.newPassword.trim();
+
+    //         const usuario = await Usuario.findOne({ email });
+    //         const salt = bcryptjs.genSaltSync();
+    //         usuario.password = bcryptjs.hashSync(newPassword, salt);
+
+    //         await usuario.save();
+    //         res.json({ usuario });
+    //     } catch (error) {
+    //         res.status(400).json({ error: "algo mal" });
+    //     }
+    // },
     putModificarPassword: async (req, res) => {
         try {
-            const email = req.body.email.trim();
+            const token = req.body.token.trim();
             const newPassword = req.body.newPassword.trim();
 
-            const usuario = await Usuario.findOne({ email });
+            const decoded = jwt.verify(token, process.env.SECRETORPRIVATEKEY);
             const salt = bcryptjs.genSaltSync();
-            usuario.password = bcryptjs.hashSync(newPassword, salt);
+            const hashedPassword = bcryptjs.hashSync(newPassword, salt);
 
-            await usuario.save();
-            res.json({ usuario });
+            await Usuario.findByIdAndUpdate(decoded.userId, { password: hashedPassword });
+
+            res.status(200).send("Contraseña actualizada exitosamente.");
         } catch (error) {
             res.status(400).json({ error: "algo mal" });
         }
     },
+
     putActivarUsuario: async (req, res) => {
         try {
             const id = req.params.id.trim();
