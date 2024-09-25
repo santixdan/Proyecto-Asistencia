@@ -128,6 +128,25 @@ export const useUsuarioStore = defineStore("usuario", () => {
         }
     }
 
+    async function putModificarPasswordPrueba(token, newPassword, confirmPassword) {
+        loading.value = true
+        try {
+            let r = await axios.put(`${API_URL}/usuarios/modificarPasswordPrueba`, {
+                token,
+                newPassword,
+                confirmPassword
+            })
+            validar.value = true
+            return { r, validar }
+        } catch (error) {
+            validar.value = false
+            console.log(error);
+            return { error, validar }
+        } finally {
+            loading.value = false
+        }
+    }
+
     async function putActivarUsuario(id) {
         loading.value = true
         try {
@@ -165,7 +184,7 @@ export const useUsuarioStore = defineStore("usuario", () => {
         usuario.value = null;
     };
     return {
-        getListarUsuarios, postCrearUsuario, postLoginUsuario, putActivarUsuario, putDesactivarUsuario, putModificarPassword, putModificarUsuario, loading, xtoken, usuario, logout
+        getListarUsuarios, postCrearUsuario, postLoginUsuario, putActivarUsuario, putDesactivarUsuario, putModificarPassword, putModificarPasswordPrueba, putModificarUsuario, loading, xtoken, usuario, logout
     }
 }, {
     persist: {

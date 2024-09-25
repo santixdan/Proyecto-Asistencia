@@ -1,50 +1,68 @@
 <template>
-    <q-card class="card">
-        <div class="logo-container">
-            <img class="logo"
-                src="https://www1.funcionpublica.gov.co/documents/28587425/42384076/logoSena.png/b8131ab9-4c1f-4ef9-8dd4-569d6b7169b6?t=1701956509586"
-                alt="Logo">
-        </div>
-        <q-card-actions class="actions">
-            <q-form @submit="resetPassword()" @reset="onReset()" class="form">
-                <q-input :type="isPwd2 ? 'password' : 'text'" filled v-model="newPassword" label="Nueva contraseña"
-                    @paste.prevent lazy-rules
-                    :rules="[val => (val && val.length > 0) || 'Por favor, dígite la nueva contraseña']"><template
-                        v-slot:append>
-                        <q-icon :name="isPwd2 ? 'visibility_off' : 'visibility'" class="cursor-pointer"
-                            @click="isPwd2 = !isPwd2" />
-                    </template></q-input>
-                <q-input :type="isPwd3 ? 'password' : 'text'" filled v-model="confirmPassword"
-                    label="Confirmar contraseña" @paste.prevent lazy-rules
-                    :rules="[val => (val && val.length > 0) || 'Por favor, dígite la confirmación de la contraseña']"><template
-                        v-slot:append>
-                        <q-icon :name="isPwd3 ? 'visibility_off' : 'visibility'" class="cursor-pointer"
-                            @click="isPwd3 = !isPwd3" />
-                    </template></q-input>
-                <div>
-                    <q-btn class="btn" label="Enviar" type="submit" color="green-9" push />
+    <div class="q-pa-md" align="center" id="superContainer" style="margin: 0px;">
+        <q-card style="margin: 0px;" class="my-card">
+            <q-card-section class="bg-green-9 text-white">
+                <h4 data-v-8ea77ebc class="q-mt-sm q-mb-sm text-white text-center text-weight-bold">ASISTENCIA
+                </h4>
+            </q-card-section>
+
+            <q-card-actions class="q-pa-md column justify-center items-center">
+                <div data-v-8ea77ebc class="column items-center q-mt-md">
+                    <img style="height: 100px; width: 100px;"
+                        src="https://www1.funcionpublica.gov.co/documents/28587425/42384076/logoSena.png/b8131ab9-4c1f-4ef9-8dd4-569d6b7169b6?t=1701956509586">
                 </div>
-            </q-form>
-        </q-card-actions>
-    </q-card>
+                <div data-v-8ea77ebc class="text-h5 text-weight-bold" id="logintxt">RECUPERAR CONTRASEÑA</div>
+                <hr data-v-8ea77ebc class="q-separator q-separator--horizontal" aria-orientation="horizontal" id="hr2">
+                <!-- <div class="q-pa-md" style="margin: 0%;">
+                    <div>
+                        <q-select filled v-model="model" :options="options" label="Rol" style="width: 250px"
+                            behavior="menu" emit-value map-options />
+                    </div>
+                </div> -->
+                <q-form @submit="resetPassword()" class="q-gutter-md">
+                    <q-input :type="isPwd2 ? 'password' : 'text'" filled v-model="newPassword" label="Nueva contraseña"
+                        @paste.prevent lazy-rules
+                        :rules="[val => (val && val.length > 0) || 'Por favor, dígite la nueva contraseña']"><template
+                            v-slot:append>
+                            <q-icon :name="isPwd2 ? 'visibility_off' : 'visibility'" class="cursor-pointer"
+                                @click="isPwd2 = !isPwd2" />
+                        </template></q-input>
+                    <q-input :type="isPwd3 ? 'password' : 'text'" filled v-model="confirmPassword"
+                        label="Confirmar contraseña" @paste.prevent lazy-rules
+                        :rules="[val => (val && val.length > 0) || 'Por favor, dígite la confirmación de la contraseña']"><template
+                            v-slot:append>
+                            <q-icon :name="isPwd3 ? 'visibility_off' : 'visibility'" class="cursor-pointer"
+                                @click="isPwd3 = !isPwd3" />
+                        </template></q-input>
+                    <div>
+                        <q-btn push :loading="useUsuario.loading" label="Guardar" type="submit" color="green-9" />
+                    </div>
+                </q-form>
+            </q-card-actions>
+        </q-card>
+    </div>
 </template>
 <script setup>
 import { ref } from 'vue';
-const newPassword = ref('');
-const confirmPassword = ref('');
+import { useRoute } from 'vue-router';
+import { useUsuarioStore } from "./../stores/usuarios.js";
+
+const route = useRoute();
+const useUsuario = useUsuarioStore();
+let newPassword = ref('');
+let confirmPassword = ref('');
 let isPwd2 = ref(true);
 let isPwd3 = ref(true);
-import { useUsuarioStore } from "./../stores/usuarios.js";
-let useUsuario = useUsuarioStore();
+let token = route.params.token;
+
 async function resetPassword() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const token = urlParams.get('token');
     try {
-        const res = await useUsuario.putModificarPassword(newPassword, confirmPassword, token)
+        const res = await useUsuario.putModificarPasswordPrueba(newPassword, confirmPassword, token)
         if (res.validar.value === true) {
             icon.value = false
             onReset()
             traer();
+            await route.replace('/');
             Notify.create({
                 color: "green-6",
                 message: "Registro exitoso",
@@ -65,3 +83,33 @@ async function resetPassword() {
     }
 };
 </script>
+<style scoped>
+.my-card {
+    width: 100%;
+    max-width: 450px;
+}
+
+#hr2 {
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+#superContainer {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    height: 100vh !important;
+}
+
+#logintxt {
+    margin-top: 15px;
+}
+
+.cardContent {
+    display: flex;
+    flex-direction: column;
+}
+</style>

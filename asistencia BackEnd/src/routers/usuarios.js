@@ -37,7 +37,7 @@ routerUsuario.post("/enviarEmail", [
     check('email', 'El email debe ser válido').isEmail(),
     check('email').custom(usuarioHelpers.validarNoEmailUsuario),
     validarCampos
-], httpUsuario.postCrearUsuarios)
+], httpUsuario.postEnviarEmail)
 
 //PUT
 routerUsuario.put("/modificar/:id", [
@@ -52,7 +52,7 @@ routerUsuario.put("/modificar/:id", [
     validarCampos
 ], httpUsuario.putModificarUsuarios)
 routerUsuario.put("/modificarPassword", [
-    check('token', 'El token es obligatorio').notEmpty(),
+    check('email', 'El email es obligatorio').notEmpty(),
     check('newPassword', 'La nueva contraseña es obligatoria').notEmpty(),
     check('confirmPassword', 'La confirmacion contraseña es obligatoria').notEmpty(),
     check('newPassword').custom(async (newPassword, { req }) => {
@@ -60,6 +60,16 @@ routerUsuario.put("/modificarPassword", [
     }),
     validarCampos
 ], httpUsuario.putModificarPassword)
+routerUsuario.put("/modificarPasswordPrueba", [
+    validarJWT,
+    check('token', 'El token es obligatorio').notEmpty(),
+    check('newPassword', 'La nueva contraseña es obligatoria').notEmpty(),
+    check('confirmPassword', 'La confirmacion contraseña es obligatoria').notEmpty(),
+    check('newPassword').custom(async (newPassword, { req }) => {
+        await usuarioHelpers.validarNewPassword(newPassword, req.body.confirmPassword);
+    }),
+    validarCampos
+], httpUsuario.putModificarPasswordPrueba)
 routerUsuario.put("/activar/:id", [
     validarJWT,
     check('id', 'El id es obligatorio').notEmpty(),
