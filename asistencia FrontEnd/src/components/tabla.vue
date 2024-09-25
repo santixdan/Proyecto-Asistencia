@@ -1,9 +1,9 @@
 <template>
   <div class="registro-asistencia">
-    <h2>REGISTRO DE ASISTENCIA Y APROBACIÓN DEL ACTA No-</h2>
+    <!-- <h2>REGISTRO DE ASISTENCIA Y APROBACIÓN DEL ACTA No-</h2>
     <div class="info">
       <span> {{ day }} de {{ month }} del año {{ year }}</span>
-    </div>
+    </div> -->
 
     <!-- Indicador de carga -->
     <div v-if="loading" class="loading-container">
@@ -18,6 +18,11 @@
     <!-- Tabla de asistencia -->
     <table v-if="!loading && rows.length > 0">
       <thead>
+        <tr>
+          <th colspan="11" style="text-align: center;">
+            REGISTRO DE ASISTENCIA Y APROBACIÓN DEL ACTA No-<br>DEL DÍA {{ day }} DEL MES DE {{ month }} DEL AÑO {{ year }}
+          </th>
+        </tr>
         <tr>
           <th>No.</th>
           <th>Nombres y Apellidos</th>
@@ -63,7 +68,7 @@
             <p>{{ row.autorizaGrabacion ? 'Sí' : 'No' }}</p>
           </td>
           <td>
-            <p>{{ row.firma }}</p>
+            <p><img :src="row.firma" alt=""></p>
           </td>
         </tr>
       </tbody>
@@ -88,9 +93,9 @@ function obtenerFechaActual() {
   let fechaObj = new Date(useBitacora.fechaBitacora);
   day.value = fechaObj.getDate();
   const meses = [
-    "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", 
-    "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
-  ];
+  "ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO",
+  "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"
+];
   month.value = meses[fechaObj.getMonth()];
   year.value = fechaObj.getFullYear();
 }
@@ -112,7 +117,7 @@ async function traer() {
         correo: aprendiz.email || '',
         telefono: aprendiz.telefono || '',
         autorizaGrabacion: bitacora.autorizaGrabacion || false,
-        firma: bitacora.firma || '',
+        firma: aprendiz.firma || '',
       };
     });
   } catch (error) {

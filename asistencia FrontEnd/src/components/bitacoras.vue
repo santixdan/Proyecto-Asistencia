@@ -23,7 +23,9 @@ import { Notify } from 'quasar'
 import { onBeforeMount, ref } from "vue";
 import { useAprendizStore } from '../stores/aprendices.js';
 import { useBitacoraStore } from '../stores/bitacoras.js';
+import { useFichaStore } from '../stores/fichas.js';
 
+let useFicha = useFichaStore();
 let useBitacora = useBitacoraStore()
 let useAprendiz = useAprendizStore()
 let optionsEstado = ['Asistió', 'No asistió', 'Excusa']
@@ -41,6 +43,19 @@ let columns = ref([
     align: "center",
     label: "Nombre del aprendiz",
     field: "aprendiznombre",
+    sortable: true,
+  },
+  {
+    name: "ficha1",
+    align: "center",
+    label: "Código de la ficha",
+    field: "ficha",
+  },
+  {
+    name: "fichanombre1",
+    align: "center",
+    label: "Nombre de la ficha",
+    field: "fichanombre",
     sortable: true,
   },
   {
@@ -78,6 +93,7 @@ async function updateEstado(estado, id) {
 async function traer() {
   let res = await useBitacora.getListarBitacora();
   let res2 = await useAprendiz.getListarAprendiz();
+  let res3 = await useFicha.getListarFichas()
   if (res.data.bitacora.length === 0) {
     Notify.create({
       color: "red-5",
@@ -88,11 +104,15 @@ async function traer() {
     });
   } else {
     rows.value = res.data.bitacora.map(bitacora => {
+      let aprendices = res2.data.aprendices.find(aprendiz => aprendiz._id === bitacora.aprendiz)
+      let fichas = res3.data.fichas.find(ficha => ficha._id === aprendices.ficha)
       return {
         ...bitacora,
         fecha: formatFecha(bitacora.fecha),
-        aprendiz: res2.data.aprendices.find(aprendiz => aprendiz._id === bitacora.aprendiz)?.cedula,
-        aprendiznombre: res2.data.aprendices.find(aprendiz => aprendiz._id === bitacora.aprendiz)?.nombre
+        aprendiz: aprendices.cedula,
+        aprendiznombre: aprendices.nombre,
+        ficha: fichas.codigo,
+        fichanombre: fichas.nombre
       };
     })
   }

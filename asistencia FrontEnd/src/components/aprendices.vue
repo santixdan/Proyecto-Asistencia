@@ -113,7 +113,7 @@ import { onBeforeMount, ref } from "vue";
 import { useAprendizStore } from '../stores/aprendices.js';
 import { useFichaStore } from '../stores/fichas.js';
 
-library.add( faPenToSquare, faCheck, faXmark);
+library.add(faPenToSquare, faCheck, faXmark);
 let useFicha = useFichaStore();
 let useAprendiz = useAprendizStore()
 let email = ref("");
@@ -238,12 +238,14 @@ async function desactivar(id) {
 }
 
 async function traerId(id) {
+  let res = await useFicha.getListarFichas();
   let aprendiz = rows.value.find(apprentice => apprentice._id === id);
+  let fichaAprendiz = res.data.fichas.find(ficha => ficha.codigo === aprendiz.ficha);
   email.value = aprendiz.email
   telefono.value = aprendiz.telefono
-  // ficha.value = aprendiz.ficha
   cedula.value = aprendiz.cedula
   name.value = aprendiz.nombre
+  ficha.value = fichaAprendiz._id;
   idAprendiz.value = id;
 }
 

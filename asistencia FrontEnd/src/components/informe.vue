@@ -69,6 +69,19 @@ let columns = ref([
         sortable: true,
     },
     {
+        name: "ficha1",
+        align: "center",
+        label: "Código de la ficha",
+        field: "ficha",
+    },
+    {
+        name: "fichanombre1",
+        align: "center",
+        label: "Nombre de la ficha",
+        field: "fichanombre",
+        sortable: true,
+    },
+    {
         name: "fecha1",
         align: "center",
         label: "Fecha de la bitácora",
@@ -91,12 +104,17 @@ async function traer() {
         });
     } else if (res.validar.value === true) {
         let res2 = await useAprendiz.getListarAprendiz();
+        let res3 = await useFicha.getListarFichas()
         rows.value = res.r.data.bitacoras.map(bitacora => {
+            let aprendices = res2.data.aprendices.find(aprendiz => aprendiz._id === bitacora.aprendiz)
+            let fichas = res3.data.fichas.find(ficha => ficha._id === aprendices.ficha)
             return {
                 ...bitacora,
                 fecha: formatFecha(bitacora.fecha),
-                aprendiz: res2.data.aprendices.find(aprendiz => aprendiz._id === bitacora.aprendiz)?.cedula,
-                aprendiznombre: res2.data.aprendices.find(aprendiz => aprendiz._id === bitacora.aprendiz)?.nombre
+                aprendiz: aprendices.cedula,
+                aprendiznombre: aprendices.nombre,
+                ficha: fichas.codigo,
+                fichanombre: fichas.nombre
             };
         })
         Notify.create({

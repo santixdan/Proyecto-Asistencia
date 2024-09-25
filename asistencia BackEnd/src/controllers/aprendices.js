@@ -1,5 +1,18 @@
 const Aprendiz = require("./../models/aprendices.js");
 const Ficha = require("./../models/fichas.js");
+const multer = require('multer');
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, './uploads/firmas'); // Carpeta donde se almacenarán las firmas
+    },
+    filename: (req, file, cb) => {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        cb(null, uniqueSuffix + '-' + file.originalname); // Renombra el archivo para evitar colisiones
+    }
+});
+
+const upload = multer({ storage });
 
 const httpAprendices = {
     getListarAprendiz: async (req, res) => {
@@ -37,7 +50,7 @@ const httpAprendices = {
             const nombre = req.body.nombre.trim();    
             const telefono = req.body.telefono.trim();
             const email = req.body.email.trim();
-            const firma = req.body.firma.trim();
+            const firma = req.file ? req.file.filename : null;
             
             const newAprendiz = new Aprendiz({ ficha, cedula, nombre, telefono, email, firma });
             await newAprendiz.save();
@@ -91,4 +104,4 @@ const httpAprendices = {
     }
 };
 
-module.exports = { httpAprendices };
+module.exports = { httpAprendices, upload  };

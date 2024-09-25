@@ -1,5 +1,5 @@
 const express = require('express');
-const { httpAprendices } = require('./../controllers/aprendices.js');
+const { httpAprendices, upload  } = require('./../controllers/aprendices.js');
 const { apredizHelpers } = require("./../helpers/aprendices.js")
 const routerAprendiz = express.Router();
 const { check } = require('express-validator');
@@ -27,6 +27,7 @@ routerAprendiz.get("/listarPorId/:id", [
 //POST
 routerAprendiz.post("/crear", [
     validarJWT,
+    upload.single('firma'),
     check('nombre', 'El nombre es obligatorio y debe ser texto').notEmpty().isString(),
     check('cedula', 'La cédula es obligatoria').notEmpty(),
     check('cedula', 'La cédula debe tener mínimo 8 caracteres').isLength({ min: 8 }),
