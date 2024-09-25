@@ -1,31 +1,30 @@
 <template>
-    <div class="q-pa-md" align="center" id="superContainer" style="margin: 0px;">
+    <div class="q-pa-md row items-start q-gutter-md col-10 col-xs-10 col-sm-8 col-md-4 col-lg-4 items-center flex q-my-lg"
+        align="center" id="superContainer" style="margin: 0px;">
         <q-card style="margin: 0px;" class="my-card">
             <q-card-section class="bg-green-9 text-white">
                 <h4 data-v-8ea77ebc class="q-mt-sm q-mb-sm text-white text-center text-weight-bold">ASISTENCIA
                 </h4>
             </q-card-section>
 
-            <q-card-actions class="q-pa-md column justify-center items-center">
+            <q-card-actions class="cardContent" align="center">
                 <div data-v-8ea77ebc class="column items-center q-mt-md">
                     <img style="height: 100px; width: 100px;"
                         src="https://www1.funcionpublica.gov.co/documents/28587425/42384076/logoSena.png/b8131ab9-4c1f-4ef9-8dd4-569d6b7169b6?t=1701956509586">
                 </div>
                 <div data-v-8ea77ebc class="text-h5 text-weight-bold" id="logintxt">LOG IN</div>
                 <hr data-v-8ea77ebc class="q-separator q-separator--horizontal" aria-orientation="horizontal" id="hr2">
-                <div class="q-pa-md" style="margin: 0%;">
-                    <div>
-                        <q-select filled v-model="model" :options="options" label="Rol" style="width: 250px"
+                <div class="q-pa-md" style="max-width: 300px">
+                    <div class="q-gutter-md">
+                        <q-select filled v-model="model" :options="options" label="Rol" style="width: 230px"
                             behavior="menu" emit-value map-options />
                     </div>
-                </div>
-                <q-form v-if="model === 'USUARIO'" @submit="login()"
-                    class="q-pa-md column justify-center items-center q-gutter-md">
+                </div><br>
+                <q-form v-if="model === 'USUARIO'" @submit="login()" class="q-gutter-md">
                     <q-input filled v-model="email" label="Correo" lazy-rules
-                        :rules="[val => (val && val.length > 0) || 'Por favor, dígite el correo']"
-                        style="width: 250px" />
-                    <q-input :type="isPwd1 ? 'password' : 'text'" style="width: 250px" filled v-model="password"
-                        label="Contraseña" lazy-rules @paste.prevent
+                        :rules="[val => (val && val.length > 0) || 'Por favor, dígite el correo']" />
+                    <q-input :type="isPwd1 ? 'password' : 'text'" filled v-model="password" label="Contraseña"
+                        lazy-rules @paste.prevent
                         :rules="[val => (val && val.length > 0) || 'Por favor, dígite la contraseña']">
                         <template v-slot:append>
                             <q-icon :name="isPwd1 ? 'visibility_off' : 'visibility'" class="cursor-pointer"
@@ -39,11 +38,10 @@
                             @click="(icon = true)" />
                     </div>
                 </q-form>
-                <q-form v-if="model === 'APRENDIZ'" @submit="crear()"
-                    class="q-pa-md column justify-center items-center q-gutter-md">
-                    <q-input filled type="number" v-model="cedula" style="width: 250px;" label="Cédula" lazy-rules
+                <q-form v-if="model === 'APRENDIZ'" @submit="crear()" class="q-gutter-md">
+                    <q-input filled type="number" v-model="cedula" label="Cédula" lazy-rules
                         :rules="[val => val && val.length > 0 || 'Por favor, dígite la cédula del aprendiz']" />
-                    <q-input filled v-model="fecha" style="width: 250px;" label="Fecha" mask="date" lazy-rules
+                    <q-input filled v-model="fecha" label="Fecha" mask="date" lazy-rules
                         :rules="[val => (val && val.length > 0) || 'Por favor, dígite la fecha de la bitácora']">
                         <template v-slot:append>
                             <q-icon name="event" class="cursor-pointer">
@@ -121,7 +119,7 @@ async function recuperar() {
         onReset()
         Notify.create({
             color: "green-6",
-            message: "Registro exitoso",
+            message: "Email Enviado",
             icon: "cloud_done",
             timeout: 2500,
         });
@@ -188,7 +186,6 @@ function onReset() {
     cedula.value = "";
 }
 </script>
-
 <style scoped>
 .my-card {
     width: 100%;
@@ -199,8 +196,6 @@ function onReset() {
     width: 100%;
     margin-top: 10px;
     margin-bottom: 10px;
-    margin-left: 0px;
-    margin-right: 0px;
 }
 
 #superContainer {

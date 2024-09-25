@@ -43,6 +43,7 @@
     </div>
 </template>
 <script setup>
+import { Notify } from 'quasar'
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { useUsuarioStore } from "./../stores/usuarios.js";
@@ -57,7 +58,7 @@ let token = route.params.token;
 
 async function resetPassword() {
     try {
-        const res = await useUsuario.putModificarPassword(newPassword, confirmPassword, token)
+        const res = await useUsuario.putModificarPassword(newPassword.value.trim(), confirmPassword.value.trim(), token)
         if (res.validar.value === true) {
             icon.value = false
             onReset()
