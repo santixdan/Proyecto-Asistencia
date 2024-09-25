@@ -163,8 +163,12 @@ function onReset() {
 }
 
 function formatFecha(fecha) {
-    const options = { year: "numeric", month: "2-digit", day: "2-digit" };
-    return new Date(fecha).toLocaleDateString("es-ES", options);
+  const date = new Date(fecha);
+  const offset = date.getTimezoneOffset();
+  date.setMinutes(date.getMinutes() + offset);
+  
+  const options = { year: "numeric", month: "2-digit", day: "2-digit" };
+  return date.toLocaleDateString("es-ES", options);
 }
 
 </script>
