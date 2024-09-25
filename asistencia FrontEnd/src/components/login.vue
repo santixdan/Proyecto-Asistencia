@@ -1,6 +1,5 @@
 <template>
-    <div class="q-pa-md row items-start q-gutter-md col-10 col-xs-10 col-sm-8 col-md-4 col-lg-4 items-center flex q-my-lg"
-        align="center" id="superContainer" style="margin: 0px;">
+    <div class="q-pa-md" align="center" id="superContainer" style="margin: 0px;">
         <q-card style="margin: 0px;" class="my-card">
             <q-card-section class="bg-green-9 text-white">
                 <h4 data-v-8ea77ebc class="q-mt-sm q-mb-sm text-white text-center text-weight-bold">ASISTENCIA
@@ -39,9 +38,9 @@
                     </div>
                 </q-form>
                 <q-form v-if="model === 'APRENDIZ'" @submit="crear()" class="q-pa-md column justify-center items-center q-gutter-md">
-                    <q-input filled type="number" v-model="cedula"  style="width: 250px" label="Cédula" lazy-rules
+                    <q-input filled type="number" v-model="cedula"  style="width: 250px;" label="Cédula" lazy-rules
                         :rules="[val => val && val.length > 0 || 'Por favor, dígite la cédula del aprendiz']" />
-                    <q-input filled v-model="fecha"  style="width: 250px" label="Fecha" mask="date" lazy-rules
+                    <q-input filled v-model="fecha"  style="width: 250px;" label="Fecha" mask="date" lazy-rules
                         :rules="[val => (val && val.length > 0) || 'Por favor, dígite la fecha de la bitácora']">
                         <template v-slot:append>
                             <q-icon name="event" class="cursor-pointer">
