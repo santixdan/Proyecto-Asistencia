@@ -65,10 +65,10 @@
         <div v-show="icon === true" class="q-pa-md q-gutter-sm">
             <q-dialog v-show="icon === true" v-model="icon" persistent>
                 <q-card>
-                    <q-card-section class="row items-center q-pb-none">
-                        <div class="text-h6">Cambiar contraseña</div>
+                    <q-card-section class="bg-green-9 row items-center">
+                        <div class="text-h6 text-white">Cambiar contraseña</div>
                         <q-space />
-                        <q-btn push icon="close" flat round dense v-close-popup @click="onReset()" />
+                        <q-btn  class="text-white" push icon="close" flat round dense v-close-popup @click="onReset()" />
                     </q-card-section>
 
                     <q-card-section>

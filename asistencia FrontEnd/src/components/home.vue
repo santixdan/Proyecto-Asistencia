@@ -7,9 +7,9 @@
           <q-avatar>
             <img src="https://lostramites.com.co/wp-content/uploads/logo-de-Sena-sin-fondo-Blanco-300x300.png" />
           </q-avatar>
-          <q-btn flat v-if="$route.path != '/home'" to="/home" id="btnBack"><font-awesome-icon
+          <q-btn style="float: right; margin: none;" flat v-if="$route.path != '/home'" to="/home"><font-awesome-icon
               :icon="['fas', 'arrow-right-from-bracket']" style="font-size: 24px;" /></q-btn>
-          <q-btn flat v-else @click="useUsuario.logout()" to="/" id="btnBack"><font-awesome-icon
+          <q-btn style="float: right; margin: none;" flat v-else @click="alert = true"><font-awesome-icon
               :icon="['fas', 'arrow-right-from-bracket']" style="font-size: 24px;" /></q-btn>
         </q-toolbar-title>
       </q-toolbar>
@@ -27,8 +27,8 @@
             <q-btn push to="/aprendiz" label="Aprendices" color="green-9" class="full-width q-mb-sm" />
             <q-btn push to="/usuario" label="Usuarios" color="green-9" class="full-width q-mb-sm" />
             <q-btn push to="/informe" label="Informe" color="green-9" class="full-width q-mb-sm" />
-            <q-btn push flat to="/" label="Cerrar sesión" color="green-9" class="full-width q-mb-sm"
-              @click="useUsuario.logout()" />
+            <q-btn push flat label="Cerrar sesión" color="green-9" class="full-width q-mb-sm"
+              @click="alert = true"/>
           </div>
         </q-list>
       </q-scroll-area>
@@ -38,7 +38,7 @@
         style="height: 150px">
         <div class="absolute-bottom bg-transparent">
           <q-avatar size="56px" class="q-mb-sm">
-            <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
+            <img src="https://www.sena.edu.co/Paginas/img/logo-sena-blanco.png" />
           </q-avatar>
           <div class="text-weight-bold">{{ nombre }}</div>
           <div>{{ correo }}</div>
@@ -46,8 +46,7 @@
       </q-img>
     </q-drawer>
     <q-page-container>
-      <div v-if="$route.path === '/home'" class="q-pa-md row justify-center items-center q-gutter-md"
-        style="min-height: 100vh;">
+      <div v-if="$route.path === '/home'" class="q-pa-md row justify-center items-center q-gutter-md">
         <q-card class="my-card text-white">
           <q-card-section class="bg-green-9">
             <div class="text-h6" align="center">FICHAS</div>
@@ -124,6 +123,24 @@
         </q-toolbar-title>
       </q-toolbar>
     </q-footer>
+    <div class="q-pa-md q-gutter-sm">
+      <q-dialog v-model="alert" persistent>
+      <q-card>
+        <q-card-section>
+          <div class="text-h6">Cerrar sesión</div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          ¿Seguro que deseas cerrar sesión?
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn flat label="Sí"  to="/" color="red-9" v-close-popup @click="useUsuario.logout()"  />
+          <q-btn flat label="No" color="green-9" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+    </div>
   </q-layout>
 </template>
 
@@ -135,8 +152,9 @@ import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { useUsuarioStore } from "./../stores/usuarios.js";
 
 let useUsuario = useUsuarioStore();
-let correo = ref(useUsuario?.usuario?.email || "")
-let nombre = ref(useUsuario?.usuario?.nombre || "")
+let correo = ref(useUsuario?.usuario?.email || "none")
+let nombre = ref(useUsuario?.usuario?.nombre || "none")
+let alert = ref(false)
 
 
 
@@ -150,23 +168,8 @@ function toggleLeftDrawer() {
 </script>
 
 <style>
-/* .custom-toolbar-title {
-  background-color: #2E7D32;
-} */
-
-#cards {
-  background-color: white !important;
-}
-
-#divCards {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  justify-items: center;
-  margin: 0 auto;
-}
-
 #imgCards {
-  height: 100px;
+  height: 150px;
 }
 
 #imgSection,
@@ -175,25 +178,14 @@ function toggleLeftDrawer() {
   justify-content: center;
 }
 
-#btnBack {
-  float: right;
-  margin: none;
-  /* width: 5%; */
-}
-
-#imgBtnBack {
-  width: 20px;
-}
-
 .my-card {
   width: 100%;
-  max-width: 250px
+  max-width: 400px
 }
 
 #hr {
   width: 90%;
   height: 5px !important;
-  /* background-color: #2E7D32; */
   border: 0px;
 }
 
@@ -202,21 +194,5 @@ function toggleLeftDrawer() {
   justify-content: center;
   margin-top: 40px;
   margin-bottom: 10px;
-}
-
-.user-info {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 1rem;
-}
-
-@media screen and (max-width:550px) and (min-width:300px) {
-  #divCards {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-content: center;
-  }
 }
 </style>

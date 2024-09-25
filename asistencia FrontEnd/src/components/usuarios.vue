@@ -32,11 +32,11 @@
     <div class="q-pa-md q-gutter-sm">
       <q-dialog v-model="icon" persistent>
         <q-card>
-          <q-card-section class="row items-center q-pb-none">
-            <div class="text-h6" v-if="change == false">Crear Usuario</div>
-            <div class="text-h6" v-else>Editar Usuario</div>
+          <q-card-section class="bg-green-9 row items-center">
+            <div class="text-h6 text-white" v-if="change == false">Crear Usuario</div>
+            <div class="text-h6 text-white" v-else>Editar Usuario</div>
             <q-space />
-            <q-btn icon="close" flat round dense v-close-popup @click="onReset()" />
+            <q-btn class="text-white" icon="close" flat round dense v-close-popup @click="onReset()" />
           </q-card-section>
 
           <q-card-section>
