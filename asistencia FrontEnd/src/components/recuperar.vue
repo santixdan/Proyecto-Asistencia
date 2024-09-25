@@ -58,26 +58,36 @@ let token = route.params.token;
 
 async function resetPassword() {
     try {
-        const res = await useUsuario.putModificarPassword(newPassword.value.trim(), confirmPassword.value.trim(), token)
-        if (res.validar.value === true) {
-            icon.value = false
-            onReset()
-            traer();
-            await route.replace('/');
-            Notify.create({
-                color: "green-6",
-                message: "Cambio exitoso",
-                icon: "cloud_done",
-                timeout: 2500,
-            });
-        } else {
+        if (newPassword.value != confirmPassword.value) {
             Notify.create({
                 color: "red-5",
                 textColor: "white",
                 icon: "warning",
-                message: res.error?.response?.data?.errors?.[0]?.msg || "Error desconocido",
+                message: "Las contraseñas no coinciden",
                 timeout: 2500,
             });
+        } else {
+            const res = await useUsuario.putModificarPassword(newPassword.value.trim(), confirmPassword.value.trim(), token)
+            if (res.validar.value === true) {
+                icon.value = false
+                onReset()
+                traer();
+                await route.replace('/');
+                Notify.create({
+                    color: "green-6",
+                    message: "Cambio exitoso",
+                    icon: "cloud_done",
+                    timeout: 2500,
+                });
+            } else {
+                Notify.create({
+                    color: "red-5",
+                    textColor: "white",
+                    icon: "warning",
+                    message: res.error?.response?.data?.errors?.[0]?.msg || "Error desconocido",
+                    timeout: 2500,
+                });
+            }
         }
     } catch (error) {
         console.error('Error:', error);

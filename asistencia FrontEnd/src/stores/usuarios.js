@@ -145,7 +145,7 @@ export const useUsuarioStore = defineStore("usuario", () => {
     //     }
     // }
 
-    async function putModificarPassword(token, newPassword, confirmPassword) {
+    async function putModificarPassword(newPassword, confirmPassword, token) {
         loading.value = true
         try {
             let r = await axios.put(`${API_URL}/usuarios/modificarPassword`, {
