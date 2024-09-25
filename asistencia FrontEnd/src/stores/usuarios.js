@@ -57,6 +57,23 @@ export const useUsuarioStore = defineStore("usuario", () => {
         }
     }
 
+    async function postEnviarEmail(email) {
+        loading.value = true
+        try {
+            let r = await axios.post(`${API_URL}/usuarios/enviarEmail`, {
+                email
+            })
+            validar.value = true
+            return { r, validar }
+        } catch (error) {
+            validar.value = false
+            console.log(error);
+            return { error, validar }
+        } finally {
+            loading.value = false
+        }
+    }
+
     async function postLoginUsuario(email, password) {
         loading.value = true
         try {
@@ -109,29 +126,29 @@ export const useUsuarioStore = defineStore("usuario", () => {
         }
     }
 
-    async function putModificarPassword(email, newPassword, confirmPassword) {
+    // async function putModificarPassword(email, newPassword, confirmPassword) {
+    //     loading.value = true
+    //     try {
+    //         let r = await axios.put(`${API_URL}/usuarios/modificarPassword`, {
+    //             email,
+    //             newPassword,
+    //             confirmPassword
+    //         })
+    //         validar.value = true
+    //         return { r, validar }
+    //     } catch (error) {
+    //         validar.value = false
+    //         console.log(error);
+    //         return { error, validar }
+    //     } finally {
+    //         loading.value = false
+    //     }
+    // }
+
+    async function putModificarPassword(token, newPassword, confirmPassword) {
         loading.value = true
         try {
             let r = await axios.put(`${API_URL}/usuarios/modificarPassword`, {
-                email,
-                newPassword,
-                confirmPassword
-            })
-            validar.value = true
-            return { r, validar }
-        } catch (error) {
-            validar.value = false
-            console.log(error);
-            return { error, validar }
-        } finally {
-            loading.value = false
-        }
-    }
-
-    async function putModificarPasswordPrueba(token, newPassword, confirmPassword) {
-        loading.value = true
-        try {
-            let r = await axios.put(`${API_URL}/usuarios/modificarPasswordPrueba`, {
                 token,
                 newPassword,
                 confirmPassword
@@ -184,7 +201,7 @@ export const useUsuarioStore = defineStore("usuario", () => {
         usuario.value = null;
     };
     return {
-        getListarUsuarios, postCrearUsuario, postLoginUsuario, putActivarUsuario, putDesactivarUsuario, putModificarPassword, putModificarPasswordPrueba, putModificarUsuario, loading, xtoken, usuario, logout
+        getListarUsuarios, postCrearUsuario, postEnviarEmail, postLoginUsuario, putActivarUsuario, putDesactivarUsuario, putModificarPassword, putModificarUsuario, loading, xtoken, usuario, logout
     }
 }, {
     persist: {

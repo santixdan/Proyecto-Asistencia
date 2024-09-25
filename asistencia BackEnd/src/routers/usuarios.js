@@ -51,17 +51,16 @@ routerUsuario.put("/modificar/:id", [
     }),
     validarCampos
 ], httpUsuario.putModificarUsuarios)
+// routerUsuario.put("/modificarPassword", [
+//     check('email', 'El email es obligatorio').notEmpty(),
+//     check('newPassword', 'La nueva contraseña es obligatoria').notEmpty(),
+//     check('confirmPassword', 'La confirmacion contraseña es obligatoria').notEmpty(),
+//     check('newPassword').custom(async (newPassword, { req }) => {
+//         await usuarioHelpers.validarNewPassword(newPassword, req.body.confirmPassword);
+//     }),
+//     validarCampos
+// ], httpUsuario.putModificarPassword)
 routerUsuario.put("/modificarPassword", [
-    check('email', 'El email es obligatorio').notEmpty(),
-    check('newPassword', 'La nueva contraseña es obligatoria').notEmpty(),
-    check('confirmPassword', 'La confirmacion contraseña es obligatoria').notEmpty(),
-    check('newPassword').custom(async (newPassword, { req }) => {
-        await usuarioHelpers.validarNewPassword(newPassword, req.body.confirmPassword);
-    }),
-    validarCampos
-], httpUsuario.putModificarPassword)
-routerUsuario.put("/modificarPasswordPrueba", [
-    validarJWT,
     check('token', 'El token es obligatorio').notEmpty(),
     check('newPassword', 'La nueva contraseña es obligatoria').notEmpty(),
     check('confirmPassword', 'La confirmacion contraseña es obligatoria').notEmpty(),
@@ -69,7 +68,7 @@ routerUsuario.put("/modificarPasswordPrueba", [
         await usuarioHelpers.validarNewPassword(newPassword, req.body.confirmPassword);
     }),
     validarCampos
-], httpUsuario.putModificarPasswordPrueba)
+], httpUsuario.putModificarPassword)
 routerUsuario.put("/activar/:id", [
     validarJWT,
     check('id', 'El id es obligatorio').notEmpty(),

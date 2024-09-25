@@ -50,7 +50,7 @@ const httpUsuario = {
         }
     },
     postEnviarEmail: async (req, res) => {
-        
+
         try {
             const email = req.body.email.trim();
             const user = await Usuario.findOne({ email })
@@ -64,10 +64,9 @@ const httpUsuario = {
             };
             transporter.sendMail(mailOptions, (error, info) => {
                 if (error) {
-                    console.error(error);
-                    return res.status(500).send("Error al enviar el correo electrónico.");
+                    return res.status(400).json({ error });
                 }
-                res.status(200).send("Correo electrónico enviado.");
+                res.json({ msg: "Correo electrónico enviado." });
             });
         } catch (error) {
             res.status(400).json({ error });
@@ -92,22 +91,22 @@ const httpUsuario = {
             res.status(400).json({ error });
         }
     },
+    // putModificarPassword: async (req, res) => {
+    //     try {
+    //         const email = req.body.email.trim();
+    //         const newPassword = req.body.newPassword.trim();
+
+    //         const usuario = await Usuario.findOne({ email });
+    //         const salt = bcryptjs.genSaltSync();
+    //         usuario.password = bcryptjs.hashSync(newPassword, salt);
+
+    //         await usuario.save();
+    //         res.json({ usuario });
+    //     } catch (error) {
+    //         res.status(400).json({ error: "algo mal" });
+    //     }
+    // },
     putModificarPassword: async (req, res) => {
-        try {
-            const email = req.body.email.trim();
-            const newPassword = req.body.newPassword.trim();
-
-            const usuario = await Usuario.findOne({ email });
-            const salt = bcryptjs.genSaltSync();
-            usuario.password = bcryptjs.hashSync(newPassword, salt);
-
-            await usuario.save();
-            res.json({ usuario });
-        } catch (error) {
-            res.status(400).json({ error: "algo mal" });
-        }
-    },
-    putModificarPasswordPrueba: async (req, res) => {
         try {
             const token = req.body.token.trim();
             const newPassword = req.body.newPassword.trim();
@@ -118,7 +117,7 @@ const httpUsuario = {
 
             await Usuario.findByIdAndUpdate(decoded.userId, { password: hashedPassword });
 
-            res.status(200).send("Contraseña actualizada exitosamente.");
+            res.status(200).json({msg: "Contraseña actualizada exitosamente."});
         } catch (error) {
             res.status(400).json({ error });
         }

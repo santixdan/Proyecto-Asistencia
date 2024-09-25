@@ -57,7 +57,7 @@ let token = route.params.token;
 
 async function resetPassword() {
     try {
-        const res = await useUsuario.putModificarPasswordPrueba(newPassword, confirmPassword, token)
+        const res = await useUsuario.putModificarPassword(newPassword, confirmPassword, token)
         if (res.validar.value === true) {
             icon.value = false
             onReset()
@@ -65,7 +65,7 @@ async function resetPassword() {
             await route.replace('/');
             Notify.create({
                 color: "green-6",
-                message: "Registro exitoso",
+                message: "Cambio exitoso",
                 icon: "cloud_done",
                 timeout: 2500,
             });

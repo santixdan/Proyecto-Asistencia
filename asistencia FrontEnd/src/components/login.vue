@@ -19,11 +19,13 @@
                             behavior="menu" emit-value map-options />
                     </div>
                 </div>
-                <q-form v-if="model === 'USUARIO'" @submit="login()"  class="q-pa-md column justify-center items-center q-gutter-md">
+                <q-form v-if="model === 'USUARIO'" @submit="login()"
+                    class="q-pa-md column justify-center items-center q-gutter-md">
                     <q-input filled v-model="email" label="Correo" lazy-rules
-                        :rules="[val => (val && val.length > 0) || 'Por favor, dígite el correo']" style="width: 250px"/>
-                    <q-input :type="isPwd1 ? 'password' : 'text'" style="width: 250px" filled v-model="password" label="Contraseña"
-                        lazy-rules @paste.prevent
+                        :rules="[val => (val && val.length > 0) || 'Por favor, dígite el correo']"
+                        style="width: 250px" />
+                    <q-input :type="isPwd1 ? 'password' : 'text'" style="width: 250px" filled v-model="password"
+                        label="Contraseña" lazy-rules @paste.prevent
                         :rules="[val => (val && val.length > 0) || 'Por favor, dígite la contraseña']">
                         <template v-slot:append>
                             <q-icon :name="isPwd1 ? 'visibility_off' : 'visibility'" class="cursor-pointer"
@@ -37,10 +39,11 @@
                             @click="(icon = true)" />
                     </div>
                 </q-form>
-                <q-form v-if="model === 'APRENDIZ'" @submit="crear()" class="q-pa-md column justify-center items-center q-gutter-md">
-                    <q-input filled type="number" v-model="cedula"  style="width: 250px;" label="Cédula" lazy-rules
+                <q-form v-if="model === 'APRENDIZ'" @submit="crear()"
+                    class="q-pa-md column justify-center items-center q-gutter-md">
+                    <q-input filled type="number" v-model="cedula" style="width: 250px;" label="Cédula" lazy-rules
                         :rules="[val => val && val.length > 0 || 'Por favor, dígite la cédula del aprendiz']" />
-                    <q-input filled v-model="fecha"  style="width: 250px;" label="Fecha" mask="date" lazy-rules
+                    <q-input filled v-model="fecha" style="width: 250px;" label="Fecha" mask="date" lazy-rules
                         :rules="[val => (val && val.length > 0) || 'Por favor, dígite la fecha de la bitácora']">
                         <template v-slot:append>
                             <q-icon name="event" class="cursor-pointer">
@@ -75,22 +78,8 @@
                             <q-form @submit="recuperar()" class="q-gutter-md">
                                 <q-input filled v-model="email2" label="Correo" lazy-rules
                                     :rules="[val => (val && val.length > 0) || 'Por favor, dígite el correo']" />
-                                <q-input :type="isPwd2 ? 'password' : 'text'" filled v-model="newPassword"
-                                    label="Nueva contraseña" @paste.prevent lazy-rules
-                                    :rules="[val => (val && val.length > 0) || 'Por favor, dígite la nueva contraseña']"><template
-                                        v-slot:append>
-                                        <q-icon :name="isPwd2 ? 'visibility_off' : 'visibility'" class="cursor-pointer"
-                                            @click="isPwd2 = !isPwd2" />
-                                    </template></q-input>
-                                <q-input :type="isPwd3 ? 'password' : 'text'" filled v-model="confirmPassword"
-                                    label="Confirmar contraseña" @paste.prevent lazy-rules
-                                    :rules="[val => (val && val.length > 0) || 'Por favor, dígite la confirmación de la contraseña']"><template
-                                        v-slot:append>
-                                        <q-icon :name="isPwd3 ? 'visibility_off' : 'visibility'" class="cursor-pointer"
-                                            @click="isPwd3 = !isPwd3" />
-                                    </template></q-input>
                                 <div>
-                                    <q-btn push :loading="useUsuario.loading" label="Guardar" type="submit"
+                                    <q-btn push :loading="useUsuario.loading" label="Enviar" type="submit"
                                         color="green-9" />
                                 </div>
                             </q-form>
@@ -119,48 +108,31 @@ let email = ref("");
 let email2 = ref("");
 let password = ref("");
 let isPwd1 = ref(true);
-let isPwd2 = ref(true);
-let isPwd3 = ref(true);
 let icon = ref(false);
 let fecha = ref("");
 let cedula = ref("");
 let model = ref("APRENDIZ")
 let options = ['APRENDIZ', 'USUARIO']
-let newPassword = ref()
-let confirmPassword = ref()
 
 async function recuperar() {
-    // let res1 = await useUsuario.getListarUsuarios();
-    // let usuario = res1.data.usuarios.find(usuario => email2.value === usuario.email);
-    // let id = ref(usuario._id);
-    if (newPassword.value !== confirmPassword.value) {
+    let res = await useUsuario.postEnviarEmail(email2.value.trim())
+    if (res.validar.value === true) {
+        icon.value = false
+        onReset()
+        Notify.create({
+            color: "green-6",
+            message: "Registro exitoso",
+            icon: "cloud_done",
+            timeout: 2500,
+        });
+    } else {
         Notify.create({
             color: "red-5",
             textColor: "white",
             icon: "warning",
-            message: "Las contraseñas no coinciden",
+            message: res.error?.response?.data?.errors?.[0]?.msg || "Error desconocido",
             timeout: 2500,
         });
-    } else {
-        let res = await useUsuario.putModificarPassword(email2.value.trim(), newPassword.value.trim(), confirmPassword.value.trim())
-        if (res.validar.value === true) {
-            icon.value = false
-            onReset()
-            Notify.create({
-                color: "green-6",
-                message: "Registro exitoso",
-                icon: "cloud_done",
-                timeout: 2500,
-            });
-        } else {
-            Notify.create({
-                color: "red-5",
-                textColor: "white",
-                icon: "warning",
-                message: res.error?.response?.data?.errors?.[0]?.msg || "Error desconocido",
-                timeout: 2500,
-            });
-        }
     }
 
 }
@@ -211,8 +183,6 @@ async function crear() {
 function onReset() {
     email.value = "";
     password.value = "";
-    confirmPassword.value = "";
-    newPassword.value = "";
     email2.value = "";
     fecha.value = "";
     cedula.value = "";
