@@ -44,15 +44,15 @@
                     <q-input filled v-model="fecha" label="Fecha" mask="date" lazy-rules
                         :rules="[val => (val && val.length > 0) || 'Por favor, dígite la fecha de la bitácora']">
                         <template v-slot:append>
-                            <q-icon name="event" class="cursor-pointer">
-                                <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                                    <q-date v-model="fecha" today-btn>
-                                        <div class="row items-center justify-end">
-                                            <q-btn v-close-popup label="Close" color="primary" flat />
-                                        </div>
-                                    </q-date>
-                                </q-popup-proxy>
-                            </q-icon>
+                                <font-awesome-icon :icon="['far', 'calendar']">
+                                    <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                                        <q-date v-model="fecha" today-btn>
+                                            <div class="row items-center justify-end">
+                                                <q-btn v-close-popup label="Close" color="primary" flat />
+                                            </div>
+                                        </q-date>
+                                    </q-popup-proxy>
+                                </font-awesome-icon>
                         </template>
                     </q-input>
                     <div>
