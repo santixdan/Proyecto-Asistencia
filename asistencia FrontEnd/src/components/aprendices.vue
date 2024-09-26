@@ -59,6 +59,9 @@
                       </q-item-section>
                     </q-item>
                   </template>
+                  <template v-slot:prepend>
+                    <font-awesome-icon icon="users-between-lines" />
+                  </template>
                 </q-select>
                 <q-input filled v-model="name" label="Nombre" lazy-rules :rules="[
                   (val) => {
@@ -67,7 +70,11 @@
                         'Por favor, dígite el nombre del aprendiz'
                     } else { return true }
                   }
-                ]" />
+                ]" >
+                  <template v-slot:prepend>
+                    <font-awesome-icon icon="user-graduate" />
+                  </template>
+                </q-input>
                 <q-input filled type="number" v-model="cedula" label="Cédula" lazy-rules :rules="[
                   (val) => {
                     if (change === false) {
@@ -75,7 +82,11 @@
                         'Por favor, dígite la cédula del aprendiz'
                     } else { return true }
                   }
-                ]" />
+                ]" >
+                  <template v-slot:prepend>
+                    <font-awesome-icon icon="address-card" />
+                  </template>
+                </q-input>
                 <q-input filled type="number" v-model="telefono" label="Teléfono" lazy-rules :rules="[
                   (val) => {
                     if (change === false) {
@@ -83,7 +94,11 @@
                         'Por favor, dígite el teléfono del aprendiz'
                     } else { return true }
                   }
-                ]" />
+                ]" >
+                  <template v-slot:prepend>
+                    <font-awesome-icon icon="phone" />
+                  </template>
+                </q-input>
                 <q-input filled v-model="email" label="Correo" lazy-rules :rules="[
                   (val) => {
                     if (change === false) {
@@ -91,7 +106,11 @@
                         'Por favor, dígite el correo del aprendiz'
                     } else { return true }
                   }
-                ]" />
+                ]">
+                  <template v-slot:prepend>
+                    <font-awesome-icon icon="envelope" />
+                  </template>
+                </q-input>
                 <div>
                   <q-btn push :loading="useAprendiz.loading" label="Guardar" type="submit" color="green-9" />
                 </div>
@@ -107,13 +126,13 @@
 <script setup>
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faPenToSquare, faCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faPenToSquare, faCheck, faXmark, faUsersBetweenLines, faEnvelope, faPhone, faAddressCard, faUserGraduate } from '@fortawesome/free-solid-svg-icons';
 import { Notify } from 'quasar'
 import { onBeforeMount, ref } from "vue";
 import { useAprendizStore } from '../stores/aprendices.js';
 import { useFichaStore } from '../stores/fichas.js';
 
-library.add(faPenToSquare, faCheck, faXmark);
+library.add(faPenToSquare, faCheck, faXmark, faUsersBetweenLines, faEnvelope, faPhone, faAddressCard, faUserGraduate);
 let useFicha = useFichaStore();
 let useAprendiz = useAprendizStore()
 let email = ref("");

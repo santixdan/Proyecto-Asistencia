@@ -1,7 +1,7 @@
 <template>
     <div class="q-pa-md row items-start q-gutter-md col-10 col-xs-10 col-sm-8 col-md-4 col-lg-4 items-center flex q-my-lg"
-    align="center" id="superContainer" style="margin: 0px;">
-    <q-card style="margin: 0px;" class="my-card">
+        align="center" id="superContainer" style="margin: 0px;">
+        <q-card style="margin: 0px;" class="my-card">
             <q-card-section class="bg-green-9 text-white">
                 <h4 data-v-8ea77ebc class="q-mt-sm q-mb-sm text-white text-center text-weight-bold">ASISTENCIA
                 </h4>
@@ -22,14 +22,22 @@
                             v-slot:append>
                             <q-icon :name="isPwd2 ? 'visibility_off' : 'visibility'" class="cursor-pointer"
                                 @click="isPwd2 = !isPwd2" />
-                        </template></q-input>
+                        </template>
+                        <template v-slot:prepend>
+                            <font-awesome-icon icon="lock" />
+                        </template>
+                    </q-input>
                     <q-input :type="isPwd3 ? 'password' : 'text'" filled v-model="confirmPassword"
                         label="Confirmar contraseña" @paste.prevent lazy-rules
                         :rules="[val => (val && val.length > 0) || 'Por favor, dígite la confirmación de la contraseña']"><template
                             v-slot:append>
                             <q-icon :name="isPwd3 ? 'visibility_off' : 'visibility'" class="cursor-pointer"
                                 @click="isPwd3 = !isPwd3" />
-                        </template></q-input>
+                        </template>
+                        <template v-slot:prepend>
+                            <font-awesome-icon icon="lock" />
+                        </template>
+                    </q-input>
                     <div>
                         <q-btn push :loading="useUsuario.loading" label="Guardar" type="submit" color="green-9" />
                     </div>
@@ -40,10 +48,14 @@
 </template>
 <script setup>
 import { Notify } from 'quasar'
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { faLock } from '@fortawesome/free-solid-svg-icons';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useUsuarioStore } from "./../stores/usuarios.js";
 
+library.add(faLock);
 const router = useRouter();
 const useUsuario = useUsuarioStore();
 let newPassword = ref('');

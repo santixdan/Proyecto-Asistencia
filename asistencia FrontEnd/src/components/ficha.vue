@@ -48,7 +48,11 @@
                         'Por favor, dígite el código de la ficha'
                     } else { return true }
                   }
-                ]" />
+                ]" >
+                  <template v-slot:prepend>
+                    <font-awesome-icon icon="hashtag" />
+                  </template>
+                </q-input>
                 <q-input filled v-model="name" label="Nombre" lazy-rules :rules="[
                   (val) => {
                     if (change === false) {
@@ -56,7 +60,11 @@
                         'Por favor, dígite el nombre de la ficha'
                     } else { return true }
                   }
-                ]" />
+                ]" >
+                  <template v-slot:prepend>
+                    <font-awesome-icon icon="users-between-lines" />
+                  </template>
+                </q-input>
                 <div>
                   <q-btn push :loading="useFicha.loading" label="Guardar" type="submit" color="green-9" />
                 </div>
@@ -72,12 +80,12 @@
 <script setup>
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faPenToSquare, faCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faPenToSquare, faCheck, faXmark, faHashtag, faUsersBetweenLines } from '@fortawesome/free-solid-svg-icons';
 import { Notify } from 'quasar'
 import { onBeforeMount, ref } from "vue";
 import { useFichaStore } from '../stores/fichas.js';
 
-library.add( faPenToSquare, faCheck, faXmark);
+library.add( faPenToSquare, faCheck, faXmark, faHashtag, faUsersBetweenLines);
 let useFicha = useFichaStore();
 let code = ref("");
 let name = ref("");

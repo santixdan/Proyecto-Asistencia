@@ -7,16 +7,15 @@
                 <q-form @submit="traer()" @reset="onReset" class="q-gutter-md">
                     <q-input filled v-model="fecha" label="Fecha" mask="date" lazy-rules
                         :rules="[val => (val && val.length > 0) || 'Por favor, dígite la fecha de la bitácora']">
-                        <template v-slot:append>
-                            <q-icon name="event" class="cursor-pointer">
-                                <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                                    <q-date v-model="fecha" today-btn>
-                                        <div class="row items-center justify-end">
-                                            <q-btn v-close-popup label="Close" color="primary" flat />
-                                        </div>
-                                    </q-date>
-                                </q-popup-proxy>
-                            </q-icon>
+                        <template v-slot:prepend>
+                            <font-awesome-icon icon="calendar-day" class="cursor-pointer" />
+                            <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                                <q-date v-model="fecha" today-btn>
+                                    <div class="row items-center justify-end">
+                                        <q-btn v-close-popup label="Close" color="primary" flat />
+                                    </div>
+                                </q-date>
+                            </q-popup-proxy>
                         </template>
                     </q-input>
                     <q-select filled type="number" v-model="ficha" use-input input-debounce="0" label="Ficha"
@@ -28,6 +27,9 @@
                                     No results
                                 </q-item-section>
                             </q-item>
+                        </template>
+                        <template v-slot:prepend>
+                            <font-awesome-icon icon="users-between-lines" />
                         </template>
                     </q-select>
                     <q-btn push label="Buscar" color="green-9" type="submit" />
@@ -43,10 +45,14 @@
 <script setup>
 import { Notify } from 'quasar'
 import { ref } from "vue";
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { faUsersBetweenLines, faCalendarDay } from '@fortawesome/free-solid-svg-icons';
 import { useAprendizStore } from '../stores/aprendices.js';
 import { useBitacoraStore } from '../stores/bitacoras.js';
 import { useFichaStore } from '../stores/fichas.js';
 
+library.add(faUsersBetweenLines, faCalendarDay);
 let useBitacora = useBitacoraStore()
 let useAprendiz = useAprendizStore()
 let useFicha = useFichaStore()
@@ -163,12 +169,12 @@ function onReset() {
 }
 
 function formatFecha(fecha) {
-  const date = new Date(fecha);
-  const offset = date.getTimezoneOffset();
-  date.setMinutes(date.getMinutes() + offset);
-  
-  const options = { year: "numeric", month: "2-digit", day: "2-digit" };
-  return date.toLocaleDateString("es-ES", options);
+    const date = new Date(fecha);
+    const offset = date.getTimezoneOffset();
+    date.setMinutes(date.getMinutes() + offset);
+
+    const options = { year: "numeric", month: "2-digit", day: "2-digit" };
+    return date.toLocaleDateString("es-ES", options);
 }
 
 </script>

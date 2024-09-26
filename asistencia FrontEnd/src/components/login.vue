@@ -17,18 +17,27 @@
                 <div class="q-pa-md" style="max-width: 300px">
                     <div class="q-gutter-md">
                         <q-select filled v-model="model" :options="options" label="Rol" style="width: 230px"
-                            behavior="menu" emit-value map-options />
+                            behavior="menu" emit-value map-options><template v-slot:prepend>
+                                <font-awesome-icon icon="users" />
+                            </template></q-select>
                     </div>
                 </div><br>
                 <q-form v-if="model === 'USUARIO'" @submit="login()" class="q-gutter-md">
                     <q-input filled v-model="email" label="Correo" lazy-rules
-                        :rules="[val => (val && val.length > 0) || 'Por favor, dígite el correo']" />
+                        :rules="[val => (val && val.length > 0) || 'Por favor, dígite el correo']">
+                        <template v-slot:prepend>
+                            <font-awesome-icon icon="envelope" />
+                        </template>
+                    </q-input>
                     <q-input :type="isPwd1 ? 'password' : 'text'" filled v-model="password" label="Contraseña"
                         lazy-rules @paste.prevent
                         :rules="[val => (val && val.length > 0) || 'Por favor, dígite la contraseña']">
                         <template v-slot:append>
                             <q-icon :name="isPwd1 ? 'visibility_off' : 'visibility'" class="cursor-pointer"
                                 @click="isPwd1 = !isPwd1" />
+                        </template>
+                        <template v-slot:prepend>
+                            <font-awesome-icon icon="lock" />
                         </template>
                     </q-input>
                     <q-btn push class="btn" label="Iniciar sesión" color="green-9" type="submit"
@@ -40,19 +49,22 @@
                 </q-form>
                 <q-form v-if="model === 'APRENDIZ'" @submit="crear()" class="q-gutter-md">
                     <q-input filled type="number" v-model="cedula" label="Cédula" lazy-rules
-                        :rules="[val => val && val.length > 0 || 'Por favor, dígite la cédula del aprendiz']" />
+                        :rules="[val => val && val.length > 0 || 'Por favor, dígite la cédula del aprendiz']">
+                        <template v-slot:prepend>
+                            <font-awesome-icon icon="address-card" />
+                        </template>
+                    </q-input>
                     <q-input filled v-model="fecha" label="Fecha" mask="date" lazy-rules
                         :rules="[val => (val && val.length > 0) || 'Por favor, dígite la fecha de la bitácora']">
-                        <template v-slot:append>
-                                <font-awesome-icon :icon="['far', 'calendar']">
-                                    <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                                        <q-date v-model="fecha" today-btn>
-                                            <div class="row items-center justify-end">
-                                                <q-btn v-close-popup label="Close" color="primary" flat />
-                                            </div>
-                                        </q-date>
-                                    </q-popup-proxy>
-                                </font-awesome-icon>
+                        <template v-slot:prepend>
+                            <font-awesome-icon icon="calendar-day" class="cursor-pointer"/>
+                            <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                                <q-date v-model="fecha" today-btn>
+                                    <div class="row items-center justify-end">
+                                        <q-btn v-close-popup label="Close" color="primary" flat />
+                                    </div>
+                                </q-date>
+                            </q-popup-proxy>
                         </template>
                     </q-input>
                     <div>
@@ -75,7 +87,11 @@
                         <div class="q-pa-md" style="max-width: 400px">
                             <q-form @submit="recuperar()" class="q-gutter-md">
                                 <q-input filled v-model="email2" label="Correo" lazy-rules
-                                    :rules="[val => (val && val.length > 0) || 'Por favor, dígite el correo']" />
+                                    :rules="[val => (val && val.length > 0) || 'Por favor, dígite el correo']">
+                                    <template v-slot:prepend>
+                                        <font-awesome-icon icon="envelope" />
+                                    </template>
+                                </q-input>
                                 <div>
                                     <q-btn push :loading="useUsuario.loading" label="Enviar" type="submit"
                                         color="green-9" />
@@ -94,11 +110,17 @@
 
 <script setup>
 import { Notify } from 'quasar'
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { faAddressCard, faEnvelope, faLock, faUsers, faCalendarDay } from '@fortawesome/free-solid-svg-icons';
+// import { faCalendarDay } from '@fortawesome/free-regular-svg-icons';  // Regular icons
 import { ref } from "vue";
 import { useUsuarioStore } from "./../stores/usuarios.js";
 import { useRouter } from 'vue-router'
 import { useBitacoraStore } from '../stores/bitacoras.js';
 
+
+library.add(faAddressCard, faCalendarDay, faEnvelope, faLock, faUsers);
 const router = useRouter()
 let useBitacora = useBitacoraStore()
 let useUsuario = useUsuarioStore();
@@ -107,6 +129,7 @@ let email2 = ref("");
 let password = ref("");
 let isPwd1 = ref(true);
 let icon = ref(false);
+let calendarVisible = ref(false)
 let fecha = ref("");
 let cedula = ref("");
 let model = ref("APRENDIZ")
