@@ -7,7 +7,7 @@
                 <q-form @submit="traer()" @reset="onReset" class="q-gutter-md">
                     <q-input filled v-model="fecha" label="Fecha" mask="date" lazy-rules
                         :rules="[val => (val && val.length > 0) || 'Por favor, dígite la fecha de la bitácora']">
-                        <template v-slot:append>
+                        <template v-slot:prepend>
                             <q-icon name="event" class="cursor-pointer">
                                 <q-popup-proxy cover transition-show="scale" transition-hide="scale">
                                     <q-date v-model="fecha" today-btn>
@@ -29,6 +29,9 @@
                                 </q-item-section>
                             </q-item>
                         </template>
+                        <template v-slot:prepend>
+                    <font-awesome-icon icon="users-between-lines" />
+                  </template>
                     </q-select>
                     <q-btn push label="Buscar" color="green-9" type="submit" />
                     <q-btn push style="float: right;" round color="green-9" icon="print" to="/tabla" target="_blank" />
@@ -43,10 +46,14 @@
 <script setup>
 import { Notify } from 'quasar'
 import { ref } from "vue";
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { faUsersBetweenLines } from '@fortawesome/free-solid-svg-icons';
 import { useAprendizStore } from '../stores/aprendices.js';
 import { useBitacoraStore } from '../stores/bitacoras.js';
 import { useFichaStore } from '../stores/fichas.js';
 
+library.add(faUsersBetweenLines);
 let useBitacora = useBitacoraStore()
 let useAprendiz = useAprendizStore()
 let useFicha = useFichaStore()
