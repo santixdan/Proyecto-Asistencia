@@ -16,7 +16,7 @@
                 <hr data-v-8ea77ebc class="q-separator q-separator--horizontal" aria-orientation="horizontal" id="hr2">
                 <br>
                 <q-form @submit="resetPassword()" class="q-gutter-md">
-                    <q-input :type="isPwd2 ? 'password' : 'text'" filled v-model="newPassword" label="Nueva contraseña"
+                    <q-input  style="width: 250px;" :type="isPwd2 ? 'password' : 'text'" filled v-model="newPassword" label="Nueva contraseña"
                         @paste.prevent lazy-rules
                         :rules="[val => (val && val.length > 0) || 'Por favor, dígite la nueva contraseña']"><template
                             v-slot:append>
@@ -27,7 +27,7 @@
                             <font-awesome-icon icon="lock" />
                         </template>
                     </q-input>
-                    <q-input :type="isPwd3 ? 'password' : 'text'" filled v-model="confirmPassword"
+                    <q-input  style="width: 250px;" :type="isPwd3 ? 'password' : 'text'" filled v-model="confirmPassword"
                         label="Confirmar contraseña" @paste.prevent lazy-rules
                         :rules="[val => (val && val.length > 0) || 'Por favor, dígite la confirmación de la contraseña']"><template
                             v-slot:append>

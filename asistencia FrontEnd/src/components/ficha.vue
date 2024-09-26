@@ -1,7 +1,7 @@
 <template>
-  
+
   <div class="todo">
-    <h3 id="tituloPrincipal">Fichas</h3> 
+    <h3 id="tituloPrincipal">Fichas</h3>
     <hr id="hr" class="bg-green-9">
     <div class="q-pa-md">
       <div class="q-pa-md q-gutter-sm">
@@ -12,9 +12,13 @@
         <template v-slot:body-cell-opciones="props">
           <q-td :props="props">
             <div class="q-pa-md q-gutter-sm">
-              <q-btn push @click="(icon = true), (change = true), traerId(props.row._id)" ><font-awesome-icon style="font-size: 20px;" icon="pen-to-square" /></q-btn>
-              <q-btn push v-if="props.row.estado == 0" @click="activar(props.row._id)" :loading="loadingButtons[props.row._id]" color="green-6"><font-awesome-icon style="font-size: 20px;" :icon="['fas', 'check']" /></q-btn>
-              <q-btn push v-else @click="desactivar(props.row._id)" :loading="loadingButtons[props.row._id]" color="red-6"><font-awesome-icon style="font-size: 20px;" :icon="['fas', 'xmark']" /></q-btn>
+              <q-btn push @click="(icon = true), (change = true), traerId(props.row._id)"><font-awesome-icon
+                  style="font-size: 20px;" icon="pen-to-square" /></q-btn>
+              <q-btn push v-if="props.row.estado == 0" @click="activar(props.row._id)"
+                :loading="loadingButtons[props.row._id]" color="green-6"><font-awesome-icon style="font-size: 20px;"
+                  :icon="['fas', 'check']" /></q-btn>
+              <q-btn push v-else @click="desactivar(props.row._id)" :loading="loadingButtons[props.row._id]"
+                color="red-6"><font-awesome-icon style="font-size: 20px;" :icon="['fas', 'xmark']" /></q-btn>
             </div>
           </q-td>
         </template>
@@ -33,34 +37,26 @@
           <q-card-section class="bg-green-9 row items-center">
             <div class="text-h6 text-white" v-if="change == false">Crear Ficha</div>
             <div class="text-h6 text-white" v-else>Editar Ficha</div>
-            
+
             <q-space />
-            <q-btn class="text-white" icon="close" flat round dense v-close-popup @click="onReset()"/>
+            <q-btn class="text-white" icon="close" flat round dense v-close-popup @click="onReset()" />
           </q-card-section>
 
           <q-card-section>
             <div class="q-pa-md" style="max-width: 400px">
               <q-form @submit="crear()" @reset="onReset()" class="q-gutter-md">
-                <q-input filled type="number" v-model="code" label="Código" lazy-rules :rules="[
-                  (val) => {
-                    if (change === false) {
-                      return (val && val.length > 0) ||
-                        'Por favor, dígite el código de la ficha'
-                    } else { return true }
-                  }
-                ]" >
+                <q-input style="max-width: 250px; min-width: 200px;" filled type="number" v-model="code" label="Código" lazy-rules :rules="[
+                  val => (val && val.length > 0) ||
+                    'Por favor, dígite el código de la ficha'
+                ]">
                   <template v-slot:prepend>
                     <font-awesome-icon icon="hashtag" />
                   </template>
                 </q-input>
-                <q-input filled v-model="name" label="Nombre" lazy-rules :rules="[
-                  (val) => {
-                    if (change === false) {
-                      return (val && val.length > 0) ||
-                        'Por favor, dígite el nombre de la ficha'
-                    } else { return true }
-                  }
-                ]" >
+                <q-input style="max-width: 250px; min-width: 200px;" filled v-model="name" label="Nombre" lazy-rules :rules="[
+                  val => (val && val.length > 0) ||
+                    'Por favor, dígite el nombre de la ficha'
+                ]">
                   <template v-slot:prepend>
                     <font-awesome-icon icon="users-between-lines" />
                   </template>
@@ -85,7 +81,7 @@ import { Notify } from 'quasar'
 import { onBeforeMount, ref } from "vue";
 import { useFichaStore } from '../stores/fichas.js';
 
-library.add( faPenToSquare, faCheck, faXmark, faHashtag, faUsersBetweenLines);
+library.add(faPenToSquare, faCheck, faXmark, faHashtag, faUsersBetweenLines);
 let useFicha = useFichaStore();
 let code = ref("");
 let name = ref("");

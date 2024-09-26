@@ -42,32 +42,23 @@
           <q-card-section>
             <div class="q-pa-md" style="max-width: 400px">
               <q-form @submit="crear()" @reset="onReset()" class="q-gutter-md">
-                <q-input filled v-model="email" label="Correo" lazy-rules :rules="[
-                  (val) => {
-                    if (change === false) {
-                      return (val && val.length > 0) ||
-                        'Por favor, dígite el correo del usuario'
-                    } else { return true }
-                  }
-                ]" >
+                <q-input  style="max-width: 250px; min-width: 200px;" filled v-model="email" label="Correo" lazy-rules :rules="[
+                  val => (val && val.length > 0) ||
+                    'Por favor, dígite el correo del usuario'
+                ]">
                   <template v-slot:prepend>
                     <font-awesome-icon icon="envelope" />
                   </template>
                 </q-input>
-                <q-input filled v-model="name" label="Nombre" lazy-rules :rules="[
-
-                  (val) => {
-                    if (change === false) {
-                      return (val && val.length > 0) ||
-                        'Por favor, dígite el nombre del usuario'
-                    } else { return true }
-                  }
-                ]" >
+                <q-input  style="max-width: 250px; min-width: 200px;" filled v-model="name" label="Nombre" lazy-rules :rules="[
+                  val => (val && val.length > 0) ||
+                    'Por favor, dígite el nombre del usuario'
+                ]">
                   <template v-slot:prepend>
                     <font-awesome-icon icon="user" />
                   </template>
                 </q-input>
-                <q-input @paste.prevent v-if="change === false" :type="isPwd ? 'password' : 'text'" filled
+                <q-input  style="max-width: 250px; min-width: 200px;" @paste.prevent v-if="change === false" :type="isPwd ? 'password' : 'text'" filled
                   v-model="password" label="Contraseña" lazy-rules
                   :rules="[val => (val && val.length > 0) || 'Por favor, dígite la contraseña']"><template
                     v-slot:append>
@@ -91,12 +82,12 @@
 <script setup>
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import {  faPenToSquare, faCheck, faXmark, faEnvelope, faUser, faLock } from '@fortawesome/free-solid-svg-icons';
+import { faPenToSquare, faCheck, faXmark, faEnvelope, faUser, faLock } from '@fortawesome/free-solid-svg-icons';
 import { Notify } from 'quasar'
 import { onBeforeMount, ref } from "vue";
 import { useUsuarioStore } from "./../stores/usuarios.js";
 
-library.add( faPenToSquare, faCheck, faXmark, faEnvelope, faUser, faLock);
+library.add(faPenToSquare, faCheck, faXmark, faEnvelope, faUser, faLock);
 let useUsuario = useUsuarioStore();
 let email = ref("");
 let name = ref("");
