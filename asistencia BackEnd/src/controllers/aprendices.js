@@ -1,15 +1,18 @@
 const Aprendiz = require("./../models/aprendices.js");
 const Ficha = require("./../models/fichas.js");
 const multer = require('multer');
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const cloudinary = require('./../config/cloudinaryConfig.js');
 
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, './uploads/firmas'); // Carpeta donde se almacenarán las firmas
+const storage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+        folder: 'firmas', // Carpeta donde se almacenarán las firmas en Cloudinary
+        allowedFormats: ['jpg', 'png'], // Formatos permitidos
+        public_id: (req, file) => {
+            return 'firma_' + Date.now(); // Renombra el archivo con un identificador único
+        },
     },
-    filename: (req, file, cb) => {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        cb(null, uniqueSuffix + '-' + file.originalname); // Renombra el archivo para evitar colisiones
-    }
 });
 
 const upload = multer({ storage });
@@ -45,13 +48,13 @@ const httpAprendices = {
     },
     postCrearAprendiz: async (req, res) => {
         try {
-            const ficha = req.body.ficha.trim();      
-            const cedula = req.body.cedula.trim();    
-            const nombre = req.body.nombre.trim();    
+            const ficha = req.body.ficha.trim();
+            const cedula = req.body.cedula.trim();
+            const nombre = req.body.nombre.trim();
             const telefono = req.body.telefono.trim();
             const email = req.body.email.trim();
-            const firma = req.file ? req.file.filename : null;
-            
+            const firma = req.file ? req.file.path : null; // URL de la firma en Cloudinary
+
             const newAprendiz = new Aprendiz({ ficha, cedula, nombre, telefono, email, firma });
             await newAprendiz.save();
             res.json({ newAprendiz });
@@ -62,9 +65,9 @@ const httpAprendices = {
     putModificarAprendiz: async (req, res) => {
         try {
             const id = req.params.id.trim();
-            const ficha = req.body.ficha?.trim();      
-            const cedula = req.body.cedula?.trim();    
-            const nombre = req.body.nombre?.trim();    
+            const ficha = req.body.ficha?.trim();
+            const cedula = req.body.cedula?.trim();
+            const nombre = req.body.nombre?.trim();
             const telefono = req.body.telefono?.trim();
             const email = req.body.email?.trim();
             const firma = req.body.firma?.trim();
@@ -104,4 +107,4 @@ const httpAprendices = {
     }
 };
 
-module.exports = { httpAprendices, upload  };
+module.exports = { httpAprendices, upload };

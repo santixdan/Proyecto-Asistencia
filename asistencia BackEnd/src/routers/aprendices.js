@@ -6,7 +6,7 @@ const { check } = require('express-validator');
 const { validarCampos } = require('./../middlewares/validar-campos.js');
 const { validarJWT } = require('./../middlewares/validarJWT.js');
 
-//GET
+//GET 
 routerAprendiz.get("/listarTodo", [
     validarJWT,
     validarCampos
@@ -27,7 +27,6 @@ routerAprendiz.get("/listarPorId/:id", [
 //POST
 routerAprendiz.post("/crear", [
     validarJWT,
-    upload.single('firma'),
     check('nombre', 'El nombre es obligatorio y debe ser texto').notEmpty().isString(),
     check('cedula', 'La cédula es obligatoria').notEmpty(),
     check('cedula', 'La cédula debe tener mínimo 8 caracteres').isLength({ min: 8 }),
@@ -36,15 +35,15 @@ routerAprendiz.post("/crear", [
     check('ficha', 'La ficha debe ser MongoId').isMongoId(),
     check('ficha').custom(apredizHelpers.validarFicha),
     check('ficha').custom(apredizHelpers.validarFichaActiva),
-    check('telefono', 'El teléfono es obligatorio').notEmpty().isMobilePhone(),
+    check('telefono', 'El teléfono es obligatorio').notEmpty(),
     check('telefono', 'El teléfono debe ser válido').isMobilePhone(),
     check('telefono').custom(apredizHelpers.validarTelefonoAprendiz),
     check('email', 'El correo es obligatorio').notEmpty(),
     check('email', 'El correo debe ser válido').isEmail(),
     check('email').custom(apredizHelpers.validarEmailAprendiz),
-    // check('firma','La firma es obligatoria').notEmpty(),
-    validarCampos
-], httpAprendices.postCrearAprendiz)
+    validarCampos,
+    upload.single('firma') 
+], httpAprendices.postCrearAprendiz);
 
 //PUT
 routerAprendiz.put("/modificar/:id", [

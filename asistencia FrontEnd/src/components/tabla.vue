@@ -1,10 +1,5 @@
 <template>
   <div class="registro-asistencia">
-    <!-- <h2>REGISTRO DE ASISTENCIA Y APROBACIÓN DEL ACTA No-</h2>
-    <div class="info">
-      <span> {{ day }} de {{ month }} del año {{ year }}</span>
-    </div> -->
-
     <!-- Indicador de carga -->
     <div v-if="loading" class="loading-container">
       <p>Cargando datos...</p>
@@ -20,26 +15,59 @@
       <thead>
         <tr>
           <th colspan="11" style="text-align: center;">
-            REGISTRO DE ASISTENCIA Y APROBACIÓN DEL ACTA No-<br>DEL DÍA {{ day }} DEL MES DE {{ month }} DEL AÑO {{ year }}
+            <span style="margin-right: 50px;">REGISTRO DE ASISTENCIA Y APROBACIÓN DEL ACTA No-</span><span>DEL DÍA <u>{{
+              day }}</u> DEL MES DE <u>{{ month }}</u> DEL AÑO <u>{{ year }}</u></span>
           </th>
         </tr>
         <tr>
-          <th>No.</th>
-          <th>Nombres y Apellidos</th>
-          <th>No. Documento</th>
-          <th>Planta</th>
-          <th>Contratista</th>
-          <th>Otro ¿Cuál?</th>
-          <th>Dependencia/Empresa</th>
-          <th>Correo Electrónico</th>
-          <th>Teléfono/Ext. SENA</th>
-          <th>Autoriza Grabación</th>
-          <th>Firma o Participación Virtual</th>
+          <th colspan="2" style="text-align: center; ">
+            OBJETIVO (S)
+          </th>
+          <th colspan="10">
+            <!-- <input type="text"> -->
+          </th>
+        </tr>
+        <tr>
+          <th>
+            <p>No.</p>
+          </th>
+          <th>
+            <p>Nombres y Apellidos</p>
+          </th>
+          <th>
+            <p>No. Documento</p>
+          </th>
+          <th>
+            <p>Planta</p>
+          </th>
+          <th>
+            <p>Contratista</p>
+          </th>
+          <th>
+            Otro<br>¿Cuál?
+          </th>
+          <th>
+            Dependencia/<br>Empresa
+          </th>
+          <th>
+            <p>Correo Electrónico</p>
+          </th>
+          <th>
+            <p>Teléfono/Ext. SENA</p>
+          </th>
+          <th>
+            Autoriza<br>Grabación
+          </th>
+          <th>
+            Firma o Participación<br>Virtual
+          </th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="(row, index) in rows" :key="row.id">
-          <td>{{ index + 1 }}</td>
+          <td>
+            <p>{{ index + 1 }}</p>
+          </td>
           <td>
             <p>{{ row.nombre }}</p>
           </td>
@@ -93,9 +121,9 @@ function obtenerFechaActual() {
   let fechaObj = new Date(useBitacora.fechaBitacora);
   day.value = fechaObj.getDate();
   const meses = [
-  "ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO",
-  "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"
-];
+    "ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO",
+    "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"
+  ];
   month.value = meses[fechaObj.getMonth()];
   year.value = fechaObj.getFullYear();
 }
@@ -104,6 +132,8 @@ async function traer() {
   try {
     let res = await useBitacora.getListarBitacoraPorFechaYFichaYEstado();
     let res2 = await useAprendiz.getListarAprendiz();
+    console.log(res2);
+    
 
     rows.value = res.r.data.bitacoras.map(bitacora => {
       let aprendiz = res2.data.aprendices.find(aprendiz => aprendiz._id === bitacora.aprendiz);
@@ -120,6 +150,21 @@ async function traer() {
         firma: aprendiz.firma || '',
       };
     });
+
+    while (rows.value.length < 12) {
+      rows.value.push({
+        nombre: '',
+        cedula: '',
+        planta: '',
+        contratista: '',
+        otro: '',
+        dependencia: '',
+        correo: '',
+        telefono: '',
+        autorizaGrabacion: false,
+        firma: '',
+      });
+    }
   } catch (error) {
     console.error('Error al traer los datos', error);
   } finally {
@@ -136,11 +181,11 @@ onBeforeMount(() => {
 <style scoped>
 .registro-asistencia {
   text-align: center;
-  margin: 20px;
+  margin: 5px;
 }
 
 table {
-  width: 100%;
+  width: 90%;
   border-collapse: collapse;
   margin-top: 20px;
 }
@@ -148,14 +193,9 @@ table {
 th,
 td {
   border: 1px solid #000;
-  padding: 10px;
-  text-align: center;
-}
-
-input[type="text"] {
-  width: 100%;
-  padding: 5px;
-  box-sizing: border-box;
+  padding: 2px;
+  /* text-align: center; */
+  font-size: 12px;
 }
 
 .loading-container {
