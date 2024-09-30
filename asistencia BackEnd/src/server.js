@@ -19,6 +19,7 @@ class Server {
     }
     middlewares() {
         this.app.use(express.json());
+        this.app.use(express.urlendcode({extend:true}))
         this.app.use(cors({
             origin: [
                 'https://proyecto-asistencia-cxfa.onrender.com',
