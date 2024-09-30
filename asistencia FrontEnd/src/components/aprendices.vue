@@ -43,8 +43,8 @@
             <div class="q-pa-md" style="max-width: 400px">
               <q-form @submit="crear()" @reset="onReset()" class="q-gutter-md">
                 <q-select filled type="number" v-model="ficha" use-input input-debounce="0" label="Ficha"
-                  :options="options" @filter="filterFn" style="max-width: 250px; min-width: 200px;" behavior="menu" emit-value map-options
-                  lazy-rules :rules="[
+                  :options="options" @filter="filterFn" style="max-width: 250px; min-width: 200px;" behavior="menu"
+                  emit-value map-options lazy-rules :rules="[
                     val => (val && val.length > 0) ||
                       'Por favor, dígite el código de la ficha'
                   ]">
@@ -59,34 +59,38 @@
                     <font-awesome-icon icon="users-between-lines" />
                   </template>
                 </q-select>
-                <q-input style="max-width: 250px; min-width: 200px;" filled v-model="name" label="Nombre" lazy-rules :rules="[
-                  val => (val && val.length > 0) ||
-                    'Por favor, dígite el nombre del aprendiz'
-                ]">
+                <q-input style="max-width: 250px; min-width: 200px;" filled v-model="name" label="Nombre" lazy-rules
+                  :rules="[
+                    val => (val && val.length > 0) ||
+                      'Por favor, dígite el nombre del aprendiz'
+                  ]">
                   <template v-slot:prepend>
                     <font-awesome-icon icon="user-graduate" />
                   </template>
                 </q-input>
-                <q-input style="max-width: 250px; min-width: 200px;" filled type="number" v-model="cedula" label="Cédula" lazy-rules :rules="[
-                  val => (val && val.length > 0) ||
-                    'Por favor, dígite la cédula del aprendiz'
-                ]">
+                <q-input style="max-width: 250px; min-width: 200px;" filled type="number" v-model="cedula"
+                  label="Cédula" lazy-rules :rules="[
+                    val => (val && val.length > 0) ||
+                      'Por favor, dígite la cédula del aprendiz'
+                  ]">
                   <template v-slot:prepend>
                     <font-awesome-icon icon="address-card" />
                   </template>
                 </q-input>
-                <q-input style="max-width: 250px; min-width: 200px;" filled type="number" v-model="telefono" label="Teléfono" lazy-rules :rules="[
-                  val => (val && val.length > 0) ||
-                    'Por favor, dígite el teléfono del aprendiz'
-                ]">
+                <q-input style="max-width: 250px; min-width: 200px;" filled type="number" v-model="telefono"
+                  label="Teléfono" lazy-rules :rules="[
+                    val => (val && val.length > 0) ||
+                      'Por favor, dígite el teléfono del aprendiz'
+                  ]">
                   <template v-slot:prepend>
                     <font-awesome-icon icon="phone" />
                   </template>
                 </q-input>
-                <q-input style="max-width: 250px; min-width: 200px;" filled v-model="email" label="Correo" lazy-rules :rules="[
-                  val => (val && val.length > 0) ||
-                    'Por favor, dígite el correo del aprendiz'
-                ]">
+                <q-input style="max-width: 250px; min-width: 200px;" filled v-model="email" label="Correo" lazy-rules
+                  :rules="[
+                    val => (val && val.length > 0) ||
+                      'Por favor, dígite el correo del aprendiz'
+                  ]">
                   <template v-slot:prepend>
                     <font-awesome-icon icon="envelope" />
                   </template>
