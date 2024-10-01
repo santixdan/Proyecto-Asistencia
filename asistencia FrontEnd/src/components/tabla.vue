@@ -132,9 +132,7 @@ async function traer() {
   try {
     let res = await useBitacora.getListarBitacoraPorFechaYFichaYEstado();
     let res2 = await useAprendiz.getListarAprendiz();
-    console.log(res2);
     
-
     rows.value = res.r.data.bitacoras.map(bitacora => {
       let aprendiz = res2.data.aprendices.find(aprendiz => aprendiz._id === bitacora.aprendiz);
       return {
