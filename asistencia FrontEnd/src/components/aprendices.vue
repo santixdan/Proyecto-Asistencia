@@ -260,6 +260,7 @@ async function traerId(id) {
   telefono.value = aprendiz.telefono
   cedula.value = aprendiz.cedula
   name.value = aprendiz.nombre
+  firma.value = aprendiz.firma
   ficha.value = fichaAprendiz._id;
   idAprendiz.value = id;
 }
@@ -287,7 +288,6 @@ function handleFirma(file) {
 
 async function crear() {
   let res;
-  console.log(firma.value);
   if (change.value === false) {
     res = await useAprendiz.postCrearAprendiz(ficha.value.trim(), cedula.value.trim(), name.value.trim(), telefono.value.trim(), email.value.trim(), firma.value)
   }
