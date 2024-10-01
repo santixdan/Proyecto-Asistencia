@@ -335,6 +335,5 @@ function onReset() {
   cedula.value = ""
   name.value = ""
   firma.value = null
-  right.value = false
 }
 </script>
