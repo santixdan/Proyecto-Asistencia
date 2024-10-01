@@ -55,76 +55,58 @@ export const useAprendizStore = defineStore("aprendiz", () => {
         }
     }
 
+    //async function putModificarAprendiz(ficha, cedula, name, telefono, email, firma, id) {
     async function putModificarAprendiz(ficha, cedula, name, telefono, email, firma, id) {
-        loading.value = true
-        const useUsuario = useUsuarioStore()
-        try {
-            let r = ref()
-            if (email) {
-                r.value = await axios.put(`${API_URL}/aprendices/modificar/${id}`, {
-                    email
-                }, {
-                    headers: {
-                        "token": useUsuario.xtoken
-                    }
-                })
-            }
-            if (name) {
-                r.value = await axios.put(`${API_URL}/aprendices/modificar/${id}`, {
-                    nombre: name
-                }, {
-                    headers: {
-                        "token": useUsuario.xtoken
-                    }
-                })
-            }
-            if (ficha) {
-                r.value = await axios.put(`${API_URL}/aprendices/modificar/${id}`, {
-                    ficha
-                }, {
-                    headers: {
-                        "token": useUsuario.xtoken
-                    }
-                })
-            }
-            if (cedula) {
-                r.value = await axios.put(`${API_URL}/aprendices/modificar/${id}`, {
-                    cedula
-                }, {
-                    headers: {
-                        "token": useUsuario.xtoken
-                    }
-                })
-            }
-            if (telefono) {
-                r.value = await axios.put(`${API_URL}/aprendices/modificar/${id}`, {
-                    telefono
-                }, {
-                    headers: {
-                        "token": useUsuario.xtoken
-                    }
-                })
-            }
-            if (firma) {
-                let formData = new FormData();
-                formData.append('firma', firma);
-                r.value = await axios.put(`${API_URL}/aprendices/modificar/${id}`,formData, {
-                    headers: {
-                        "token": useUsuario.xtoken,
-                        'Content-Type': 'multipart/form-data'
-                    }
-                })
-            }
-            validar.value = true
-            return { r, validar }
-        } catch (error) {
-            validar.value = false
-            console.log(error);
-            return { error, validar }
-        } finally {
-            loading.value = false
+    loading.value = true;
+    const useUsuario = useUsuarioStore();
+
+    try {
+        let r;
+        let formData;
+
+        if (firma) {
+            // Si hay firma, usamos FormData
+            formData = new FormData();
+            if (ficha) formData.append('ficha', ficha);
+            if (cedula) formData.append('cedula', cedula);
+            if (name) formData.append('nombre', name);
+            if (telefono) formData.append('telefono', telefono);
+            if (email) formData.append('email', email);
+            formData.append('firma', firma);
+
+            r = await axios.put(`${API_URL}/aprendices/modificar/${id}`, formData, {
+                headers: {
+                    "token": useUsuario.xtoken,
+                    'Content-Type': 'multipart/form-data',
+                }
+            });
+        } else {
+            // Si no hay firma, enviamos un objeto JSON
+            let data = {};
+            if (ficha) data.ficha = ficha;
+            if (cedula) data.cedula = cedula;
+            if (name) data.nombre = name;
+            if (telefono) data.telefono = telefono;
+            if (email) data.email = email;
+
+            r = await axios.put(`${API_URL}/aprendices/modificar/${id}`, data, {
+                headers: {
+                    "token": useUsuario.xtoken,
+                }
+            });
         }
+
+        validar.value = true;
+        return { r, validar };
+    } catch (error) {
+        validar.value = false;
+        console.log(error);
+        return { error, validar };
+    } finally {
+        loading.value = false;
     }
+}
+
     async function putActivarAprendiz(id) {
         const useUsuario = useUsuarioStore()
         try {
