@@ -69,6 +69,7 @@ export const useAprendizStore = defineStore("aprendiz", () => {
             if (telefono) formData.append('telefono', telefono);
             if (email) formData.append('email', email);
             formData.append('firma', firma);
+            
 
             r = await axios.put(`${API_URL}/aprendices/modificar/${id}`, formData, {
                 headers: {
@@ -77,13 +78,13 @@ export const useAprendizStore = defineStore("aprendiz", () => {
                 }
             });
         } else {
-            // Si no hay firma, enviamos un objeto JSON
             let data = {};
             if (ficha) data.ficha = ficha;
             if (cedula) data.cedula = cedula;
             if (name) data.nombre = name;
             if (telefono) data.telefono = telefono;
             if (email) data.email = email;
+            
 
             r = await axios.put(`${API_URL}/aprendices/modificar/${id}`, data, {
                 headers: {

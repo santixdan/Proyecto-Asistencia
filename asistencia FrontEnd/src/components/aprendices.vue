@@ -95,13 +95,23 @@
                     <font-awesome-icon icon="envelope" />
                   </template>
                 </q-input>
-                <q-file style="max-width: 250px; min-width: 200px;" clearable filled v-model="firma"
-                  accept=".jpg, image/*" label="Firma" @input="handleFirma" :rules="[
+                <q-file v-if="change === false" style="max-width: 250px; min-width: 200px;" clearable filled
+                  v-model="firma" accept=".jpg, image/*" label="Firma" @input="handleFirma" :rules="[
                     val => val !== null || 'Por favor, seleccione un archivo']">
                   <template v-slot:prepend>
                     <font-awesome-icon icon="file-signature" />
                   </template>
                 </q-file>
+                <q-input filled v-show="right === false && change === true" v-model="firmaView" label="Firma"
+                  readonly />
+                <q-file v-show="right === true && change === true" style="max-width: 250px; min-width: 200px;" clearable
+                  filled v-model="firma" accept=".jpg, image/*" label="Firma" @input="handleFirma" :rules="[
+                    (val) => right ? (val !== null || 'Por favor, seleccione un archivo') : true]">
+                  <template v-slot:prepend>
+                    <font-awesome-icon icon="file-signature" />
+                  </template>
+                </q-file>
+                <q-checkbox v-if="change === true" v-model="right" label="Cambiar firma" />
                 <div v-if="firmaPreview && change === true" style="max-width: 250px; min-width: 200px;">
                   <q-img :src="firmaPreview" alt="Firma del aprendiz">
                     <div class="absolute-bottom text-subtitle1 text-center">
@@ -110,7 +120,9 @@
                   </q-img>
                 </div>
                 <div v-if="!firmaPreview && change === true" style="max-width: 250px; min-width: 200px;">
-                  <q-img src="https://media.istockphoto.com/id/1409329028/es/vector/no-hay-imagen-disponible-marcador-de-posici%C3%B3n-miniatura-icono-dise%C3%B1o-de-ilustraci%C3%B3n.jpg?s=612x612&w=0&k=20&c=Bd89b8CBr-IXx9mBbTidc-wu_gtIj8Py_EMr3hGGaPw=" alt="Firma del aprendiz">
+                  <q-img
+                    src="https://media.istockphoto.com/id/1409329028/es/vector/no-hay-imagen-disponible-marcador-de-posici%C3%B3n-miniatura-icono-dise%C3%B1o-de-ilustraci%C3%B3n.jpg?s=612x612&w=0&k=20&c=Bd89b8CBr-IXx9mBbTidc-wu_gtIj8Py_EMr3hGGaPw="
+                    alt="Firma del aprendiz">
                     <div class="absolute-bottom text-subtitle1 text-center">
                       Image not found
                     </div>
@@ -146,7 +158,9 @@ let ficha = ref();
 let cedula = ref("");
 let name = ref("");
 let firma = ref(null);
+let firmaView = ref(null);
 let firmaPreview = ref(null);
+let right = ref(false)
 let icon = ref(false);
 let change = ref(); // false: crear, true: modificar
 let idAprendiz = ref();
@@ -272,7 +286,8 @@ async function traerId(id) {
   cedula.value = aprendiz.cedula
   name.value = aprendiz.nombre
   ficha.value = fichaAprendiz._id;
-  firma.value = null;
+  firmaView.value = aprendiz.firma;
+  firma.value = null
   idAprendiz.value = id;
   firmaPreview.value = aprendiz.firma
 }
@@ -289,12 +304,12 @@ async function traerFichas() {
 function handleFirma(file) {
   if (file && file.length > 0) {
     const reader = new FileReader();
-    console.log(reader);
+    // console.log(reader);
 
     reader.onload = (e) => {
-      firmaPreview.value = e.target.result; // Asigna la URL de la imagen.
+      firmaPreview.value = e.target.result; 
     };
-    reader.readAsDataURL(file[0]); // Lee el archivo de imagen.
+    reader.readAsDataURL(file[0]); 
   }
 }
 
@@ -304,7 +319,15 @@ async function crear() {
     res = await useAprendiz.postCrearAprendiz(ficha.value.trim(), cedula.value.trim(), name.value.trim(), telefono.value.trim(), email.value.trim(), firma.value)
   }
   else {
-    res = await useAprendiz.putModificarAprendiz(ficha.value, cedula.value, name.value, telefono.value, email.value, firma.value, idAprendiz.value)
+    let laFirma;
+    if (right.value === false && firmaView.value) {
+      laFirma = firmaView.value;
+    } else if (right.value === true && firma.value) {
+      laFirma = firma.value;
+    } else {
+      laFirma = "";
+    }
+    res = await useAprendiz.putModificarAprendiz(ficha.value, cedula.value, name.value, telefono.value, email.value, laFirma, idAprendiz.value)
   }
   if (res.validar.value === true) {
     icon.value = false
@@ -333,6 +356,7 @@ function onReset() {
   ficha.value = ""
   cedula.value = ""
   name.value = ""
-  firma.value = ""
+  firma.value = null
+  right.value = false
 }
 </script>
