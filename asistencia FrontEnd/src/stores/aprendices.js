@@ -106,11 +106,12 @@ export const useAprendizStore = defineStore("aprendiz", () => {
                 })
             }
             if (firma) {
-                r.value = await axios.put(`${API_URL}/aprendices/modificar/${id}`, {
-                    firma
-                }, {
+                let formData = new FormData();
+                formData.append('firma', firma);
+                r.value = await axios.put(`${API_URL}/aprendices/modificar/${id}`,formData, {
                     headers: {
-                        "token": useUsuario.xtoken
+                        "token": useUsuario.xtoken,
+                        'Content-Type': 'multipart/form-data'
                     }
                 })
             }
