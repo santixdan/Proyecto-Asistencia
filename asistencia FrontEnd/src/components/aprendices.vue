@@ -95,13 +95,20 @@
                     <font-awesome-icon icon="envelope" />
                   </template>
                 </q-input>
-                <q-file style="max-width: 250px; min-width: 200px;" clearable filled v-model="firma" accept=".jpg, image/*"
-                  label="Firma" @input="handleFirma" :rules="[
+                <q-file style="max-width: 250px; min-width: 200px;" clearable filled v-model="firma"
+                  accept=".jpg, image/*" label="Firma" @input="handleFirma" :rules="[
                     val => val !== null || 'Por favor, seleccione un archivo']">
                   <template v-slot:prepend>
                     <font-awesome-icon icon="file-signature" />
                   </template>
                 </q-file>
+                <div v-if="firmaPreview && change === true" style="max-width: 250px; min-width: 200px;">
+                  <q-img :src="firmaPreview" alt="Firma del aprendiz">
+                    <div class="absolute-bottom text-subtitle1 text-center">
+                      Firma Actual
+                    </div>
+                  </q-img>
+                </div>
                 <div>
                   <q-btn push :loading="useAprendiz.loading" label="Guardar" type="submit" color="green-9" />
                 </div>
@@ -257,9 +264,9 @@ async function traerId(id) {
   telefono.value = aprendiz.telefono
   cedula.value = aprendiz.cedula
   name.value = aprendiz.nombre
-  firma.value = aprendiz.firma
   ficha.value = fichaAprendiz._id;
   idAprendiz.value = id;
+  firmaPreview.value = aprendiz.firma
 }
 
 async function traerFichas() {

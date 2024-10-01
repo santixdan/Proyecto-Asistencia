@@ -66,7 +66,7 @@ const httpAprendices = {
             const nombre = req.body.nombre?.trim();
             const telefono = req.body.telefono?.trim();
             const email = req.body.email?.trim();
-            const firma = req.file ? req.file.path : null;
+            const firma = req.file ? req.file.path : aprendiz.firma;  // Mantener la firma anterior si no se envía un archivo
 
             const aprendiz = await Aprendiz.findById(id);
 

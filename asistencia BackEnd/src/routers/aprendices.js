@@ -49,6 +49,7 @@ routerAprendiz.post("/crear", [
 //PUT
 routerAprendiz.put("/modificar/:id", [
     validarJWT,
+    upload.single('firma'),
     check('id', 'El id es obligatorio').notEmpty(),
     check('id', 'El id debe ser MongoId').isMongoId(),
     check('id').custom(apredizHelpers.validarId),
