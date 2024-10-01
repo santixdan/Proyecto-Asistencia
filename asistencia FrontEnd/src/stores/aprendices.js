@@ -55,17 +55,13 @@ export const useAprendizStore = defineStore("aprendiz", () => {
         }
     }
 
-    //async function putModificarAprendiz(ficha, cedula, name, telefono, email, firma, id) {
     async function putModificarAprendiz(ficha, cedula, name, telefono, email, firma, id) {
     loading.value = true;
     const useUsuario = useUsuarioStore();
-
     try {
         let r;
         let formData;
-
         if (firma) {
-            // Si hay firma, usamos FormData
             formData = new FormData();
             if (ficha) formData.append('ficha', ficha);
             if (cedula) formData.append('cedula', cedula);

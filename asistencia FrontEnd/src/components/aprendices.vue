@@ -109,6 +109,13 @@
                     </div>
                   </q-img>
                 </div>
+                <div v-if="!firmaPreview && change === true" style="max-width: 250px; min-width: 200px;">
+                  <q-img src="https://media.istockphoto.com/id/1409329028/es/vector/no-hay-imagen-disponible-marcador-de-posici%C3%B3n-miniatura-icono-dise%C3%B1o-de-ilustraci%C3%B3n.jpg?s=612x612&w=0&k=20&c=Bd89b8CBr-IXx9mBbTidc-wu_gtIj8Py_EMr3hGGaPw=" alt="Firma del aprendiz">
+                    <div class="absolute-bottom text-subtitle1 text-center">
+                      Image not found
+                    </div>
+                  </q-img>
+                </div>
                 <div>
                   <q-btn push :loading="useAprendiz.loading" label="Guardar" type="submit" color="green-9" />
                 </div>
@@ -265,6 +272,7 @@ async function traerId(id) {
   cedula.value = aprendiz.cedula
   name.value = aprendiz.nombre
   ficha.value = fichaAprendiz._id;
+  firma.value = null;
   idAprendiz.value = id;
   firmaPreview.value = aprendiz.firma
 }
