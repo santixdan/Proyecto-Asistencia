@@ -97,10 +97,7 @@
                 </q-input>
                 <q-file style="max-width: 250px; min-width: 200px;" clearable filled v-model="firma" accept=".jpg, image/*"
                   label="Firma" @input="handleFirma" :rules="[
-                    val => val !== null || 'Por favor, seleccione un archivo',
-                    val => val && val.size < 2000000 || 'El archivo debe ser menor a 2MB',
-                    val => val && ['image/jpeg', 'image/png'].includes(val.type) || 'El archivo debe ser JPG o PNG'
-                  ]">
+                    val => val !== null || 'Por favor, seleccione un archivo']">
                   <template v-slot:prepend>
                     <font-awesome-icon icon="file-signature" />
                   </template>
