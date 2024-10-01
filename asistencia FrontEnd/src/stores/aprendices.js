@@ -4,6 +4,7 @@ import { ref } from "vue"
 import { useUsuarioStore } from "./usuarios.js";
 
 const API_URL = 'https://proyecto-asistencia-backend.onrender.com';
+// const API_URL = 'http://localhost:4000';
 
 export const useAprendizStore = defineStore("aprendiz", () => {
     let validar = ref(true)
@@ -26,19 +27,21 @@ export const useAprendizStore = defineStore("aprendiz", () => {
             loading.value = false
         }
     }
-    async function postCrearAprendiz(ficha, cedula, name, telefono, email) {
+    async function postCrearAprendiz(ficha, cedula, name, telefono, email, firma) {
         loading.value = true
         const useUsuario = useUsuarioStore()
         try {
-            let r = await axios.post(`${API_URL}/aprendices/crear`, {
-                ficha,
-                cedula,
-                nombre: name,
-                telefono,
-                email
-            }, {
+            let formData = new FormData(); // Crea una instancia de FormData
+            formData.append('ficha', ficha);
+            formData.append('cedula', cedula);
+            formData.append('nombre', name);
+            formData.append('telefono', telefono);
+            formData.append('email', email);
+            formData.append('firma', firma);
+            let r = await axios.post(`${API_URL}/aprendices/crear`, formData, {
                 headers: {
-                    "token": useUsuario.xtoken
+                    "token": useUsuario.xtoken,
+                    'Content-Type': 'multipart/form-data'
                 }
             })
             validar.value = true
@@ -52,7 +55,7 @@ export const useAprendizStore = defineStore("aprendiz", () => {
         }
     }
 
-    async function putModificarAprendiz(ficha, cedula, name, telefono, email, id) {
+    async function putModificarAprendiz(ficha, cedula, name, telefono, email, firma, id) {
         loading.value = true
         const useUsuario = useUsuarioStore()
         try {
@@ -96,6 +99,15 @@ export const useAprendizStore = defineStore("aprendiz", () => {
             if (telefono) {
                 r.value = await axios.put(`${API_URL}/aprendices/modificar/${id}`, {
                     telefono
+                }, {
+                    headers: {
+                        "token": useUsuario.xtoken
+                    }
+                })
+            }
+            if (firma) {
+                r.value = await axios.put(`${API_URL}/aprendices/modificar/${id}`, {
+                    firma
                 }, {
                     headers: {
                         "token": useUsuario.xtoken

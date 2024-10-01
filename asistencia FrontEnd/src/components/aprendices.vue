@@ -95,6 +95,16 @@
                     <font-awesome-icon icon="envelope" />
                   </template>
                 </q-input>
+                <q-file style="max-width: 250px; min-width: 200px;" clearable filled v-model="firma" accept=".jpg, image/*"
+                  label="Firma" @input="handleFirma" :rules="[
+                    val => val !== null || 'Por favor, seleccione un archivo',
+                    val => val && val.size < 2000000 || 'El archivo debe ser menor a 2MB',
+                    val => val && ['image/jpeg', 'image/png'].includes(val.type) || 'El archivo debe ser JPG o PNG'
+                  ]">
+                  <template v-slot:prepend>
+                    <font-awesome-icon icon="file-signature" />
+                  </template>
+                </q-file>
                 <div>
                   <q-btn push :loading="useAprendiz.loading" label="Guardar" type="submit" color="green-9" />
                 </div>
@@ -110,13 +120,13 @@
 <script setup>
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faPenToSquare, faCheck, faXmark, faUsersBetweenLines, faEnvelope, faPhone, faAddressCard, faUserGraduate } from '@fortawesome/free-solid-svg-icons';
+import { faPenToSquare, faCheck, faXmark, faUsersBetweenLines, faEnvelope, faPhone, faAddressCard, faUserGraduate, faFileSignature } from '@fortawesome/free-solid-svg-icons';
 import { Notify } from 'quasar'
 import { onBeforeMount, ref } from "vue";
 import { useAprendizStore } from '../stores/aprendices.js';
 import { useFichaStore } from '../stores/fichas.js';
 
-library.add(faPenToSquare, faCheck, faXmark, faUsersBetweenLines, faEnvelope, faPhone, faAddressCard, faUserGraduate);
+library.add(faPenToSquare, faCheck, faXmark, faUsersBetweenLines, faEnvelope, faPhone, faAddressCard, faUserGraduate, faFileSignature);
 let useFicha = useFichaStore();
 let useAprendiz = useAprendizStore()
 let email = ref("");
@@ -124,6 +134,8 @@ let telefono = ref("");
 let ficha = ref();
 let cedula = ref("");
 let name = ref("");
+let firma = ref(null);
+let firmaPreview = ref(null);
 let icon = ref(false);
 let change = ref(); // false: crear, true: modificar
 let idAprendiz = ref();
@@ -261,13 +273,26 @@ async function traerFichas() {
 
 }
 
+function handleFirma(file) {
+  if (file && file.length > 0) {
+    const reader = new FileReader();
+    console.log(reader);
+
+    reader.onload = (e) => {
+      firmaPreview.value = e.target.result; // Asigna la URL de la imagen.
+    };
+    reader.readAsDataURL(file[0]); // Lee el archivo de imagen.
+  }
+}
+
 async function crear() {
   let res;
+  console.log(firma.value);
   if (change.value === false) {
-    res = await useAprendiz.postCrearAprendiz(ficha.value.trim(), cedula.value.trim(), name.value.trim(), telefono.value.trim(), email.value.trim())
+    res = await useAprendiz.postCrearAprendiz(ficha.value.trim(), cedula.value.trim(), name.value.trim(), telefono.value.trim(), email.value.trim(), firma.value)
   }
   else {
-    res = await useAprendiz.putModificarAprendiz(ficha.value, cedula.value, name.value, telefono.value, email.value, idAprendiz.value)
+    res = await useAprendiz.putModificarAprendiz(ficha.value, cedula.value, name.value, telefono.value, email.value, firma.value, idAprendiz.value)
   }
   if (res.validar.value === true) {
     icon.value = false
@@ -296,5 +321,6 @@ function onReset() {
   ficha.value = ""
   cedula.value = ""
   name.value = ""
+  firma.value = ""
 }
 </script>
