@@ -28,12 +28,10 @@ const httpFichas = {
             const nombre = req.body.nombre ? req.body.nombre.trim() : undefined;
 
             const ficha = await Ficha.findById(id);
-            if (codigo) {
-                ficha.codigo = codigo;
-            }
-            if (nombre) {
-                ficha.nombre = nombre;
-            }
+            
+            ficha.codigo = codigo;
+            ficha.nombre = nombre;
+            
             await ficha.save();
             res.json({ ficha });
         } catch (error) {

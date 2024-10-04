@@ -70,12 +70,12 @@ const httpAprendices = {
 
             const aprendiz = await Aprendiz.findById(id);
 
-            if (ficha) aprendiz.ficha = ficha;
-            if (cedula) aprendiz.cedula = cedula;
-            if (nombre) aprendiz.nombre = nombre;
-            if (telefono) aprendiz.telefono = telefono;
-            if (email) aprendiz.email = email;
-            if (firma) aprendiz.firma = firma;
+            aprendiz.ficha = ficha;
+            aprendiz.cedula = cedula;
+            aprendiz.nombre = nombre;
+            aprendiz.telefono = telefono;
+            aprendiz.email = email;
+            aprendiz.firma = firma;
 
             await aprendiz.save();
             res.json({ aprendiz });

@@ -79,12 +79,10 @@ const httpUsuario = {
             const nombre = req.body.nombre ? req.body.nombre.trim() : undefined;
 
             const usuario = await Usuario.findById(id);
-            if (email) {
-                usuario.email = email;
-            }
-            if (nombre) {
-                usuario.nombre = nombre;
-            }
+                
+            usuario.email = email;
+            usuario.nombre = nombre;
+            
             await usuario.save();
             res.json({ usuario });
         } catch (error) {

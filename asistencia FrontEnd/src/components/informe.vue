@@ -144,7 +144,6 @@ async function traer() {
 const filterFn = async (val, update) => {
     let res = await useFicha.getListarFichas();
     const fichasActivas = res.data.fichas.filter(ficha => ficha.estado === 1);
-    console.log(fichasActivas);
     
     if (val === '') {
         update(() => {

@@ -3,8 +3,8 @@ import axios from "axios"
 import { ref } from "vue"
 import { useUsuarioStore } from "./usuarios.js";
 
-// const API_URL = 'https://proyecto-asistencia-backend.onrender.com';
-const API_URL = 'http://localhost:4000';
+const API_URL = 'https://proyecto-asistencia-backend.onrender.com';
+// const API_URL = 'http://localhost:4000';
 
 export const useBitacoraStore = defineStore("bitacora", () => {
     let validar = ref(true)
@@ -32,7 +32,6 @@ export const useBitacoraStore = defineStore("bitacora", () => {
         const useUsuario = useUsuarioStore();
         fechaBitacora.value = fecha
         fichaBitacora.value = ficha
-        console.log("fecha que se manda" , fecha);
         
         loading.value = true;
 

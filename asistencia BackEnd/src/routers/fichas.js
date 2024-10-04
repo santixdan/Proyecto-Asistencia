@@ -28,8 +28,8 @@ routerFicha.put("/modificar/:id", [
     check('id', 'El id es obligatorio').notEmpty(),
     check('id', 'El id debe ser MongoId').isMongoId(),
     check('id').custom(fichaHelpers.validarId),
-    check('nombre', 'El nombre es obligatorio y debe ser texto').isString(),
-    check('codigo', 'El codigo debe tener mínimo 5 caracteres').isLength({ min: 5 }),
+    check('nombre', 'El nombre es obligatorio y debe ser texto').notEmpty().isString(),
+    check('codigo', 'El codigo debe tener mínimo 5 caracteres').notEmpty().isLength({ min: 5 }),
     // check('codigo').custom(fichaHelpers.validarCodigoFicha),
     check('codigo').custom(async (codigo, { req }) => {
         await fichaHelpers.validarCodigoSiEsDiferente(codigo, req.params.id);

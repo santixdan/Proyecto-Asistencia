@@ -41,7 +41,7 @@ routerBitacora.get('/listarPorFecha', [
     validarCampos
 ], httpBitacora.getListarPorFecha)
 routerBitacora.get('/listarPorFechaYFicha/:ficha', [
-    // validarJWT,
+    validarJWT,
     check('ficha', 'La ficha es obligatoria').notEmpty(),
     check('ficha', 'La ficha debe ser MongoId').isMongoId(),
     check('ficha').optional().custom(bitacoraHelpers.validarFicha),

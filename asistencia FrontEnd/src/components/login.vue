@@ -54,19 +54,6 @@
                                 <font-awesome-icon icon="address-card" />
                             </template>
                         </q-input>
-                        <!-- <q-input style="width: 250px" filled v-model="fecha" label="Fecha" mask="date" lazy-rules
-                            :rules="[val => (val && val.length > 0) || 'Por favor, dígite la fecha de la bitácora']">
-                            <template v-slot:prepend>
-                                <font-awesome-icon icon="calendar-day" class="cursor-pointer" />
-                                <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                                    <q-date v-model="fecha" today-btn>
-                                        <div class="row items-center justify-end">
-                                            <q-btn v-close-popup label="Close" color="primary" flat />
-                                        </div>
-                                    </q-date>
-                                </q-popup-proxy>
-                            </template>
-                        </q-input> -->
                         <div>
                             <q-btn push :loading="useBitacora.loading" class="btn" label="Registrar" color="green-9"
                                 type="submit" />
@@ -132,14 +119,7 @@ let email2 = ref("");
 let password = ref("");
 let isPwd1 = ref(true);
 let icon = ref(false);
-// // let calendarVisible = ref(false)
-const fechaBogota = moment.tz('America/Bogota').startOf('day').toDate(); // necesito que la fecha sea así 2024-11-11T00:00:00.000Z
-// const fecha = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Bogota' }));
-
-// // Ajustar la hora a 00:00:00 para obtener el formato deseado
-// // fecha.setHours(0, 0, 0, 0); // necesito que la fecha sea así 2024-11-11T00:00:00.000Z
-// const fechaMongo = new Date(); // necesito que la fecha sea así 2024-11-11T00:00:00.000Z
-// console.log(fechaActual);
+const fecha = moment.tz('America/Bogota').startOf('day').toDate();
 let cedula = ref("");
 let model = ref("APRENDIZ")
 let options = ['APRENDIZ', 'USUARIO']
@@ -190,10 +170,7 @@ async function login() {
 }
 
 async function crear() {
-    let res = await useBitacora.postCrearBitacora2(cedula.value.trim(), fechaBogota)
-    // console.log(fecha);
-    // console.log(fechaMongo);
-    console.log(fechaBogota);
+    let res = await useBitacora.postCrearBitacora2(cedula.value.trim(), fecha)
     
     if (res.validar.value === true) {
         onReset()
@@ -218,7 +195,7 @@ function onReset() {
     email.value = "";
     password.value = "";
     email2.value = "";
-    fechaBogota.value = "";
+    fecha.value = "";
     cedula.value = "";
 }
 </script>
