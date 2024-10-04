@@ -18,7 +18,7 @@
                             </q-popup-proxy>
                         </template>
                     </q-input>
-                    <q-select filled type="number" v-model="ficha" use-input input-debounce="0" label="Ficha"
+                    <q-select filled type="number" v-model="ficha" clearable use-input input-debounce="0" label="Ficha"
                         :options="options" @filter="filterFn" behavior="menu" emit-value map-options lazy-rules
                         :rules="[val => val && val.length > 0 || 'Por favor, dígite el código de la ficha']">
                         <template v-slot:no-option>
@@ -144,6 +144,8 @@ async function traer() {
 const filterFn = async (val, update) => {
     let res = await useFicha.getListarFichas();
     const fichasActivas = res.data.fichas.filter(ficha => ficha.estado === 1);
+    console.log(fichasActivas);
+    
     if (val === '') {
         update(() => {
             options.value = fichasActivas.map(ficha => ({

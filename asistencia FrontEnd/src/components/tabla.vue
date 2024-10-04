@@ -96,7 +96,7 @@
             <p>{{ row.autorizaGrabacion }}</p>
           </td>
           <td>
-            <p><img :src="row.firma" alt="firma del aprendiz"></p>
+            <img :src="row.firma" alt="firma del aprendiz" style="height: 35px; ">
           </td>
         </tr>
       </tbody>
@@ -135,9 +135,10 @@ async function traer() {
   try {
     let res = await useBitacora.getListarBitacoraPorFechaYFichaYEstado();
     let res2 = await useAprendiz.getListarAprendiz();
-    let res3 = useFicha.getListarFichas();
+    let res3 = await useFicha.getListarFichas();
     ficha = res3.data.fichas.find(ficha => ficha._id === useBitacora.fichaBitacora)?.codigo
-    // console.log(res2);
+    console.log(res3);
+    console.log(res2);
 
     rows.value = res.r.data.bitacoras.map(bitacora => {
       let aprendiz = res2.data.aprendices.find(aprendiz => aprendiz._id === bitacora.aprendiz);
@@ -150,7 +151,7 @@ async function traer() {
         dependencia: bitacora.dependencia || '',
         correo: aprendiz.email || '',
         telefono: aprendiz.telefono || '',
-        autorizaGrabacion: bitacora.autorizaGrabacion || false,
+        autorizaGrabacion: bitacora.autorizaGrabacion || '',
         firma: aprendiz.firma || '',
       };
     });
@@ -165,7 +166,7 @@ async function traer() {
         dependencia: '',
         correo: '',
         telefono: '',
-        autorizaGrabacion: false,
+        autorizaGrabacion: '',
         firma: '',
       });
     }

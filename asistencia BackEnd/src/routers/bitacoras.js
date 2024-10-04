@@ -36,21 +36,17 @@ routerBitacora.get('/listarPorFicha/:ficha', [
 ], httpBitacora.getListarPorFicha)
 routerBitacora.get('/listarPorFecha', [
     validarJWT,
-    check('fechaInicio', 'La fecha es obligatoria').notEmpty(),
-    check('fechaInicio', 'La fecha debe ser valida').isDate(),
-    check('fechaFin', 'La fecha es obligatoria').notEmpty(),
-    check('fechaFin', 'La fecha debe ser valida').isDate(),
+    check('fechaInicio', 'La fecha debe ser valida').notEmpty(),
+    check('fechaFin', 'La fecha debe ser valida').notEmpty(),
     validarCampos
 ], httpBitacora.getListarPorFecha)
 routerBitacora.get('/listarPorFechaYFicha/:ficha', [
-    validarJWT,
+    // validarJWT,
     check('ficha', 'La ficha es obligatoria').notEmpty(),
     check('ficha', 'La ficha debe ser MongoId').isMongoId(),
     check('ficha').optional().custom(bitacoraHelpers.validarFicha),
-    check('fechaInicio', 'La fecha es obligatoria').notEmpty(),
-    check('fechaInicio', 'La fecha debe ser valida').isDate(),
-    check('fechaFin', 'La fecha es obligatoria').notEmpty(),
-    check('fechaFin', 'La fecha debe ser valida').isDate(),
+    check('fechaInicio', 'La fecha debe ser valida').notEmpty(),
+    check('fechaFin', 'La fecha debe ser valida').notEmpty(),
     validarCampos
 ], httpBitacora.getListarPorFechaYFicha)
 routerBitacora.get('/listarPorFechaYFichaYEstado/:ficha', [
@@ -58,10 +54,8 @@ routerBitacora.get('/listarPorFechaYFichaYEstado/:ficha', [
     check('ficha', 'La ficha es obligatoria').notEmpty(),
     check('ficha', 'La ficha debe ser MongoId').isMongoId(),
     check('ficha').optional().custom(bitacoraHelpers.validarFicha),
-    check('fechaInicio', 'La fecha es obligatoria').notEmpty(),
-    check('fechaInicio', 'La fecha debe ser valida').isDate(),
-    check('fechaFin', 'La fecha es obligatoria').notEmpty(),
-    check('fechaFin', 'La fecha debe ser valida').isDate(),
+    check('fechaInicio', 'La fecha debe ser valida').notEmpty(),
+    check('fechaFin', 'La fecha debe ser valida').notEmpty(),
     validarCampos
 ], httpBitacora.getListarPorFechaYFichaYEstado)
 
@@ -82,7 +76,7 @@ routerBitacora.post('/crear1', [
 ], httpBitacora.postCrearBitacora1)
 routerBitacora.post('/crear2', [
     check('cedula', 'El aprendiz es obligatorio').notEmpty(),
-    check('fecha', 'La fecha debe ser valida').notEmpty().isDate(),
+    check('fecha', 'La fecha debe ser valida').notEmpty(),
     check('cedula').custom(bitacoraHelpers.validarAprendiz2),
     check('cedula').custom(bitacoraHelpers.validarAprendizActivo2),
     check('fecha').custom(async (fecha, { req }) => {

@@ -120,6 +120,7 @@ import { ref } from "vue";
 import { useUsuarioStore } from "./../stores/usuarios.js";
 import { useRouter } from 'vue-router'
 import { useBitacoraStore } from '../stores/bitacoras.js';
+import moment from 'moment-timezone';
 
 
 library.add(faAddressCard, faCalendarDay, faEnvelope, faLock, faUsers);
@@ -131,8 +132,13 @@ let email2 = ref("");
 let password = ref("");
 let isPwd1 = ref(true);
 let icon = ref(false);
-// let calendarVisible = ref(false)
-const fecha = new Date().toLocaleString('es-CO', { timeZone: 'America/Bogota' });
+// // let calendarVisible = ref(false)
+const fechaBogota = moment.tz('America/Bogota').startOf('day').toDate(); // necesito que la fecha sea así 2024-11-11T00:00:00.000Z
+// const fecha = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Bogota' }));
+
+// // Ajustar la hora a 00:00:00 para obtener el formato deseado
+// // fecha.setHours(0, 0, 0, 0); // necesito que la fecha sea así 2024-11-11T00:00:00.000Z
+// const fechaMongo = new Date(); // necesito que la fecha sea así 2024-11-11T00:00:00.000Z
 // console.log(fechaActual);
 let cedula = ref("");
 let model = ref("APRENDIZ")
@@ -184,7 +190,11 @@ async function login() {
 }
 
 async function crear() {
-    let res = await useBitacora.postCrearBitacora2(cedula.value.trim(), fecha)
+    let res = await useBitacora.postCrearBitacora2(cedula.value.trim(), fechaBogota)
+    // console.log(fecha);
+    // console.log(fechaMongo);
+    console.log(fechaBogota);
+    
     if (res.validar.value === true) {
         onReset()
         Notify.create({
@@ -208,7 +218,7 @@ function onReset() {
     email.value = "";
     password.value = "";
     email2.value = "";
-    fecha.value = "";
+    fechaBogota.value = "";
     cedula.value = "";
 }
 </script>

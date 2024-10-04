@@ -3,8 +3,8 @@ import axios from "axios"
 import { ref } from "vue"
 import { useUsuarioStore } from "./usuarios.js";
 
-const API_URL = 'https://proyecto-asistencia-backend.onrender.com';
-// const API_URL = 'http://localhost:4000';
+// const API_URL = 'https://proyecto-asistencia-backend.onrender.com';
+const API_URL = 'http://localhost:4000';
 
 export const useAprendizStore = defineStore("aprendiz", () => {
     let validar = ref(true)
@@ -56,53 +56,35 @@ export const useAprendizStore = defineStore("aprendiz", () => {
     }
 
     async function putModificarAprendiz(ficha, cedula, name, telefono, email, firma, id) {
-    loading.value = true;
-    const useUsuario = useUsuarioStore();
-    try {
-        let r;
-        let formData;
-        if (firma) {
+        loading.value = true;
+        const useUsuario = useUsuarioStore();
+        try {
+            let formData;
             formData = new FormData();
-            if (ficha) formData.append('ficha', ficha);
-            if (cedula) formData.append('cedula', cedula);
-            if (name) formData.append('nombre', name);
-            if (telefono) formData.append('telefono', telefono);
-            if (email) formData.append('email', email);
+            formData.append('ficha', ficha);
+            formData.append('cedula', cedula);
+            formData.append('nombre', name);
+            formData.append('telefono', telefono);
+            formData.append('email', email);
             formData.append('firma', firma);
-            
 
-            r = await axios.put(`${API_URL}/aprendices/modificar/${id}`, formData, {
+            let r = await axios.put(`${API_URL}/aprendices/modificar/${id}`, formData, {
                 headers: {
                     "token": useUsuario.xtoken,
                     'Content-Type': 'multipart/form-data',
                 }
-            });
-        } else {
-            let data = {};
-            if (ficha) data.ficha = ficha;
-            if (cedula) data.cedula = cedula;
-            if (name) data.nombre = name;
-            if (telefono) data.telefono = telefono;
-            if (email) data.email = email;
-            
+            })
 
-            r = await axios.put(`${API_URL}/aprendices/modificar/${id}`, data, {
-                headers: {
-                    "token": useUsuario.xtoken,
-                }
-            });
+            validar.value = true;
+            return { r, validar };
+        } catch (error) {
+            validar.value = false;
+            console.log(error);
+            return { error, validar };
+        } finally {
+            loading.value = false;
         }
-
-        validar.value = true;
-        return { r, validar };
-    } catch (error) {
-        validar.value = false;
-        console.log(error);
-        return { error, validar };
-    } finally {
-        loading.value = false;
     }
-}
 
     async function putActivarAprendiz(id) {
         const useUsuario = useUsuarioStore()

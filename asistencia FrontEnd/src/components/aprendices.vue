@@ -42,7 +42,7 @@
           <q-card-section>
             <div class="q-pa-md" style="max-width: 400px">
               <q-form @submit="crear()" @reset="onReset()" class="q-gutter-md">
-                <q-select filled type="number" v-model="ficha" use-input input-debounce="0" label="Ficha"
+                <q-select filled type="number" v-model="ficha" clearable use-input input-debounce="0" label="Ficha"
                   :options="options" @filter="filterFn" style="max-width: 250px; min-width: 200px;" behavior="menu"
                   emit-value map-options lazy-rules :rules="[
                     val => (val && val.length > 0) ||

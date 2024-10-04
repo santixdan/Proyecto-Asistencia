@@ -5,7 +5,6 @@ const httpBitacora = {
     getListarBitacoras: async (req, res) => {
         try {
             const bitacora = await Bitacora.find();
-            console.log('Bitácoras encontradas:', bitacora.length);
             res.json({ bitacora });
         } catch (error) {
             res.status(400).json({ error });
