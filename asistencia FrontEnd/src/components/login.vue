@@ -54,7 +54,7 @@
                                 <font-awesome-icon icon="address-card" />
                             </template>
                         </q-input>
-                        <q-input style="width: 250px" filled v-model="fecha" label="Fecha" mask="date" lazy-rules
+                        <!-- <q-input style="width: 250px" filled v-model="fecha" label="Fecha" mask="date" lazy-rules
                             :rules="[val => (val && val.length > 0) || 'Por favor, dígite la fecha de la bitácora']">
                             <template v-slot:prepend>
                                 <font-awesome-icon icon="calendar-day" class="cursor-pointer" />
@@ -66,9 +66,9 @@
                                     </q-date>
                                 </q-popup-proxy>
                             </template>
-                        </q-input>
+                        </q-input> -->
                         <div>
-                            <q-btn push :loading="useBitacora.loading" class="btn" label="Crear" color="green-9"
+                            <q-btn push :loading="useBitacora.loading" class="btn" label="Registrar" color="green-9"
                                 type="submit" />
                         </div>
                     </q-form>
@@ -131,8 +131,9 @@ let email2 = ref("");
 let password = ref("");
 let isPwd1 = ref(true);
 let icon = ref(false);
-let calendarVisible = ref(false)
-let fecha = ref("");
+// let calendarVisible = ref(false)
+const fecha = new Date().toLocaleString('es-CO', { timeZone: 'America/Bogota' });
+// console.log(fechaActual);
 let cedula = ref("");
 let model = ref("APRENDIZ")
 let options = ['APRENDIZ', 'USUARIO']
@@ -183,7 +184,7 @@ async function login() {
 }
 
 async function crear() {
-    let res = await useBitacora.postCrearBitacora2(cedula.value.trim(), fecha.value.trim())
+    let res = await useBitacora.postCrearBitacora2(cedula.value.trim(), fecha)
     if (res.validar.value === true) {
         onReset()
         Notify.create({

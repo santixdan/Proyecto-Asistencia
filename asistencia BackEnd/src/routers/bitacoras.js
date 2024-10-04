@@ -71,17 +71,23 @@ routerBitacora.post('/crear1', [
     validarJWT,
     check('aprendiz', 'El aprendiz es obligatorio').notEmpty(),
     check('aprendiz', 'El aprendiz debe ser un MongoId').isMongoId(),
-    check('fecha', 'La fecha es obligatoria y debe ser valida').notEmpty().isDate(),
+    check('fecha', 'La fecha debe ser valida').notEmpty().isDate(),
     check('aprendiz').custom(bitacoraHelpers.validarAprendiz1),
     check('aprendiz').custom(bitacoraHelpers.validarAprendizActivo1),
+    check('fecha').custom(async (fecha, { req }) => {
+        await bitacoraHelpers.validarFecha1(fecha, req.body.aprendiz);
+    }),
     check('estado').optional().custom(bitacoraHelpers.validarEstado),
     validarCampos
 ], httpBitacora.postCrearBitacora1)
 routerBitacora.post('/crear2', [
     check('cedula', 'El aprendiz es obligatorio').notEmpty(),
-    check('fecha', 'La fecha es obligatoria y debe ser valida').notEmpty().isDate(),
+    check('fecha', 'La fecha debe ser valida').notEmpty().isDate(),
     check('cedula').custom(bitacoraHelpers.validarAprendiz2),
     check('cedula').custom(bitacoraHelpers.validarAprendizActivo2),
+    check('fecha').custom(async (fecha, { req }) => {
+        await bitacoraHelpers.validarFecha2(fecha, req.body.cedula);
+    }),
     check('estado').optional().custom(bitacoraHelpers.validarEstado),
     validarCampos
 ], httpBitacora.postCrearBitacora2)

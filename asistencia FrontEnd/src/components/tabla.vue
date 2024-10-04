@@ -24,7 +24,7 @@
             OBJETIVO (S)
           </th>
           <th colspan="10">
-            <!-- <input type="text"> -->
+            <span>Registro de asistencia de la ficha {{ ficha }}</span>
           </th>
         </tr>
         <tr>
@@ -81,10 +81,10 @@
             <p>{{ row.contratista }}</p>
           </td>
           <td>
-            <p>{{ row.otro }}</p>
+            <p>{{ row.otro ? 'Sí' : 'Aprendiz' }}</p>
           </td>
           <td>
-            <p>{{ row.dependencia }}</p>
+            <p>{{ row.dependencia ? 'Sí' : 'SENA/CAT' }}</p>
           </td>
           <td>
             <p>{{ row.correo }}</p>
@@ -93,10 +93,10 @@
             <p>{{ row.telefono }}</p>
           </td>
           <td>
-            <p>{{ row.autorizaGrabacion ? 'Sí' : 'No' }}</p>
+            <p>{{ row.autorizaGrabacion }}</p>
           </td>
           <td>
-            <p><img :src="row.firma" alt=""></p>
+            <p><img :src="row.firma" alt="firma del aprendiz"></p>
           </td>
         </tr>
       </tbody>
@@ -108,9 +108,12 @@
 import { ref, onBeforeMount } from 'vue';
 import { useAprendizStore } from '../stores/aprendices.js';
 import { useBitacoraStore } from '../stores/bitacoras.js';
+import { useFichaStore } from '../stores/fichas.js';
 
 let useBitacora = useBitacoraStore()
 let useAprendiz = useAprendizStore()
+let useFicha = useFichaStore();
+let ficha;
 let day = ref('');
 let month = ref('');
 let year = ref('');
@@ -132,8 +135,10 @@ async function traer() {
   try {
     let res = await useBitacora.getListarBitacoraPorFechaYFichaYEstado();
     let res2 = await useAprendiz.getListarAprendiz();
+    let res3 = useFicha.getListarFichas();
+    ficha = res3.data.fichas.find(ficha => ficha._id === useBitacora.fichaBitacora)?.codigo
     // console.log(res2);
-    
+
     rows.value = res.r.data.bitacoras.map(bitacora => {
       let aprendiz = res2.data.aprendices.find(aprendiz => aprendiz._id === bitacora.aprendiz);
       return {

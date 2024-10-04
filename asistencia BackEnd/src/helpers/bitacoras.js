@@ -47,6 +47,35 @@ const bitacoraHelpers = {
         if (!existeFicha) {
             throw new Error("La ficha no existe en la base de datos")
         }
+    },
+    validarFecha1: async (fecha, aprendiz) => {
+        let bitacoraAprendiz = await Bitacora.find({ aprendiz });
+    
+        let fechaSinHora = new Date(fecha).setHours(0, 0, 0, 0);
+    
+        let yaRegistrado = bitacoraAprendiz.some(bitacora => {
+            let fechaBitacora = new Date(bitacora.fecha).setHours(0, 0, 0, 0);
+            return fechaBitacora === fechaSinHora;
+        });
+    
+        if (yaRegistrado) {
+            throw new Error(`El aprendiz ya fue registrado en la fecha ${new Date(fecha).toLocaleDateString()}`);
+        }
+    },
+    validarFecha2: async (fecha, cedula) => {
+        let existeAprendiz = await Aprendiz.findOne({cedula})
+        let bitacoraAprendiz = await Bitacora.find({ aprendiz : existeAprendiz._id });
+    
+        let fechaSinHora = new Date(fecha).setHours(0, 0, 0, 0);
+    
+        let yaRegistrado = bitacoraAprendiz.some(bitacora => {
+            let fechaBitacora = new Date(bitacora.fecha).setHours(0, 0, 0, 0);
+            return fechaBitacora === fechaSinHora;
+        });
+    
+        if (yaRegistrado) {
+            throw new Error(`El aprendiz ya fue registrado en la fecha ${new Date(fecha).toLocaleDateString()}`);
+        }
     }
 }
 module.exports = { bitacoraHelpers };
