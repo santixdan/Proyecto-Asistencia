@@ -62,7 +62,8 @@
                 <q-input style="max-width: 250px; min-width: 200px;" filled v-model="name" label="Nombre" lazy-rules
                   :rules="[
                     val => (val && val.length > 0) ||
-                      'Por favor, dígite el nombre del aprendiz'
+                      'Por favor, dígite el nombre del aprendiz',
+                    val => val.trim() !== '' || 'No se permiten espacios en blanco'
                   ]">
                   <template v-slot:prepend>
                     <font-awesome-icon icon="user-graduate" />
