@@ -61,10 +61,12 @@ const httpAprendices = {
     putModificarAprendiz: async (req, res) => {
         try {
             const id = req.params.id.trim();
-            const { ficha, cedula, nombre, telefono, email } = req.body;
+            const newData = req.body;
             const firma = req.file ? req.file.path : null;
 
-            const aprendiz = await Aprendiz.findByIdAndUpdate(id, { ficha, cedula, nombre, telefono, email, firma });
+            if (firma) newData.firma = firma
+
+            const aprendiz = await Aprendiz.findByIdAndUpdate(id, newData,{ new: true});
             res.json({ aprendiz });
         } catch (error) {
             res.status(400).json({ error });
