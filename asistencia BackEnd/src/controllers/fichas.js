@@ -11,9 +11,7 @@ const httpFichas = {
     },
     postCrearFichas: async (req, res) => {
         try {
-            const codigo = req.body.codigo.trim();
-            const nombre = req.body.nombre.trim();
-
+            const {codigo, nombre} = req.body
             const newFicha = new Ficha({ codigo, nombre });
             await newFicha.save();
             res.json({ newFicha });
@@ -24,15 +22,9 @@ const httpFichas = {
     putModificarFichas: async (req, res) => {
         try {
             const id = req.params.id.trim();
-            const codigo = req.body.codigo ? req.body.codigo.trim() : undefined;
-            const nombre = req.body.nombre ? req.body.nombre.trim() : undefined;
+            const {codigo, nombre} = req.body
 
-            const ficha = await Ficha.findById(id);
-            
-            ficha.codigo = codigo;
-            ficha.nombre = nombre;
-            
-            await ficha.save();
+            const ficha = await Ficha.findByIdAndUpdate(id, { codigo, nombre });
             res.json({ ficha });
         } catch (error) {
             res.status(400).json({ error });

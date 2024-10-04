@@ -23,9 +23,7 @@ const httpUsuario = {
     },
     postCrearUsuarios: async (req, res) => {
         try {
-            const email = req.body.email.trim();
-            const password = req.body.password.trim();
-            const nombre = req.body.nombre.trim();
+            const {email, password, nombre} = req.body
 
             const newUsuario = new Usuario({ email, password, nombre });
             const salt = bcryptjs.genSaltSync();
@@ -39,9 +37,7 @@ const httpUsuario = {
     },
     postLoginUsuario: async (req, res) => {
         try {
-            const email = req.body.email.trim();
-            const password = req.body.password.trim();
-
+            const {email, password} = req.body
             const usuario = await Usuario.findOne({ email });
             const token = await generarJWT(usuario._id);
             res.json({ usuario, token });
@@ -75,15 +71,9 @@ const httpUsuario = {
     putModificarUsuarios: async (req, res) => {
         try {
             const id = req.params.id.trim();
-            const email = req.body.email ? req.body.email.trim() : undefined;
-            const nombre = req.body.nombre ? req.body.nombre.trim() : undefined;
+            const {email, nombre} = req.body
 
-            const usuario = await Usuario.findById(id);
-                
-            usuario.email = email;
-            usuario.nombre = nombre;
-            
-            await usuario.save();
+            const usuario = await Usuario.findByIdAndUpdate(id, {email, nombre});
             res.json({ usuario });
         } catch (error) {
             res.status(400).json({ error });
