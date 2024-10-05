@@ -30,9 +30,9 @@ export const useBitacoraStore = defineStore("bitacora", () => {
     }
     async function getListarBitacoraPorFechaYFicha(fecha, ficha) {
         const useUsuario = useUsuarioStore();
-        fechaBitacora.value = fecha
+        fechaBitacora.value = new Date(fecha).toISOString()
         fichaBitacora.value = ficha
-        console.log(fecha);
+        console.log(new Date(fecha).toISOString());
         console.log(ficha);
         
         
