@@ -4,13 +4,11 @@
       <q-toolbar class="custom-toolbar-title">
         <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
         <q-toolbar-title>
-          <q-avatar>
-            <img src="https://lostramites.com.co/wp-content/uploads/logo-de-Sena-sin-fondo-Blanco-300x300.png" />
-          </q-avatar>
-          <q-btn style="float: right; margin: none;" flat v-if="$route.path != '/home'" to="/home"><font-awesome-icon
-              :icon="['fas', 'arrow-right-from-bracket']" style="font-size: 24px;" /></q-btn>
-          <q-btn style="float: right; margin: none;" flat v-else @click="alert = true"><font-awesome-icon
-              :icon="['fas', 'arrow-right-from-bracket']" style="font-size: 24px;" /></q-btn>
+          <router-link to="/home">
+            <q-avatar class="cursor-pointer">
+              <img src="https://lostramites.com.co/wp-content/uploads/logo-de-Sena-sin-fondo-Blanco-300x300.png" />
+            </q-avatar>
+          </router-link>
         </q-toolbar-title>
       </q-toolbar>
     </q-header>
@@ -27,8 +25,7 @@
             <q-btn push to="/aprendiz" label="Aprendices" color="green-9" class="full-width q-mb-sm" />
             <q-btn push to="/usuario" label="Usuarios" color="green-9" class="full-width q-mb-sm" />
             <q-btn push to="/informe" label="Informe" color="green-9" class="full-width q-mb-sm" />
-            <q-btn push flat label="Cerrar sesión" color="green-9" class="full-width q-mb-sm"
-              @click="alert = true"/>
+            <q-btn push flat label="Cerrar sesión" color="green-9" class="full-width q-mb-sm" @click="alert = true" />
           </div>
         </q-list>
       </q-scroll-area>
@@ -125,21 +122,21 @@
     </q-footer>
     <div class="q-pa-md q-gutter-sm">
       <q-dialog v-model="alert" persistent>
-      <q-card>
-        <q-card-section>
-          <div class="text-h6">Cerrar sesión</div>
-        </q-card-section>
+        <q-card>
+          <q-card-section>
+            <div class="text-h6">Cerrar sesión</div>
+          </q-card-section>
 
-        <q-card-section class="q-pt-none">
-          ¿Seguro que deseas cerrar sesión?
-        </q-card-section>
+          <q-card-section class="q-pt-none">
+            ¿Seguro que deseas cerrar sesión?
+          </q-card-section>
 
-        <q-card-actions align="right">
-          <q-btn flat label="Sí"  to="/" color="red-9" v-close-popup @click="useUsuario.logout()"  />
-          <q-btn flat label="No" color="green-9" v-close-popup />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
+          <q-card-actions align="right">
+            <q-btn flat label="Sí" to="/" color="red-9" v-close-popup @click="useUsuario.logout()" />
+            <q-btn flat label="No" color="green-9" v-close-popup />
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
     </div>
   </q-layout>
 </template>

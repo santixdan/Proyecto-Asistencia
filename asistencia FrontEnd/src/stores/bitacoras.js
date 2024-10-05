@@ -32,6 +32,9 @@ export const useBitacoraStore = defineStore("bitacora", () => {
         const useUsuario = useUsuarioStore();
         fechaBitacora.value = fecha
         fichaBitacora.value = ficha
+        console.log(fecha);
+        console.log(ficha);
+        
         
         loading.value = true;
 
