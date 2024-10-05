@@ -38,13 +38,12 @@ export const useBitacoraStore = defineStore("bitacora", () => {
         try {
             let r = await axios.get(`${API_URL}/bitacoras/listarPorFechaYFicha/${ficha}`, {
                 params: {
-                    fechaInicio: fecha,
-                    fechaFin: fecha
+                    fechaInicio: fechaBitacora.value,
+                    fechaFin: fechaBitacora.value
                 },
                 headers: {
                     "token": useUsuario.xtoken
-                },
-                withCredentials: true
+                }
             });
             validar.value = true
             return { r, validar }
