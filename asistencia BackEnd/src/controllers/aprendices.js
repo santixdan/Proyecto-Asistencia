@@ -49,7 +49,7 @@ const httpAprendices = {
     postCrearAprendiz: async (req, res) => {
         try {
             const { ficha, cedula, nombre, telefono, email } = req.body;
-            const firma = req.file ? req.file.path : null;
+            const firma = req.file ? req.file.path : null; // URL de la firma en Cloudinary
 
             const newAprendiz = new Aprendiz({ ficha, cedula, nombre, telefono, email, firma });
             await newAprendiz.save();
@@ -61,13 +61,12 @@ const httpAprendices = {
     putModificarAprendiz: async (req, res) => {
         try {
             const id = req.params.id.trim();
-<<<<<<< HEAD
             const ficha = req.body.ficha?.trim();
             const cedula = req.body.cedula?.trim();
             const nombre = req.body.nombre?.trim();
             const telefono = req.body.telefono?.trim();
             const email = req.body.email?.trim();
-            const firma = req.file ? req.file.path : null;  // Mantener la firma anterior si no se envía un archivo
+            const firma = req.file ? req.file.path : null;
 
             const aprendiz = await Aprendiz.findById(id);
 
@@ -79,14 +78,6 @@ const httpAprendices = {
             if (firma) aprendiz.firma = firma;
 
             await aprendiz.save();
-=======
-            const newData = req.body;
-            const firma = req.file ? req.file.path : null;
-
-            if (firma) newData.firma = firma
-
-            const aprendiz = await Aprendiz.findByIdAndUpdate(id, newData,{ new: true});
->>>>>>> 562e2cfbba8ab47c88de2df938f4bb91ad29b38f
             res.json({ aprendiz });
         } catch (error) {
             res.status(400).json({ error });
