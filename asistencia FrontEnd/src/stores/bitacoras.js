@@ -30,14 +30,11 @@ export const useBitacoraStore = defineStore("bitacora", () => {
     }
     async function getListarBitacoraPorFechaYFicha(fecha, ficha) {
         const useUsuario = useUsuarioStore();
-        fechaBitacora.value = new Date(fecha).toISOString()
+        fechaBitacora.value = fecha
         fichaBitacora.value = ficha
-        console.log(new Date(fecha).toISOString());
+        console.log(fecha);
         console.log(ficha);
-        
-        
         loading.value = true;
-
         try {
             let r = await axios.get(`${API_URL}/bitacoras/listarPorFechaYFicha/${ficha}`, {
                 params: {

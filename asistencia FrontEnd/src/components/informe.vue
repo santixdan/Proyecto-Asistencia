@@ -99,8 +99,9 @@ let columns = ref([
 
 
 async function traer() {
-    let res = await useBitacora.getListarBitacoraPorFechaYFicha(fecha.value.trim(), ficha.value.trim());
+    let res = await useBitacora.getListarBitacoraPorFechaYFicha(fecha.value, ficha.value);
     console.log(res);
+    console.log(res.r.data.bitacoras.length);
     
     if (res.r.data.bitacoras.length === 0) {
         Notify.create({

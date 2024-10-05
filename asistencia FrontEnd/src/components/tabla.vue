@@ -134,6 +134,7 @@ function obtenerFechaActual() {
 async function traer() {
   try {
     let res = await useBitacora.getListarBitacoraPorFechaYFichaYEstado();
+    console.log(res);
     let res2 = await useAprendiz.getListarAprendiz();
     let res3 = await useFicha.getListarFichas();
     ficha = res3.data.fichas.find(ficha => ficha._id === useBitacora.fichaBitacora)?.codigo

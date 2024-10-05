@@ -143,9 +143,6 @@
 
 <script setup>
 import { ref } from 'vue';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { useUsuarioStore } from "./../stores/usuarios.js";
 
 let useUsuario = useUsuarioStore();
@@ -153,9 +150,6 @@ let correo = ref(useUsuario?.usuario?.email || "none")
 let nombre = ref(useUsuario?.usuario?.nombre || "none")
 let alert = ref(false)
 
-
-
-library.add(faArrowRightFromBracket);
 
 const leftDrawerOpen = ref(false);
 
