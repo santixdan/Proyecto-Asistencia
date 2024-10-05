@@ -109,7 +109,7 @@ async function traer() {
       let fichas = res3.data.fichas.find(ficha => ficha._id === aprendices.ficha)
       return {
         ...bitacora,
-        // fecha: formatFecha(bitacora.fecha),
+        fecha: formatFecha(bitacora.fecha),
         aprendiz: aprendices.cedula,
         aprendiznombre: aprendices.nombre,
         ficha: fichas.codigo,
