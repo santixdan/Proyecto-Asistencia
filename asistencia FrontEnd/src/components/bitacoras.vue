@@ -94,8 +94,6 @@ async function traer() {
   let res = await useBitacora.getListarBitacora();
   let res2 = await useAprendiz.getListarAprendiz();
   let res3 = await useFicha.getListarFichas()
-  console.log(res);
-  
   
   if (res.data.bitacora.length === 0) {
     Notify.create({
