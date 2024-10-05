@@ -100,6 +100,8 @@ let columns = ref([
 
 async function traer() {
     let res = await useBitacora.getListarBitacoraPorFechaYFicha(fecha.value.trim(), ficha.value.trim());
+    console.log(res);
+    
     if (res.r.data.bitacoras.length === 0) {
         Notify.create({
             color: "red-5",

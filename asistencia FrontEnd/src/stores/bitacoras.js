@@ -43,7 +43,8 @@ export const useBitacoraStore = defineStore("bitacora", () => {
                 },
                 headers: {
                     "token": useUsuario.xtoken
-                }
+                },
+                withCredentials: true
             });
             validar.value = true
             return { r, validar }

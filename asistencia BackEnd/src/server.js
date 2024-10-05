@@ -27,7 +27,7 @@ class Server {
             ],
             credentials: true,
             methods: ['GET', 'POST', 'PUT', 'DELETE'],
-            allowedHeaders: ['Content-Type', 'Authorization', 'token']
+            allowedHeaders: ['Content-Type', 'Authorization', 'token', 'Accept', 'X-Requested-With']
         }));
         this.app.use(express.static('public'));
         // this.app.use(nodemailer());
