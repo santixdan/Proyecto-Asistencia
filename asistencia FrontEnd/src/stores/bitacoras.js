@@ -34,6 +34,8 @@ export const useBitacoraStore = defineStore("bitacora", () => {
         fichaBitacora.value = ficha
         console.log(fecha);
         console.log(ficha);
+        console.log(fechaBitacora.value);
+        console.log(fichaBitacora.value);
         loading.value = true;
         try {
             let r = await axios.get(`${API_URL}/bitacoras/listarPorFechaYFicha/${ficha}`, {

@@ -119,7 +119,7 @@ let email2 = ref("");
 let password = ref("");
 let isPwd1 = ref(true);
 let icon = ref(false);
-const fecha = moment.tz('America/Bogota').startOf('day').toDate();
+let fecha = moment().tz('America/Bogota').startOf('day');
 let cedula = ref("");
 let model = ref("APRENDIZ")
 let options = ['APRENDIZ', 'USUARIO']
@@ -171,6 +171,7 @@ async function login() {
 
 async function crear() {
     let res = await useBitacora.postCrearBitacora2(cedula.value.trim(), fecha)
+    console.log(fecha);
     
     if (res.validar.value === true) {
         onReset()
@@ -195,7 +196,7 @@ function onReset() {
     email.value = "";
     password.value = "";
     email2.value = "";
-    fecha.value = "";
+    fecha = "";
     cedula.value = "";
 }
 </script>
