@@ -71,9 +71,15 @@ const httpUsuario = {
     putModificarUsuarios: async (req, res) => {
         try {
             const id = req.params.id.trim();
-            const {email, nombre} = req.body
+            const email = req.body.email?.trim();
+            const nombre = req.body.nombre?.trim();
 
-            const usuario = await Usuario.findByIdAndUpdate(id, {email, nombre});
+            const usuario = await Usuario.findById(id);
+
+            if (email) usuario.email = email;
+            if (nombre) usuario.nombre = nombre;
+
+            await usuario.save();
             res.json({ usuario });
         } catch (error) {
             res.status(400).json({ error });

@@ -2,7 +2,7 @@ import { defineStore } from "pinia"
 import axios from "axios"
 import { ref } from "vue"
 
-const API_URL = 'https://proyecto-asistencia-backend.onrender.com';
+// const API_URL = 'https://proyecto-asistencia-backend.onrender.com';
 // const API_URL = 'http://localhost:4000';
 
 export const useUsuarioStore = defineStore("usuario", () => {
@@ -97,25 +97,14 @@ export const useUsuarioStore = defineStore("usuario", () => {
     async function putModificarUsuario(email, name, id) {
         loading.value = true
         try {
-            let r = ref()
-            if (email) {
-                r.value = await axios.put(`${API_URL}/usuarios/modificar/${id}`, {
-                    email
-                }, {
-                    headers: {
-                        "token": xtoken.value
-                    }
-                })
-            }
-            if (name) {
-                r.value = await axios.put(`${API_URL}/usuarios/modificar/${id}`, {
+            let r= await axios.put(`${API_URL}/usuarios/modificar/${id}`, {
+                    email,
                     nombre: name
                 }, {
                     headers: {
                         "token": xtoken.value
                     }
                 })
-            }
             validar.value = true
             return { r, validar }
         } catch (error) {

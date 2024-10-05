@@ -61,10 +61,23 @@ const httpAprendices = {
     putModificarAprendiz: async (req, res) => {
         try {
             const id = req.params.id.trim();
-            const { ficha, cedula, nombre, telefono, email } = req.body;
-            const firma = req.file ? req.file.path : null;
+            const ficha = req.body.ficha?.trim();
+            const cedula = req.body.cedula?.trim();
+            const nombre = req.body.nombre?.trim();
+            const telefono = req.body.telefono?.trim();
+            const email = req.body.email?.trim();
+            const firma = req.file ? req.file.path : null;  // Mantener la firma anterior si no se envía un archivo
 
-            const aprendiz = await Aprendiz.findByIdAndUpdate(id, { ficha, cedula, nombre, telefono, email, firma });
+            const aprendiz = await Aprendiz.findById(id);
+
+            if (ficha) aprendiz.ficha = ficha;
+            if (cedula) aprendiz.cedula = cedula;
+            if (nombre) aprendiz.nombre = nombre;
+            if (telefono) aprendiz.telefono = telefono;
+            if (email) aprendiz.email = email;
+            if (firma) aprendiz.firma = firma;
+
+            await aprendiz.save();
             res.json({ aprendiz });
         } catch (error) {
             res.status(400).json({ error });

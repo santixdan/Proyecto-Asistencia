@@ -66,7 +66,7 @@ export const useAprendizStore = defineStore("aprendiz", () => {
             formData.append('nombre', name);
             formData.append('telefono', telefono);
             formData.append('email', email);
-            formData.append('firma', firma);
+            if(ficha) formData.append('firma', firma);
 
             let r = await axios.put(`${API_URL}/aprendices/modificar/${id}`, formData, {
                 headers: {

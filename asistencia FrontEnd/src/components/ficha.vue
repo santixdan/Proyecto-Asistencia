@@ -150,7 +150,7 @@ async function crear() {
     res = await useFicha.postCrearFicha(code.value.trim(), name.value.trim());
   }
   else {
-    res = await useFicha.putModificarFicha(code.value, name.value, idFicha.value);
+    res = await useFicha.putModificarFicha(code.value.trim(), name.value.trim(), idFicha.value);
   }
   if (res.validar.value === true) {
     icon.value = false

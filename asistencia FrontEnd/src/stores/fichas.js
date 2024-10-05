@@ -53,25 +53,14 @@ export const useFichaStore = defineStore("ficha", () => {
         loading.value = true
         const useUsuario = useUsuarioStore()
         try {
-            let r = ref()
-            if (code) {
-                r.value = await axios.put(`${API_URL}/fichas/modificar/${id}`, {
-                    codigo: code
-                }, {
+            let r = await axios.put(`${API_URL}/fichas/modificar/${id}`, {
+                codigo: code,
+                nombre: name
+            }, {
                     headers: {
                         "token": useUsuario.xtoken
                     }
                 })
-            }
-            if (name) {
-                r.value = await axios.put(`${API_URL}/fichas/modificar/${id}`, {
-                    nombre: name
-                }, {
-                    headers: {
-                        "token": useUsuario.xtoken
-                    }
-                })
-            }
             validar.value = true
             return { r, validar }
         } catch (error) {

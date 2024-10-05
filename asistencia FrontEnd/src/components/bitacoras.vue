@@ -94,6 +94,7 @@ async function traer() {
   let res = await useBitacora.getListarBitacora();
   let res2 = await useAprendiz.getListarAprendiz();
   let res3 = await useFicha.getListarFichas()
+  
   if (res.data.bitacora.length === 0) {
     Notify.create({
       color: "red-5",

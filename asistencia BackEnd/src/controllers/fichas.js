@@ -22,9 +22,15 @@ const httpFichas = {
     putModificarFichas: async (req, res) => {
         try {
             const id = req.params.id.trim();
-            const {codigo, nombre} = req.body
+            const codigo = req.body.codigo?.trim();
+            const nombre = req.body.nombre?.trim();
 
-            const ficha = await Ficha.findByIdAndUpdate(id, { codigo, nombre });
+            const ficha = await Ficha.findById(id);
+
+            if(codigo) ficha.codigo = codigo
+            if(nombre) ficha.nombre = nombre
+
+            await ficha.save();
             res.json({ ficha });
         } catch (error) {
             res.status(400).json({ error });

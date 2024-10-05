@@ -167,7 +167,7 @@ async function crear() {
     res = await useUsuario.postCrearUsuario(email.value.trim(), name.value.trim(), password.value.trim());
   }
   else {
-    res = await useUsuario.putModificarUsuario(email.value, name.value, idUsuario.value);
+    res = await useUsuario.putModificarUsuario(email.value.trim(), name.value.trim(), idUsuario.value);
   }
   if (res.validar.value === true) {
     icon.value = false
