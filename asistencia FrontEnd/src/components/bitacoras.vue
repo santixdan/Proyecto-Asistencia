@@ -109,7 +109,7 @@ async function traer() {
       let fichas = res3.data.fichas.find(ficha => ficha._id === aprendices.ficha)
       return {
         ...bitacora,
-        // fecha: formatFecha(bitacora.fecha),
+        fecha: formatFecha(bitacora.fecha),
         aprendiz: aprendices.cedula,
         aprendiznombre: aprendices.nombre,
         ficha: fichas.codigo,
@@ -124,8 +124,17 @@ function formatFecha(fecha) {
   const offset = date.getTimezoneOffset(); // obtén el offset en minutos
   date.setMinutes(date.getMinutes() + offset); // ajusta la fecha
   
-  const options = { year: "numeric", month: "2-digit", day: "2-digit" };
-  return date.toLocaleDateString("es-ES", options);
+  const options = { 
+    year: "numeric", 
+    month: "2-digit", 
+    day: "2-digit",
+    hour: "2-digit", 
+    minute: "2-digit",
+    hour12: true // usa formato de 24 horas, si prefieres 12 horas, cámbialo a true
+  };
+  
+  return date.toLocaleString("es-ES", options);
 }
+
 
 </script>

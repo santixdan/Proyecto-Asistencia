@@ -185,6 +185,8 @@ onBeforeMount(() => {
 .registro-asistencia {
   text-align: center;
   margin: 5px;
+  display: flex;
+  justify-content: center;
 }
 
 table {

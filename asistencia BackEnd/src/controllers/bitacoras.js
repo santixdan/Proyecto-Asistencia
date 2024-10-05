@@ -51,8 +51,18 @@ const httpBitacora = {
     },
     getListarPorFecha: async (req, res) => {
         try {
-            const { fechaInicio, fechaFin } = req.body;
-            const bitacoras = await Bitacora.find({ fecha: { $gte: fechaInicio, $lte: fechaFin } }).sort({ fecha: 1 });
+            let { fechaInicio, fechaFin } = req.query;
+
+            fechaInicio = new Date(fechaInicio);
+            fechaFin = new Date(fechaFin);
+
+            fechaInicio.setUTCHours(0, 0, 0, 0);
+            fechaFin.setUTCHours(23, 59, 59, 999);
+    
+            const bitacoras = await Bitacora.find({
+                fecha: { $gte: fechaInicio, $lte: fechaFin }
+            }).sort({ fecha: 1 });
+    
             res.json({ bitacoras });
         } catch (error) {
             res.status(400).json({ error });
@@ -61,9 +71,16 @@ const httpBitacora = {
     getListarPorFechaYFicha: async (req, res) => {
         try {
             const ficha = req.params.ficha
-            const { fechaInicio, fechaFin } = req.query;
+            let { fechaInicio, fechaFin } = req.query;
+
             const aprendices = await Aprendiz.find({ ficha });
             const ids_Aprendiz = aprendices.map(aprendiz => aprendiz._id);
+            
+            fechaInicio = new Date(fechaInicio);
+            fechaFin = new Date(fechaFin);
+
+            fechaInicio.setUTCHours(0, 0, 0, 0);
+            fechaFin.setUTCHours(23, 59, 59, 999);
             
             const bitacoras = await Bitacora.find({aprendiz : { $in: ids_Aprendiz },  fecha: { $gte: fechaInicio, $lte: fechaFin } });
             res.json({ bitacoras });
@@ -74,7 +91,14 @@ const httpBitacora = {
     getListarPorFechaYFichaYEstado: async (req, res) => {
         try {
             const ficha = req.params.ficha
-            const { fechaInicio, fechaFin } = req.query;
+            let { fechaInicio, fechaFin } = req.query;
+
+            fechaInicio = new Date(fechaInicio);
+            fechaFin = new Date(fechaFin);
+
+            fechaInicio.setUTCHours(0, 0, 0, 0);
+            fechaFin.setUTCHours(23, 59, 59, 999);
+
             const aprendices = await Aprendiz.find({ ficha });
             const ids_Aprendiz = aprendices.map(aprendiz => aprendiz._id);
             

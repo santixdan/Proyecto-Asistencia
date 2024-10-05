@@ -18,8 +18,9 @@
                             </q-popup-proxy>
                         </template>
                     </q-input>
-                    <q-select filled type="number" v-model="ficha" clearable use-input input-debounce="0" label="Ficha"
-                        :options="options" @filter="filterFn" behavior="menu" emit-value map-options lazy-rules
+                    <q-select filled type="number" v-model="ficha" clearable use-input
+                        input-debounce="0" label="Ficha" :options="options" @filter="filterFn" behavior="menu"
+                        emit-value map-options lazy-rules
                         :rules="[val => val && val.length > 0 || 'Por favor, dígite el código de la ficha']">
                         <template v-slot:no-option>
                             <q-item>
@@ -100,7 +101,7 @@ let columns = ref([
 
 async function traer() {
     let res = await useBitacora.getListarBitacoraPorFechaYFicha(fecha.value, ficha.value);
-    
+
     if (res.r.data.bitacoras.length === 0) {
         Notify.create({
             color: "red-5",
@@ -109,7 +110,7 @@ async function traer() {
             message: "No hay registros con esas especificaciones",
             timeout: 2500,
         });
-    } else if (res.validar.value === true) {
+    }else if (res.validar.value === true) {
         let res2 = await useAprendiz.getListarAprendiz();
         let res3 = await useFicha.getListarFichas()
         rows.value = res.r.data.bitacoras.map(bitacora => {
@@ -145,7 +146,7 @@ async function traer() {
 const filterFn = async (val, update) => {
     let res = await useFicha.getListarFichas();
     const fichasActivas = res.data.fichas.filter(ficha => ficha.estado === 1);
-    
+
     if (val === '') {
         update(() => {
             options.value = fichasActivas.map(ficha => ({
@@ -175,8 +176,16 @@ function formatFecha(fecha) {
     const offset = date.getTimezoneOffset();
     date.setMinutes(date.getMinutes() + offset);
 
-    const options = { year: "numeric", month: "2-digit", day: "2-digit" };
-    return date.toLocaleDateString("es-ES", options);
+    const options = {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true
+    };
+
+    return date.toLocaleString("es-ES", options);
 }
 
 </script>

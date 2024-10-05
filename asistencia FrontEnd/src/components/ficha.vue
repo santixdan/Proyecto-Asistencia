@@ -116,6 +116,7 @@ onBeforeMount(() => {
 
 async function traer() {
   let res = await useFicha.getListarFichas();
+  
   rows.value = res.data.fichas;
 }
 
