@@ -36,6 +36,7 @@ routerUsuario.post("/enviarEmail", [
     check('email', 'El email es obligatorio').notEmpty(),
     check('email', 'El email debe ser válido').isEmail(),
     check('email').custom(usuarioHelpers.validarNoEmailUsuario),
+    check('email').custom(usuarioHelpers.validarUsuarioActivo),
     validarCampos
 ], httpUsuario.postEnviarEmail)
 
