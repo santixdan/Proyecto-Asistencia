@@ -24,7 +24,7 @@
             OBJETIVO (S)
           </th>
           <th colspan="10">
-            <span>Registro de asistencia de la ficha {{ ficha }}</span>
+            <span>Registro de asistencia de la ficha <u>{{ ficha }}</u></span>
           </th>
         </tr>
         <tr>
@@ -81,10 +81,10 @@
             <p>{{ row.contratista }}</p>
           </td>
           <td>
-            <p>{{ row.otro ? 'Sí' : 'Aprendiz' }}</p>
+            <p>{{ row.otro }}</p>
           </td>
           <td>
-            <p>{{ row.dependencia ? 'Sí' : 'SENA/CAT' }}</p>
+            <p>{{ row.dependencia }}</p>
           </td>
           <td>
             <p>{{ row.correo }}</p>
@@ -96,7 +96,7 @@
             <p>{{ row.autorizaGrabacion }}</p>
           </td>
           <td>
-            <img :src="row.firma" alt="firma del aprendiz" style="height: 35px; ">
+            <img :src="row.firma" style="height: 35px; ">
           </td>
         </tr>
       </tbody>
@@ -145,8 +145,8 @@ async function traer() {
         cedula: aprendiz?.cedula || '',
         planta: bitacora.planta || '',
         contratista: bitacora.contratista || '',
-        otro: bitacora.otro || '',
-        dependencia: bitacora.dependencia || '',
+        otro: bitacora?.otro || 'Aprendiz' ,
+        dependencia: bitacora?.dependencia || 'SENA/CAT',
         correo: aprendiz.email || '',
         telefono: aprendiz.telefono || '',
         autorizaGrabacion: bitacora.autorizaGrabacion || '',
