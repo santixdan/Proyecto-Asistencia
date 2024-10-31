@@ -35,7 +35,7 @@
         style="height: 150px">
         <div class="absolute-bottom bg-transparent">
           <q-avatar size="56px" class="q-mb-sm">
-            <img src="https://www.sena.edu.co/Paginas/img/logo-sena-blanco.png" />
+            <img src="https://lostramites.com.co/wp-content/uploads/logo-de-Sena-sin-fondo-Blanco-300x300.png" />
           </q-avatar>
           <div class="text-weight-bold">{{ nombre }}</div>
           <div>{{ correo }}</div>
