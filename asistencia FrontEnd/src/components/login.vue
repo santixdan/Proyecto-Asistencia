@@ -22,7 +22,7 @@
                 </div><br>
                 <div class="q-pa-md" style="max-width: 300px">
                     <q-form v-if="model === 'USUARIO'" @submit="login()" class="q-gutter-md">
-                        <q-input style="width: 250px;" filled v-model="email" label="Correo" lazy-rules
+                        <q-input style="width: 250px;" filled type="email" v-model="email" label="Correo" lazy-rules
                             :rules="[val => (val && val.length > 0) || 'Por favor, dígite el correo']">
                             <template v-slot:prepend>
                                 <font-awesome-icon icon="envelope" />
