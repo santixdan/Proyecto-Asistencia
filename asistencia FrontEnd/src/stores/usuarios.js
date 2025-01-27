@@ -2,8 +2,8 @@ import { defineStore } from "pinia"
 import axios from "axios"
 import { ref } from "vue"
 
-const API_URL = 'https://proyecto-asistencia-backend.onrender.com';
-// const API_URL = 'http://localhost:4000';
+// const API_URL = 'https://proyecto-asistencia-backend.onrender.com';
+const API_URL = 'http://localhost:4000';
 
 export const useUsuarioStore = defineStore("usuario", () => {
     let xtoken = ref()

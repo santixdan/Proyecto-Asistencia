@@ -23,7 +23,7 @@ const httpUsuario = {
     },
     postCrearUsuarios: async (req, res) => {
         try {
-            const {email, password, nombre} = req.body
+            const { email, password, nombre } = req.body
 
             const newUsuario = new Usuario({ email, password, nombre });
             const salt = bcryptjs.genSaltSync();
@@ -37,7 +37,7 @@ const httpUsuario = {
     },
     postLoginUsuario: async (req, res) => {
         try {
-            const {email, password} = req.body
+            const { email, password } = req.body
             const usuario = await Usuario.findOne({ email });
             const token = await generarJWT(usuario._id);
             res.json({ usuario, token });
@@ -56,7 +56,59 @@ const httpUsuario = {
                 from: process.env.CORREO,
                 to: email,
                 subject: "Restablecimiento de contraseña",
-                text: `Haz clic en el siguiente enlace para restablecer tu contraseña: ${resetLink}`
+                // text: `Haz clic en el siguiente enlace para restablecer tu contraseña: ${resetLink}`
+                html: `
+                <html>
+                    <head>
+                        <style>
+                            body {
+                                font-family: Arial, sans-serif;
+                                background-color: #f4f4f9;
+                                margin: 0;
+                                padding: 0;
+                            }
+                            .container {
+                                width: 100%;
+                                padding: 20px;
+                                text-align: center;
+                            }
+                            .card {
+                                background-color: white;
+                                padding: 30px;
+                                border-radius: 10px;
+                                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                                width: 90%;
+                                max-width: 500px;
+                                margin: 0 auto;
+                            }
+                            .btn {
+                                background-color: #4CAF50;
+                                color: white;
+                                padding: 10px 20px;
+                                border-radius: 5px;
+                                text-decoration: none;
+                                font-weight: bold;
+                            }
+                            .footer {
+                                font-size: 12px;
+                                color: #555;
+                                margin-top: 20px;
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="container">
+                            <div class="card">
+                                <h2>Restablecimiento de Contraseña</h2>
+                                <p>Hola, ${user.nombre}</p>
+                                <p>Haz clic en el siguiente enlace para restablecer tu contraseña:</p>
+                                <a href="${resetLink}" class="btn">Restablecer Contraseña</a>
+                                <p class="footer">Si no solicitaste este cambio, ignora este correo.</p>
+                            </div>
+                        </div>
+                    </body>
+                </html>
+            `
             };
             transporter.sendMail(mailOptions, (error, info) => {
                 if (error) {
@@ -111,7 +163,7 @@ const httpUsuario = {
 
             await Usuario.findByIdAndUpdate(decoded.userId, { password: hashedPassword });
 
-            res.status(200).json({msg: "Contraseña actualizada exitosamente."});
+            res.status(200).json({ msg: "Contraseña actualizada exitosamente." });
         } catch (error) {
             res.status(400).json({ error });
         }
